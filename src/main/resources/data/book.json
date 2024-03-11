@@ -1,7 +1,7 @@
 {
   "book": [
     {
-      "bookId": 1,
+      "bookId": "001",
       "bookTitle": "Realm of Magic",
       "author": "Alice Williams",
       "copies": 9,
@@ -14,7 +14,7 @@
       "prevBookBorrowers": []
     },
     {
-      "bookId": 2,
+      "bookId": "002",
       "bookTitle": "Dangerous Pursuit",
       "author": "David Turner",
       "copies": 6,
@@ -27,7 +27,7 @@
       "prevBookBorrowers": []
     },
     {
-      "bookId": 3,
+      "bookId": "003",
       "bookTitle": "Timeless Chronicles",
       "author": "Emily Brown",
       "copies": 8,
@@ -40,7 +40,7 @@
       "prevBookBorrowers": []
     },
     {
-      "bookId": 4,
+      "bookId": "004",
       "bookTitle": "Code Red",
       "author": "Michael Clark",
       "copies": 5,
@@ -53,13 +53,91 @@
       "prevBookBorrowers": []
     },
     {
-      "bookId": 5,
+      "bookId": "005",
       "bookTitle": "Stars Aligned",
       "author": "Sophie Turner",
       "copies": 7,
       "genre": "Adult",
       "shortDescription": "A coming-of-age story with a touch of magic.",
       "imagePath": "resources/images/bookImages/stars_aligned.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "006",
+      "bookTitle": "Parallel Realms",
+      "author": "Ryan Miller",
+      "copies": 7,
+      "genre": "Sci-Fi",
+      "shortDescription": "A mind-bending journey through parallel universes.",
+      "imagePath": "resources/images/bookImages/parallel_realms.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "007",
+      "bookTitle": "Laugh Out Loud",
+      "author": "Emma White",
+      "copies": 5,
+      "genre": "Comedy",
+      "shortDescription": "A hilarious comedy that tickles your funny bone.",
+      "imagePath": "resources/images/bookImages/laugh_out_loud.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "008",
+      "bookTitle": "Laugh Out Loud",
+      "author": "Emma White",
+      "copies": 5,
+      "genre": "Comedy",
+      "shortDescription": "A hilarious comedy that tickles your funny bone.",
+      "imagePath": "resources/images/bookImages/laugh_out_loud.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "008",
+      "bookTitle": "Harry Potter and the Sorcerer's Stone",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The first novel in the Harry Potter series and Rowling's debut novel.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_sorcerer_s_stone.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "009",
+      "bookTitle": "Harry Potter and the Chamber of Secrets",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The second novel in the Harry Potter series.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_chamber_of_secrets.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "010",
+      "bookTitle": "Harry Potter and the Prisoner of Azkaban",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The third novel in the Harry Potter series.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_prisoner_of_azkaban.jpg",
       "currentBorrowers": [],
       "pendingBorrowers":[],
       "pendingBookReturners": [],
