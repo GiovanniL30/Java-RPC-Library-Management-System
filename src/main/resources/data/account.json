@@ -7,7 +7,7 @@
       "lastName": "",
       "firstName": "",
       "password": "",
-      "pendingBooks": "",
+      "pendingBooks": [],
       "borrowedBooks": [],
       "totalBorrowedBook": 1
     }

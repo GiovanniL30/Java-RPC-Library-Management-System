@@ -1,13 +1,53 @@
 package project.server;
 
+import project.client.controller.ClientController;
+import project.server.controller.ServerController;
+import project.utilities.RMI.ClientRemoteMethods;
+import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Account;
 
+import java.net.MalformedURLException;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.RMIClientSocketFactory;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
 
-    private LinkedList<Account> loggedInAccounts;
+    private static ServerController serverController;
 
+    protected Server(){
+
+        try {
+            Registry registry = LocateRegistry.createRegistry(1099);
+
+            ClientRemoteMethods clientRemoteMethods = new ClientServant();
+            registry.rebind("ClientRemote", clientRemoteMethods);
+
+            ServerRemoteMethods serverRemoteMethods = new ServerServant();
+            registry.rebind("ServerRemote", serverRemoteMethods);
+
+
+            serverController = new ServerController();
+            System.out.println("Server is running...");
+        } catch (RuntimeException | RemoteException e) {
+            throw  new RuntimeException(e);
+        }
+
+    }
+
+
+    public static ServerController getServerController() {
+        return serverController;
+    }
+
+    public static void main(String[] args) {
+        new Server();
+    }
 
 }
