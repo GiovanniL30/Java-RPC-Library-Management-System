@@ -1,0 +1,16 @@
+{
+  "book": [
+    {
+      "bookId": 1,
+      "bookTitle": "Hello Wolrd",
+      "author": "Sample Auhtor",
+      "copies": 2,
+      "shortDescription": "sample short",
+      "imagePath": "sample/path",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    }
+  ]
+}

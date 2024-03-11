@@ -1,0 +1,15 @@
+{
+  "accounts": [
+    {
+      "id": "asc",
+      "userName": "",
+      "email": "",
+      "lastName": "",
+      "firstName": "",
+      "password": "",
+      "pendingBooks": "",
+      "borrowedBooks": [],
+      "totalBorrowedBook": 1
+    }
+  ]
+}
