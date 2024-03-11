@@ -207,6 +207,71 @@
       "pendingBorrowers":[],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
+    },
+    {
+      "bookId": "016",
+      "bookTitle": "Percy Jackson and The Lightning Thief",
+      "author": "Rick Riordan",
+      "copies": 8,
+      "genre": "Fiction",
+      "shortDescription": "A light-hearted fantasy about a modern boy who learns that his true father is Poseidon.",
+      "imagePath": "resources/images/bookImages/the_lightning_thief.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "017",
+      "bookTitle": "Percy Jackson and The Sea of Monster",
+      "author": "Rick Riordan",
+      "copies": 8,
+      "genre": "Fiction",
+      "shortDescription": "A fantasy book about a demigod boy, Percy Jackson who will retrieve the Golden Fleece.",
+      "imagePath": "resources/images/bookImages/the_sea_of_monster.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "018",
+      "bookTitle": "Percy Jackson and The Titan's Curse",
+      "author": "Rick Riordan",
+      "copies": 8,
+      "genre": "Fiction",
+      "shortDescription": "Sequel of the book The Sea of Monster",
+      "imagePath": "resources/images/bookImages/the_titan's_curse.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "019",
+      "bookTitle": "The Fellowship of the Ring",
+      "author": "J.R.R Tolkien",
+      "copies": 8,
+      "genre": "Fiction",
+      "shortDescription": "One Ring to rule them all, One Ring to find them.",
+      "imagePath": "resources/images/bookImages/the_fellowship_of_the_ring.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "020",
+      "bookTitle": "The Two Towers",
+      "author": "J.R.R Tolkien",
+      "copies": 8,
+      "genre": "Fiction",
+      "shortDescription": "The second part of J.R.R. Tolkien’s epic adventure The Lord of the Rings.",
+      "imagePath": "resources/images/bookImages/the_two_towers.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
     }
   ]
 }
