@@ -1,5 +1,7 @@
 package project.utilities.RMI;
 
+import project.server.controller.ServerController;
+import project.server.controller.ServerObserver;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
@@ -36,4 +38,5 @@ public interface ServerRemoteMethods extends Remote {
     Response<String> changeUserPassword(Account account, String newPassword) throws RemoteException;
 
     Response<LinkedList<Book>> getBooks() throws RemoteException;
+    void registerServer(ServerController serverObserver) throws RemoteException;
 }

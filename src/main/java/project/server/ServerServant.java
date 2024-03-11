@@ -1,5 +1,7 @@
 package project.server;
 
+import project.server.controller.ServerController;
+import project.server.controller.ServerObserver;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
@@ -11,6 +13,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 
 public class ServerServant extends UnicastRemoteObject implements ServerRemoteMethods {
+
+    private ServerController serverController;
+
     protected ServerServant() throws RemoteException {
         super();
     }
@@ -92,5 +97,10 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
     public Response<LinkedList<Book>> getBooks() {
         System.out.println("Server get all books");
         return null;
+    }
+
+    @Override
+    public void registerServer(ServerController serverObserver) {
+        serverController = serverObserver;
     }
 }

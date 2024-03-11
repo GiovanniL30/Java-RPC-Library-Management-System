@@ -1,24 +1,30 @@
 package project.server.controller;
 
-import project.utilities.RMI.ClientRemoteMethods;
+import project.server.Server;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
 
+
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.LinkedList;
 
-public class ServerController implements ServerObserver {
+public class ServerController implements ServerObserver, Serializable {
 
     private final ServerRemoteMethods serverRemoteMethods;
 
     public ServerController() {
 
         try {
-            serverRemoteMethods = (ServerRemoteMethods) LocateRegistry.getRegistry("localhost", 1098).lookup("server");
+
+            serverRemoteMethods = (ServerRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ServerRemote");
+            serverRemoteMethods.registerServer(this);
+
         }catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
@@ -90,4 +96,6 @@ public class ServerController implements ServerObserver {
     public void changeUserPassword(Account account, String newPassword) {
 
     }
+
+
 }
