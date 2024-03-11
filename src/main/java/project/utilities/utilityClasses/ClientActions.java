@@ -10,6 +10,7 @@ public enum ClientActions implements Serializable {
     BORROW_BOOK,
     CANCEL_PENDING,
     RETURN_BOOK,
-    SEND_MESSAGE
+    SEND_MESSAGE,
+
 
 }

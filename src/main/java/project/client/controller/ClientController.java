@@ -4,6 +4,7 @@ import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Response;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 
@@ -30,7 +31,11 @@ public class ClientController implements ClientObserver, Serializable {
     public void logIn(Authentication credential) {
 
         try {
-            clientRemoteMethods.logIn(credential, this);
+
+            Response<String> response = clientRemoteMethods.logIn(credential, this);
+
+            //TODO: handle response
+
             serverRemoteMethods().notification(ClientActions.LOGIN);
         } catch (RemoteException e) {
             System.out.println(e.getMessage());
@@ -42,7 +47,10 @@ public class ClientController implements ClientObserver, Serializable {
     public void borrowBook(Book book) {
 
         try {
-            clientRemoteMethods.borrowBook(book);
+            Response<String> response = clientRemoteMethods.borrowBook(book);
+
+            //TODO: handle response
+
             serverRemoteMethods().notification(ClientActions.BORROW_BOOK);
         } catch (RemoteException e) {
 
@@ -53,7 +61,11 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void removePending(Book book) {
         try {
-            clientRemoteMethods.removePending(book);
+            Response<String> response = clientRemoteMethods.removePending(book);
+
+            //TODO: handle response
+
+            serverRemoteMethods().notification(ClientActions.CANCEL_PENDING);
         } catch (RemoteException e) {
 
         }
@@ -63,8 +75,11 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void returnBook(Book book) {
         try {
-            clientRemoteMethods.returnBook(book);
+            Response<String> response = clientRemoteMethods.returnBook(book);
 
+            //TODO: handle response
+
+            serverRemoteMethods().notification(ClientActions.RETURN_BOOK);
         } catch (RemoteException e) {
 
         }
@@ -73,6 +88,33 @@ public class ClientController implements ClientObserver, Serializable {
 
     @Override
     public void updateView(ServerActions serverActions) {
+
+        switch (serverActions) {
+            case EDIT_BOOK -> {
+
+            }case BAN_ACCOUNT -> {
+
+            }case DELETE_BOOK -> {
+
+            }case UNBAN_ACCOUNT -> {
+
+            }case ADDED_NEW_BOOK -> {
+
+            }case DELETE_ACCOUNT -> {
+
+            }case RETRIEVES_BOOK -> {
+
+            }case CHANGE_PASSWORD -> {
+
+            }case BROADCAST_MESSAGE -> {
+
+            }case ACCEPT_BOOK_PENDING -> {
+
+            }case CANCEL_BOOK_PENDING -> {
+
+            }
+            default -> {}
+        }
 
     }
 
