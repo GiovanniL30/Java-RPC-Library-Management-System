@@ -142,6 +142,71 @@
       "pendingBorrowers":[],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
+    },
+    {
+      "bookId": "011",
+      "bookTitle": "Harry Potter and the Goblet of Fire",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The fourth novel in the Harry Potter series.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_goblet_of_fire.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "012",
+      "bookTitle": "Harry Potter and the Order of the Phoenix",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The fifth novel in the Harry Potter series.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_order_of_the_phoenix.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "013",
+      "bookTitle": "Harry Potter and the Half-Blood Prince",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The sixth and penultimate novel in the Harry Potter series.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_half_blood_prince.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "014",
+      "bookTitle": "Harry Potter and the Deathly Hallows",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The seventh and final novel in the Harry Potter series.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_deathly_hallows.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
+    },
+    {
+      "bookId": "015",
+      "bookTitle": "Harry Potter and the Cursed Child",
+      "author": "J.K. Rowling",
+      "copies": 7,
+      "genre": "Fantasy",
+      "shortDescription": "The story is set nineteen years after the events of the 2007.",
+      "imagePath": "resources/images/bookImages/harry_potter_and_the_cursed_child.jpg",
+      "currentBorrowers": [],
+      "pendingBorrowers":[],
+      "pendingBookReturners": [],
+      "prevBookBorrowers": []
     }
   ]
 }
