@@ -2,13 +2,19 @@ package project.server;
 
 import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
+import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
+import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.ServerActions;
 
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 
@@ -24,6 +30,13 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
     @Override
     public Response<String> acceptBook(Book book, Student student) {
         System.out.println("Server accepts book");
+
+        try {
+            clientRemoteMethods().getClients().get(student.getAccount().getUserName()).updateView(ServerActions.ACCEPT_BOOK_PENDING);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
         return null;
     }
 
@@ -105,8 +118,19 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
     }
 
     @Override
-    public void notification() {
+    public void notification(ClientActions clientActions) {
         System.out.println("A client sent a notification");
-        serverController.updateView();
+        serverController.updateView(clientActions);
+    }
+
+
+    private ClientRemoteMethods clientRemoteMethods() {
+
+        try {
+            return (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
+        } catch (NotBoundException | RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

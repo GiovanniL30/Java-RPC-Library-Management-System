@@ -1,10 +1,12 @@
 package project.server;
 
+import project.client.controller.ClientController;
 import project.client.controller.ClientObserver;
 import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
+import project.utilities.utilityClasses.ServerActions;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -13,7 +15,7 @@ import java.util.LinkedList;
 
 public class ClientServant extends UnicastRemoteObject implements ClientRemoteMethods {
 
-    private final HashMap<String, ClientObserver> clientsController;
+    private final HashMap<String, ClientController> clientsController;
 
     public ClientServant() throws RemoteException {
         super();
@@ -21,7 +23,7 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     }
 
     @Override
-    public Response<String> logIn(Authentication credential, ClientObserver clientObserver) {
+    public Response<String> logIn(Authentication credential, ClientController clientObserver) {
         System.out.println("Client Request to log in");
 
         clientsController.put(credential.getUserName(), clientObserver);
@@ -48,7 +50,7 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
 
     @Override
-    public HashMap<String, ClientObserver> getClients() {
+    public HashMap<String, ClientController> getClients() {
         return clientsController;
     }
 
@@ -56,6 +58,11 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     public Response<LinkedList<Book>> getBooks() {
         System.out.println("Client Request to get all the books");
         return null;
+    }
+
+    @Override
+    public void notification(ServerActions serverActions) {
+
     }
 
 }

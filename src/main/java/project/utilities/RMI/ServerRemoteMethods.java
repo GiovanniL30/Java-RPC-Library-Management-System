@@ -6,6 +6,7 @@ import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
+import project.utilities.utilityClasses.ClientActions;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -39,5 +40,5 @@ public interface ServerRemoteMethods extends Remote {
 
     Response<LinkedList<Book>> getBooks() throws RemoteException;
     void registerServer(ServerController serverObserver) throws RemoteException;
-    void notification() throws RemoteException;
+    void notification(ClientActions clientActions) throws RemoteException;
 }

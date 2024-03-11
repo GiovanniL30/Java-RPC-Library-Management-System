@@ -5,6 +5,7 @@ import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
+import project.utilities.utilityClasses.ClientActions;
 
 
 import java.io.Serializable;
@@ -98,7 +99,7 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
-    public void updateView() {
+    public void updateView(ClientActions clientActions) {
         System.out.println("I will now be updating my view");
     }
 

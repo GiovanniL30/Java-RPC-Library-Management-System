@@ -4,9 +4,10 @@ import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
+import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.ServerActions;
 
 import java.io.Serializable;
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -30,7 +31,7 @@ public class ClientController implements ClientObserver, Serializable {
 
         try {
             clientRemoteMethods.logIn(credential, this);
-            serverRemoteMethods().notification();
+            serverRemoteMethods().notification(ClientActions.LOGIN);
         } catch (RemoteException e) {
             System.out.println(e.getMessage());
         }
@@ -42,8 +43,7 @@ public class ClientController implements ClientObserver, Serializable {
 
         try {
             clientRemoteMethods.borrowBook(book);
-
-
+            serverRemoteMethods().notification(ClientActions.BORROW_BOOK);
         } catch (RemoteException e) {
 
         }
@@ -68,6 +68,11 @@ public class ClientController implements ClientObserver, Serializable {
         } catch (RemoteException e) {
 
         }
+
+    }
+
+    @Override
+    public void updateView(ServerActions serverActions) {
 
     }
 

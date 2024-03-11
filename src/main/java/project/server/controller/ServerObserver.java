@@ -4,6 +4,7 @@ import project.client.controller.ClientController;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
+import project.utilities.utilityClasses.ClientActions;
 
 public interface ServerObserver {
 
@@ -33,7 +34,7 @@ public interface ServerObserver {
 
     void changeUserPassword(Account account, String newPassword);
 
-    void updateView();
+    void updateView(ClientActions clientActions);
 
 
 }

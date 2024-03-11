@@ -2,6 +2,8 @@ package project.client.controller;
 
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
+import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.ServerActions;
 
 public interface ClientObserver {
 
@@ -29,6 +31,9 @@ public interface ClientObserver {
      * @param book The book to be returned
      */
     void returnBook(Book book);
+
+    void updateView(ServerActions serverActions);
+
 
 
 
