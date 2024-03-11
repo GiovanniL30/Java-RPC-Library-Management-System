@@ -33,5 +33,7 @@ public interface ServerObserver {
 
     void changeUserPassword(Account account, String newPassword);
 
+    void updateView();
+
 
 }

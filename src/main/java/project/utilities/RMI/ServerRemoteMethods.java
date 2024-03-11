@@ -39,4 +39,5 @@ public interface ServerRemoteMethods extends Remote {
 
     Response<LinkedList<Book>> getBooks() throws RemoteException;
     void registerServer(ServerController serverObserver) throws RemoteException;
+    void notification() throws RemoteException;
 }

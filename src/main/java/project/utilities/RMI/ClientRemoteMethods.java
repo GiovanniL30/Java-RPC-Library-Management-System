@@ -17,7 +17,7 @@ public interface ClientRemoteMethods extends Remote {
      * Handle login event
      * @param credential The authentication credentials entered by the user
      */
-    Response<String> logIn(Authentication credential) throws RemoteException;
+    Response<String> logIn(Authentication credential, ClientObserver clientObserver) throws RemoteException;
 
     /**
      * Handle borrowing a book event
@@ -38,13 +38,10 @@ public interface ClientRemoteMethods extends Remote {
      */
     Response<String> returnBook(Book book) throws RemoteException;
 
-    void registerClient(String id, ClientObserver clientObserver) throws RemoteException;
-    void unregisterClient(String id) throws RemoteException;
 
     HashMap<String, ClientObserver> getClients() throws RemoteException;
 
     Response<LinkedList<Book>> getBooks() throws RemoteException;
 
-    void notifyServer(NotifyType notifyType, ClientController clientController) throws RemoteException;
 
 }

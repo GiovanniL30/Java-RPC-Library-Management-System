@@ -103,4 +103,10 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
     public void registerServer(ServerController serverObserver) {
         serverController = serverObserver;
     }
+
+    @Override
+    public void notification() {
+        System.out.println("A client sent a notification");
+        serverController.updateView();
+    }
 }

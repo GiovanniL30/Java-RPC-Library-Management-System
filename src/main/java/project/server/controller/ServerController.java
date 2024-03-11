@@ -97,5 +97,10 @@ public class ServerController implements ServerObserver, Serializable {
 
     }
 
+    @Override
+    public void updateView() {
+        System.out.println("I will now be updating my view");
+    }
+
 
 }
