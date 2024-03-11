@@ -1,6 +1,7 @@
 package project.server;
 
 import project.utilities.RMI.ClientRemoteMethods;
+import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Account;
 
 import java.rmi.AccessException;
@@ -21,6 +22,9 @@ public class Server {
 
             ClientRemoteMethods clientRemoteMethods = new ClientServant();
             LocateRegistry.createRegistry(1099).bind("client", clientRemoteMethods);
+
+            ServerRemoteMethods serverRemoteMethods = new ServerServant();
+            LocateRegistry.createRegistry(1098).bind("server", serverRemoteMethods);
 
             System.out.println("Server is running...");
         } catch (RuntimeException | AlreadyBoundException | RemoteException e) {

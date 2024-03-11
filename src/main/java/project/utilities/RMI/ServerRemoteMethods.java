@@ -6,33 +6,34 @@ import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 
 public interface ServerRemoteMethods extends Remote {
 
-    Response<String> acceptBook(String studentId, String bookId, String bookTitle);
+    Response<String> acceptBook(Book book, Student student) throws RemoteException;
 
-    Response<String> retrieveBook(String studentId, String bookId, String bookTitle);
+    Response<String> retrieveBook(Book book, Student student) throws RemoteException;
 
-    Response<String> editBook(Book book);
+    Response<String> editBook(Book book) throws RemoteException;
 
-    Response<String> deleteBook(String bookId);
+    Response<String> deleteBook(Book book) throws RemoteException;
 
-    Response<String> cancelPending(String studentId, String bookId, String bookTitle);
+    Response<String> cancelPending(Book book, Student student) throws RemoteException;
 
-    Response<String> createNewBook(Book book);
+    Response<String> createNewBook(Book book) throws RemoteException;
 
-    Response<String> broadcastMessage(String message);
+    Response<String> broadcastMessage(String message) throws RemoteException;
 
-    Response<String> banAccount(Account account);
+    Response<String> banAccount(Account account) throws RemoteException;
 
-    Response<String> unbanAccount(Account account);
+    Response<String> unbanAccount(Account account) throws RemoteException;
 
-    Response<String> deleteAccount(Student account);
+    Response<String> deleteAccount(Student account) throws RemoteException;
 
-    Response<String> createAccount(Account account);
+    Response<String> createAccount(Account account) throws RemoteException;
 
-    Response<String> changeUserPassword(String accountId, String newPassword);
+    Response<String> changeUserPassword(Account account, String newPassword) throws RemoteException;
 
-    Response<LinkedList<Book>> getBooks();
+    Response<LinkedList<Book>> getBooks() throws RemoteException;
 }

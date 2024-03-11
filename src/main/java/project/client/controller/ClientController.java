@@ -16,18 +16,11 @@ public class ClientController implements ClientObserver {
 
         try {
             clientRemoteMethods = (ClientRemoteMethods) LocateRegistry.getRegistry("localhost", 1099).lookup("client");
-        }catch (RemoteException e) {
-            throw new RuntimeException(e);
-        } catch (NotBoundException e) {
+        }catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
 
 
-    }
-
-    public static void main(String[] args) {
-        ClientController clientController = new ClientController();
-        clientController.logIn(new Authentication("", ""));
     }
 
     @Override
