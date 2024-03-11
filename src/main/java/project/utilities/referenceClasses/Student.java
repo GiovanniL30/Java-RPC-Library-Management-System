@@ -1,8 +1,9 @@
 package project.utilities.referenceClasses;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Student {
+public class Student implements Serializable {
 
     private Account account;
     private int totalBorrowedBooks;

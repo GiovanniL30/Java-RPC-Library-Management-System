@@ -1,6 +1,8 @@
 package project.utilities.referenceClasses;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
 
     private String accountId;
     private String userName;

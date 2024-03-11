@@ -1,8 +1,9 @@
 package project.utilities.referenceClasses;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Book {
+public class Book implements Serializable {
 
     private String bookId;
     private String bookTitle;

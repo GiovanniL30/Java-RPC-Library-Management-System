@@ -1,11 +1,11 @@
 package project.utilities.referenceClasses;
 
-import project.utilities.utilityClasses.TypeObject;
+import java.io.Serializable;
 
-public class Response<T> {
+public class Response<T> implements Serializable {
 
-    private T payload;
-    private boolean isSuccess;
+    private final T payload;
+    private final boolean isSuccess;
 
     public Response(boolean isSuccess, T payload) {
         this.isSuccess = isSuccess;
