@@ -1,5 +1,6 @@
 package project.client.controller;
 
+import project.client.utility.ClientPanels;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.ClientActions;
@@ -34,6 +35,8 @@ public interface ClientObserver {
 
     void updateView(ServerActions serverActions);
 
+
+    void changeFrame(ClientPanels clientPanels);
 
 
 

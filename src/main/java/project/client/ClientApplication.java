@@ -1,22 +1,21 @@
 package project.client;
 
 import project.client.controller.ClientController;
-import project.server.Server;
-import project.utilities.referenceClasses.Authentication;
+import project.client.views.ClientMainView;
+
+import javax.swing.*;
 
 public class ClientApplication {
 
     public static void main(String[] args) {
 
-        for(int i = 0 ; i < 10; i++) {
+        SwingUtilities.invokeLater( () -> {
+            ClientController clientController = new ClientController();
+            ClientMainView mainView = new ClientMainView(clientController);
+            clientController.setMainView(mainView);
 
-            new Thread(() -> {
-                ClientController clientController = new ClientController();
-                clientController.logIn(new Authentication("", ""));
-            }).start();
-
-        }
-
+            mainView.setClientController(clientController);
+        });
 
     }
 
