@@ -9,7 +9,7 @@
       "shortDescription": "Discover a magical world beyond imagination.",
       "imagePath": "resources/images/bookImages/realm_of_magic.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -22,7 +22,7 @@
       "shortDescription": "A gripping thriller that keeps you on the edge.",
       "imagePath": "resources/images/bookImages/dangerous_pursuit.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -35,7 +35,7 @@
       "shortDescription": "Explore the past through captivating historical tales.",
       "imagePath": "resources/images/bookImages/timeless_chronicles.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -48,7 +48,7 @@
       "shortDescription": "High-octane action packed with suspense.",
       "imagePath": "resources/images/bookImages/code_red.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -61,7 +61,7 @@
       "shortDescription": "A coming-of-age story with a touch of magic.",
       "imagePath": "resources/images/bookImages/stars_aligned.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -74,7 +74,7 @@
       "shortDescription": "A mind-bending journey through parallel universes.",
       "imagePath": "resources/images/bookImages/parallel_realms.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -87,7 +87,7 @@
       "shortDescription": "A hilarious comedy that tickles your funny bone.",
       "imagePath": "resources/images/bookImages/laugh_out_loud.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -100,7 +100,7 @@
       "shortDescription": "A hilarious comedy that tickles your funny bone.",
       "imagePath": "resources/images/bookImages/laugh_out_loud.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -113,7 +113,7 @@
       "shortDescription": "The first novel in the Harry Potter series and Rowling's debut novel.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_sorcerer_s_stone.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -126,7 +126,7 @@
       "shortDescription": "The second novel in the Harry Potter series.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_chamber_of_secrets.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -139,7 +139,7 @@
       "shortDescription": "The third novel in the Harry Potter series.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_prisoner_of_azkaban.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -152,7 +152,7 @@
       "shortDescription": "The fourth novel in the Harry Potter series.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_goblet_of_fire.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -165,7 +165,7 @@
       "shortDescription": "The fifth novel in the Harry Potter series.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_order_of_the_phoenix.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -178,7 +178,7 @@
       "shortDescription": "The sixth and penultimate novel in the Harry Potter series.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_half_blood_prince.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -191,7 +191,7 @@
       "shortDescription": "The seventh and final novel in the Harry Potter series.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_deathly_hallows.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -204,7 +204,7 @@
       "shortDescription": "The story is set nineteen years after the events of the 2007.",
       "imagePath": "resources/images/bookImages/harry_potter_and_the_cursed_child.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -217,7 +217,7 @@
       "shortDescription": "A light-hearted fantasy about a modern boy who learns that his true father is Poseidon.",
       "imagePath": "resources/images/bookImages/the_lightning_thief.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -230,7 +230,7 @@
       "shortDescription": "A fantasy book about a demigod boy, Percy Jackson who will retrieve the Golden Fleece.",
       "imagePath": "resources/images/bookImages/the_sea_of_monster.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -243,7 +243,7 @@
       "shortDescription": "Sequel of the book The Sea of Monster",
       "imagePath": "resources/images/bookImages/the_titan's_curse.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -256,7 +256,7 @@
       "shortDescription": "One Ring to rule them all, One Ring to find them.",
       "imagePath": "resources/images/bookImages/the_fellowship_of_the_ring.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -269,7 +269,7 @@
       "shortDescription": "The second part of J.R.R. Tolkien’s epic adventure The Lord of the Rings.",
       "imagePath": "resources/images/bookImages/the_two_towers.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -282,7 +282,7 @@
       "shortDescription": "The third part of J.R.R. Tolkien’s epic adventure The Lord of the Rings.",
       "imagePath": "resources/images/bookImages/the_return_of_the_king.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -295,7 +295,7 @@
       "shortDescription": "The story follows a girl from District 12 who volunteers.",
       "imagePath": "resources/images/bookImages/hunger_games.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -308,7 +308,7 @@
       "shortDescription": "The second book in The Hunger Game Series.",
       "imagePath": "resources/images/bookImages/catching_fire.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -321,7 +321,7 @@
       "shortDescription": "The last installment of the Hunger Games series.",
       "imagePath": "resources/images/bookImages/mockingjay.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -334,7 +334,7 @@
       "shortDescription": "The prequel to the original The Hunger Games trilogy.",
       "imagePath": "resources/images/bookImages/ballad.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -347,7 +347,7 @@
       "shortDescription": "A hilarious tale of an angel and a demon teaming up to prevent the apocalypse.",
       "imagePath": "resources/images/bookImages/good_omens.jpg",
       "currentBorrowers": [],
-      "pendingBorrowers":[],
+      "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     }

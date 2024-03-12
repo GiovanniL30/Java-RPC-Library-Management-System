@@ -8,16 +8,16 @@ public class Book implements Serializable {
     private String bookId;
     private String bookTitle;
     private String author;
-    private String[] genre;
+    private String genre;
     private String shortDescription;
     private String imagePath;
     private int copies;
-    private LinkedList<Student> currentBorrowers;
-    private LinkedList<Student> previousBorrowers;
-    private LinkedList<Student> pendingBorrowers;
-    private LinkedList<Student> pendingBookReturners;
+    private LinkedList<String> currentBorrowers;
+    private LinkedList<String> previousBorrowers;
+    private LinkedList<String> pendingBorrowers;
+    private LinkedList<String> pendingBookReturners;
 
-    public Book(String bookId, String bookTitle, String author, String[] genre, String shortDescription, String imagePath, int copies, LinkedList<Student> currentBorrowers, LinkedList<Student> previousBorrowers, LinkedList<Student> pendingBorrowers, LinkedList<Student> pendingBookReturners) {
+    public Book(String bookId, String bookTitle, String author, String genre, String shortDescription, String imagePath, int copies, LinkedList<String> currentBorrowers, LinkedList<String> previousBorrowers, LinkedList<String> pendingBorrowers, LinkedList<String> pendingBookReturners) {
         this.bookId = bookId;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -55,11 +55,11 @@ public class Book implements Serializable {
         this.author = author;
     }
 
-    public String[] getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(String[] genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 
@@ -87,35 +87,52 @@ public class Book implements Serializable {
         this.copies = copies;
     }
 
-    public LinkedList<Student> getCurrentBorrowers() {
+    public LinkedList<String> getCurrentBorrowers() {
         return currentBorrowers;
     }
 
-    public void setCurrentBorrowers(LinkedList<Student> currentBorrowers) {
+    public void setCurrentBorrowers(LinkedList<String> currentBorrowers) {
         this.currentBorrowers = currentBorrowers;
     }
 
-    public LinkedList<Student> getPreviousBorrowers() {
+    public LinkedList<String> getPreviousBorrowers() {
         return previousBorrowers;
     }
 
-    public void setPreviousBorrowers(LinkedList<Student> previousBorrowers) {
+    public void setPreviousBorrowers(LinkedList<String> previousBorrowers) {
         this.previousBorrowers = previousBorrowers;
     }
 
-    public LinkedList<Student> getPendingBorrowers() {
+    public LinkedList<String> getPendingBorrowers() {
         return pendingBorrowers;
     }
 
-    public void setPendingBorrowers(LinkedList<Student> pendingBorrowers) {
+    public void setPendingBorrowers(LinkedList<String> pendingBorrowers) {
         this.pendingBorrowers = pendingBorrowers;
     }
 
-    public LinkedList<Student> getPendingBookReturners() {
+    public LinkedList<String> getPendingBookReturners() {
         return pendingBookReturners;
     }
 
-    public void setPendingBookReturners(LinkedList<Student> pendingBookReturners) {
+    public void setPendingBookReturners(LinkedList<String> pendingBookReturners) {
         this.pendingBookReturners = pendingBookReturners;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId='" + bookId + '\'' +
+                ", bookTitle='" + bookTitle + '\'' +
+                ", author='" + author + '\'' +
+                ", genre='" + genre + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", copies=" + copies +
+                ", currentBorrowers=" + currentBorrowers +
+                ", previousBorrowers=" + previousBorrowers +
+                ", pendingBorrowers=" + pendingBorrowers +
+                ", pendingBookReturners=" + pendingBookReturners +
+                '}';
     }
 }
