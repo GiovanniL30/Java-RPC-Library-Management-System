@@ -47,7 +47,7 @@ public interface ClientRemoteMethods extends Remote {
     HashMap<String, ClientController> getClients() throws RemoteException;
 
     Response<LinkedList<Book>> getBooks() throws RemoteException;
-    void notification(ServerActions serverActions);
+    void notification(ServerActions serverActions) throws RemoteException;
 
 
 }

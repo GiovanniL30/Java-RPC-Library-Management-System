@@ -1,8 +1,12 @@
 package project.client.views;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import project.client.controller.ClientController;
+import project.client.utility.ClientPanels;
 import project.client.views.components.Header;
+import project.client.views.components.HomePanel;
 import project.client.views.components.Menu;
+import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +16,9 @@ public class ClientMainView extends JFrame {
     public static int FRAME_WIDTH = 1000;
     private Header header;
     private Menu menu;
+    private ClientController clientController;
     private JPanel contentHolder = new JPanel();
+    private Loading loading = new Loading(this);
 
 
 
@@ -22,9 +28,14 @@ public class ClientMainView extends JFrame {
         header = new Header("Giovanni Leo");
         menu = new Menu();
         contentHolder.setPreferredSize(new Dimension(FRAME_WIDTH, 550));
+        contentHolder.add(new HomePanel());
+
         add(header);
         add(menu);
         add(contentHolder);
+
+
+
     }
 
 
@@ -55,5 +66,34 @@ public class ClientMainView extends JFrame {
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public void setContentPanel(JPanel panel) {
+        new SwingWorker<>() {
+            @Override
+            protected Object doInBackground() {
+                contentHolder.removeAll();
+                contentHolder.add(panel);
+                contentHolder.revalidate();
+                contentHolder.repaint();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                loading.setVisible(false);
+            }
+        }.execute();
+
+        loading.setVisible(true);
+    }
+
+    public void setClientController(ClientController clientController) {
+        this.clientController = clientController;
+
+        menu.getHomeButton().addActionListener(e -> this.clientController.changeFrame(ClientPanels.HOME_PANEL));
+        menu.getPendingBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.PENDING_PANEL));
+        menu.getBorrowedBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.BORROWED_PANEL));
+        menu.getAccount().addActionListener(e -> this.clientController.changeFrame(ClientPanels.ACCOUNT_PANEL));
     }
 }

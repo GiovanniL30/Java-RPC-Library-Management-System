@@ -1,5 +1,6 @@
 package project.client.views.components;
 
+import project.client.controller.ClientController;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;

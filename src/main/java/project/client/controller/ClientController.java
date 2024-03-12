@@ -1,5 +1,11 @@
 package project.client.controller;
 
+import project.client.utility.ClientPanels;
+import project.client.views.ClientMainView;
+import project.client.views.components.AccountPanel;
+import project.client.views.components.BorrowedBooksPanel;
+import project.client.views.components.HomePanel;
+import project.client.views.components.PendingBooksPanel;
 import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
@@ -16,8 +22,10 @@ import java.rmi.registry.LocateRegistry;
 public class ClientController implements ClientObserver, Serializable {
 
     private final ClientRemoteMethods clientRemoteMethods;
+    private final ClientMainView mainView;
 
-    public ClientController() {
+    public ClientController(ClientMainView mainView) {
+        this.mainView = mainView;
 
         try {
             clientRemoteMethods = (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
@@ -92,28 +100,65 @@ public class ClientController implements ClientObserver, Serializable {
         switch (serverActions) {
             case EDIT_BOOK -> {
 
-            }case BAN_ACCOUNT -> {
-
-            }case DELETE_BOOK -> {
-
-            }case UNBAN_ACCOUNT -> {
-
-            }case ADDED_NEW_BOOK -> {
-
-            }case DELETE_ACCOUNT -> {
-
-            }case RETRIEVES_BOOK -> {
-
-            }case CHANGE_PASSWORD -> {
-
-            }case BROADCAST_MESSAGE -> {
-
-            }case ACCEPT_BOOK_PENDING -> {
-
-            }case CANCEL_BOOK_PENDING -> {
+            }
+            case BAN_ACCOUNT -> {
 
             }
-            default -> {}
+            case DELETE_BOOK -> {
+
+            }
+            case UNBAN_ACCOUNT -> {
+
+            }
+            case ADDED_NEW_BOOK -> {
+
+            }
+            case DELETE_ACCOUNT -> {
+
+            }
+            case RETRIEVES_BOOK -> {
+
+            }
+            case CHANGE_PASSWORD -> {
+
+            }
+            case BROADCAST_MESSAGE -> {
+
+            }
+            case ACCEPT_BOOK_PENDING -> {
+
+            }
+            case CANCEL_BOOK_PENDING -> {
+
+            }
+            default -> {
+            }
+        }
+
+    }
+
+    @Override
+    public void changeFrame(ClientPanels clientPanels) {
+
+        switch (clientPanels) {
+            case HOME_PANEL -> {
+                mainView.setContentPanel(new HomePanel());
+                mainView.getMenu().setCurrentButton(mainView.getMenu().getHomeButton());
+            }
+            case ACCOUNT_PANEL -> {
+                mainView.setContentPanel(new AccountPanel());
+                mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
+            }
+            case PENDING_PANEL -> {
+                mainView.setContentPanel(new PendingBooksPanel());
+                mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
+
+            }
+            case BORROWED_PANEL -> {
+                mainView.setContentPanel(new BorrowedBooksPanel());
+                mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
+
+            }
         }
 
     }
