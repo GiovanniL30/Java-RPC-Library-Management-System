@@ -6,35 +6,46 @@ import project.client.utility.ClientPanels;
 import project.client.views.components.Header;
 import project.client.views.components.HomePanel;
 import project.client.views.components.Menu;
+import project.utilities.referenceClasses.Book;
 import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
 
 public class ClientMainView extends JFrame {
 
     public static int FRAME_WIDTH = 1000;
-    private Header header;
-    private Menu menu;
+    private final Header header;
+    private final Menu menu;
+    private final JPanel contentHolder = new JPanel();
+    private final Loading loading = new Loading(this);
     private ClientController clientController;
-    private JPanel contentHolder = new JPanel();
-    private Loading loading = new Loading(this);
 
 
+    public ClientMainView(ClientController clientController) {
 
-    public ClientMainView() {
+        this.clientController = clientController;
         initializeFrame();
 
         header = new Header("Giovanni Leo");
         menu = new Menu();
         contentHolder.setPreferredSize(new Dimension(FRAME_WIDTH, 550));
-        contentHolder.add(new HomePanel());
+
+
+        setContentPanel(new HomePanel(clientController.getBooks()));
+
 
         add(header);
         add(menu);
         add(contentHolder);
 
 
+        menu.getHomeButton().addActionListener(e -> this.clientController.changeFrame(ClientPanels.HOME_PANEL));
+        menu.getPendingBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.PENDING_PANEL));
+        menu.getBorrowedBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.BORROWED_PANEL));
+        menu.getAccount().addActionListener(e -> this.clientController.changeFrame(ClientPanels.ACCOUNT_PANEL));
 
     }
 
@@ -69,6 +80,7 @@ public class ClientMainView extends JFrame {
     }
 
     public void setContentPanel(JPanel panel) {
+
         new SwingWorker<>() {
             @Override
             protected Object doInBackground() {
@@ -86,14 +98,12 @@ public class ClientMainView extends JFrame {
         }.execute();
 
         loading.setVisible(true);
+
+
     }
 
     public void setClientController(ClientController clientController) {
         this.clientController = clientController;
 
-        menu.getHomeButton().addActionListener(e -> this.clientController.changeFrame(ClientPanels.HOME_PANEL));
-        menu.getPendingBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.PENDING_PANEL));
-        menu.getBorrowedBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.BORROWED_PANEL));
-        menu.getAccount().addActionListener(e -> this.clientController.changeFrame(ClientPanels.ACCOUNT_PANEL));
     }
 }

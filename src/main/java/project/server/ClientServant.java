@@ -3,6 +3,7 @@ package project.server;
 import project.client.controller.ClientController;
 import project.client.controller.ClientObserver;
 import project.utilities.RMI.ClientRemoteMethods;
+import project.utilities.model.BookModel;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
@@ -16,6 +17,7 @@ import java.util.LinkedList;
 public class ClientServant extends UnicastRemoteObject implements ClientRemoteMethods {
 
     private final HashMap<String, ClientController> clientsController;
+    private final BookModel bookModel = new BookModel();
 
     public ClientServant() throws RemoteException {
         super();
@@ -57,7 +59,7 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     @Override
     public Response<LinkedList<Book>> getBooks() {
         System.out.println("Client Request to get all the books");
-        return null;
+        return new Response<>(true, bookModel.getBooks());
     }
 
     @Override

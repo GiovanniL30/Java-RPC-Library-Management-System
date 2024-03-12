@@ -19,7 +19,7 @@ public class Picture extends JPanel {
         // Check if the image dimensions are valid
         if(icon.getIconHeight() < 0 || icon.getIconWidth() < 0){
             // If invalid, load a default image (imageNotAvailable.png) instead
-            icon = new ImageIcon("res/images/imageNotAvailable.png");
+            icon = new ImageIcon("src/main/resources/images/bookImages/imageNotAvailable.png");
         }
         // Scale the image to the specified dimensions
         Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);

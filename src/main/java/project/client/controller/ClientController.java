@@ -13,19 +13,23 @@ import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
+import project.utilities.viewComponents.Loading;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
 
 public class ClientController implements ClientObserver, Serializable {
 
     private final ClientRemoteMethods clientRemoteMethods;
-    private final ClientMainView mainView;
+    private ClientMainView mainView;
+    private Loading loading;
 
-    public ClientController(ClientMainView mainView) {
-        this.mainView = mainView;
+    public ClientController() {
 
         try {
             clientRemoteMethods = (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
@@ -137,13 +141,35 @@ public class ClientController implements ClientObserver, Serializable {
 
     }
 
+
+
     @Override
     public void changeFrame(ClientPanels clientPanels) {
 
         switch (clientPanels) {
+
             case HOME_PANEL -> {
-                mainView.setContentPanel(new HomePanel());
-                mainView.getMenu().setCurrentButton(mainView.getMenu().getHomeButton());
+                SwingWorker<LinkedList<Book>, Void> worker = new SwingWorker<>() {
+                    @Override
+                    protected LinkedList<Book> doInBackground() {
+                        return getBooks();
+                    }
+
+                    @Override
+                    protected void done() {
+                        try {
+                            mainView.setContentPanel(new HomePanel(get()));
+                            mainView.getMenu().setCurrentButton(mainView.getMenu().getHomeButton());
+                            loading.setVisible(false);
+                        } catch (InterruptedException | ExecutionException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+                };
+                worker.execute();
+
+                loading.setVisible(true);
             }
             case ACCOUNT_PANEL -> {
                 mainView.setContentPanel(new AccountPanel());
@@ -161,6 +187,27 @@ public class ClientController implements ClientObserver, Serializable {
             }
         }
 
+    }
+
+    public LinkedList<Book> getBooks() {
+        try {
+            Response<LinkedList<Book>> response = clientRemoteMethods.getBooks();
+
+            if(response.isSuccess()) {
+                return response.getPayload();
+            }
+
+            serverRemoteMethods().notification(ClientActions.RETURN_BOOK);
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+
+        return new LinkedList<>();
+    }
+
+    public void setMainView(ClientMainView mainView) {
+        this.mainView = mainView;
+        loading = new Loading(this.mainView);
     }
 
     private ServerRemoteMethods serverRemoteMethods() {
