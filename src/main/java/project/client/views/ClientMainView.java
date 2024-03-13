@@ -32,6 +32,7 @@ public class ClientMainView extends JFrame {
         header = new Header("Giovanni Leo");
         menu = new Menu();
         contentHolder.setPreferredSize(new Dimension(FRAME_WIDTH, 550));
+        contentHolder.setBackground(Color.white);
 
 
         setContentPanel(new HomePanel(clientController.getBooks()));
@@ -55,6 +56,7 @@ public class ClientMainView extends JFrame {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             UIManager.put("Button.arc", 10);
+
             UIManager.put("TextComponent.arc", 5);
             UIManager.put("ScrollBar.width", 10);
             UIManager.put("ScrollBar.thumbArc", 3);

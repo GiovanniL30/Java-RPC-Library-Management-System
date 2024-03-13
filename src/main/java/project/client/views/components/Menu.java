@@ -18,6 +18,7 @@ public class Menu extends JPanel {
     private final Button account;
 
     public Menu() {
+        setBackground(ColorFactory.blue());
         homeButton = new Button("Home", 200, 50, FontFactory.newPoppinsBold(15));
         pendingBooks = new Button("Pending Books", 200, 50, FontFactory.newPoppinsBold(15));
         borrowedBooks = new Button("Borrowed Books", 200, 50, FontFactory.newPoppinsBold(15));
