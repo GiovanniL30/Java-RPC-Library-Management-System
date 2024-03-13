@@ -5,6 +5,7 @@ import project.client.utility.ClientPanels;
 import project.client.views.components.Header;
 import project.client.views.components.HomePanel;
 import project.client.views.components.Menu;
+import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
@@ -31,7 +32,13 @@ public class MainPanel extends JPanel {
         contentHolder.setBackground(Color.white);
 
 
-        setContentPanel(new HomePanel(clientController.getBooks()));
+        JLabel welcomeMessage = new JLabel("Welcome to VanniBooks!");
+        welcomeMessage.setFont(FontFactory.newPoppinsBold(20));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(welcomeMessage, BorderLayout.CENTER);
+        panel.setBackground(Color.white);
+        setContentPanel(panel);
 
 
         add(header);

@@ -95,5 +95,9 @@ public class Login extends JPanel {
     public void setUserName(FieldInput userName) {
         this.userName = userName;
     }
+
+    public Button getLoginButton() {
+        return loginButton;
+    }
 } // end of Login
 

@@ -2,6 +2,7 @@ package project.client.controller;
 
 import project.client.utility.ClientPanels;
 import project.client.views.ClientMainView;
+import project.client.views.MainPanel;
 import project.client.views.components.AccountPanel;
 import project.client.views.components.BorrowedBooksPanel;
 import project.client.views.components.HomePanel;
@@ -49,6 +50,27 @@ public class ClientController implements ClientObserver, Serializable {
             Response<String> response = clientRemoteMethods.logIn(credential, this);
 
             //TODO: handle response
+
+            new SwingWorker<>() {
+                @Override
+                protected Object doInBackground() {
+                    mainView.getContentPane().removeAll();
+                    MainPanel mainPanel = new MainPanel(ClientController.this);
+                    mainView.setMainPanel(mainPanel);
+                    mainView.getContentPane().add(mainPanel);
+                    mainView.getContentPane().invalidate();
+                    mainView.getContentPane().repaint();
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    loading.setVisible(false);
+                    super.done();
+                }
+            }.execute();
+
+            loading.setVisible(true);
 
             serverRemoteMethods().notification(ClientActions.LOGIN);
         } catch (RemoteException e) {

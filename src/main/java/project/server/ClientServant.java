@@ -29,7 +29,7 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     public Response<String> logIn(Authentication credential, ClientController clientObserver) {
         System.out.println("Client Request to log in");
 
-        clientsController.put(credential.getUserName(), clientObserver);
+        //clientsController.put(credential.getUserName(), clientObserver);
         return new Response<>(true, "Hi");
     }
 
