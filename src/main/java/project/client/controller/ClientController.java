@@ -11,6 +11,7 @@ import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
+import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
@@ -28,6 +29,7 @@ public class ClientController implements ClientObserver, Serializable {
     private final ClientRemoteMethods clientRemoteMethods;
     private ClientMainView mainView;
     private Loading loading;
+    private Student loggedInAccount;
 
     public ClientController() {
 
