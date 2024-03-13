@@ -2,9 +2,7 @@ package project.utilities.RMI;
 
 import project.client.controller.ClientController;
 import project.client.controller.ClientObserver;
-import project.utilities.referenceClasses.Authentication;
-import project.utilities.referenceClasses.Book;
-import project.utilities.referenceClasses.Response;
+import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ServerActions;
 
 import java.rmi.Remote;
@@ -19,7 +17,7 @@ public interface ClientRemoteMethods extends Remote {
      *
      * @param credential The authentication credentials entered by the user
      */
-    Response<String> logIn(Authentication credential, ClientController clientObserver) throws RemoteException;
+    Response<Student> logIn(Authentication credential, ClientController clientObserver) throws RemoteException;
 
     /**
      * Handle borrowing a book event

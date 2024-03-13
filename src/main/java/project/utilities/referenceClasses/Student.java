@@ -48,4 +48,14 @@ public class Student implements Serializable {
     public void setBorrowedBooks(LinkedList<Book> borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "account=" + account +
+                ", totalBorrowedBooks=" + totalBorrowedBooks +
+                ", pendingBooks=" + pendingBooks +
+                ", borrowedBooks=" + borrowedBooks +
+                '}';
+    }
 }

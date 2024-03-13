@@ -1,10 +1,10 @@
 package project.client.views.components;
 
 import project.utilities.referenceClasses.Book;
+import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
+import project.utilities.viewComponents.*;
 import project.utilities.viewComponents.Button;
-import project.utilities.viewComponents.IconButton;
-import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,24 +14,53 @@ public class HomePanel extends JPanel {
 
     private LinkedList<Book> books;
 
+    private SearchBar searchBar;
+
     public HomePanel(LinkedList<Book> books){
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.books = books;
 
+        searchBar = new SearchBar(new Dimension(800, 100), false);
+
         GridLayout gridLayout = new GridLayout(0, 2);
-        gridLayout.setVgap(10);
+        gridLayout.setVgap(50);
         gridLayout.setHgap(10);
+
+        Button searchButton = new Button("Search", 100, 50, FontFactory.newPoppinsDefault(13));
+
+        JPanel header = new JPanel();
+        header.setLayout(new FlowLayout(FlowLayout.LEFT));
+        header.setBackground(Color.WHITE);
+
+        header.add(searchBar);
+
+        header.add(searchButton);
+        searchButton.setBackground(ColorFactory.blue());
+        searchButton.setForeground(Color.white);
+
+        add(header);
 
         JPanel panel = new JPanel();
         panel.setLayout(gridLayout);
-
-        for(Book book : books) {
-            panel.add(new BookCardComponent(book));
-        }
-
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(920, 400));
-
         add(scrollPane);
+
+        new SwingWorker<>() {
+            @Override
+            protected Object doInBackground() {
+
+                for(Book book : books) {
+                    panel.add(new BookCardComponent(book));
+                    panel.revalidate();
+                    panel.repaint();
+                }
+
+                return null;
+            }
+
+
+        }.execute();
 
     }
 
@@ -43,7 +72,7 @@ public class HomePanel extends JPanel {
 
             IconButton button = new IconButton(book.getImagePath(), 250, 300);
             JLabel label = new JLabel(book.getBookTitle());
-            label.setFont(FontFactory.newPoppinsBold(13));
+            label.setFont(FontFactory.newPoppinsBold(16));
 
             setLayout(new GridBagLayout());
 

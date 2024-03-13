@@ -2,11 +2,11 @@
   "accounts": [
     {
       "id": "asc",
-      "userName": "",
+      "userName": "giovanni123",
       "email": "",
-      "lastName": "",
-      "firstName": "",
-      "password": "",
+      "lastName": "Leo",
+      "firstName": "Giovanni",
+      "password": "12345678",
       "pendingBooks": [],
       "borrowedBooks": [],
       "totalBorrowedBook": 1

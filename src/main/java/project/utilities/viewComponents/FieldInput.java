@@ -45,11 +45,11 @@ public class FieldInput extends JPanel {
         // Add the appropriate input field based on the field type
         if (isPasswordField) {
             passwordField.setPreferredSize(dimension);
-            passwordField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
+            //passwordField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
             add(passwordField, constraints);
         } else {
             textField.setPreferredSize(dimension);
-            textField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
+            //textField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
             add(textField, constraints);
         } // end of if-else
 

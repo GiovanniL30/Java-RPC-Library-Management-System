@@ -2,6 +2,7 @@ package project.client.controller;
 
 import project.client.utility.ClientPanels;
 import project.client.views.ClientMainView;
+import project.client.views.MainPanel;
 import project.client.views.components.AccountPanel;
 import project.client.views.components.BorrowedBooksPanel;
 import project.client.views.components.HomePanel;
@@ -11,6 +12,7 @@ import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
+import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
@@ -28,6 +30,7 @@ public class ClientController implements ClientObserver, Serializable {
     private final ClientRemoteMethods clientRemoteMethods;
     private ClientMainView mainView;
     private Loading loading;
+    private Student loggedInAccount;
 
     public ClientController() {
 
@@ -44,9 +47,38 @@ public class ClientController implements ClientObserver, Serializable {
 
         try {
 
-            Response<String> response = clientRemoteMethods.logIn(credential, this);
+            Response<Student> response = clientRemoteMethods.logIn(credential, this);
 
-            //TODO: handle response
+
+            if(response.isSuccess()) {
+                new SwingWorker<>() {
+                    @Override
+                    protected Object doInBackground() {
+                        loggedInAccount = response.getPayload();
+                        mainView.getContentPane().removeAll();
+                        MainPanel mainPanel = new MainPanel(ClientController.this);
+                        mainView.setMainPanel(mainPanel);
+                        mainView.getContentPane().add(mainPanel);
+                        mainView.getContentPane().invalidate();
+                        mainView.getContentPane().repaint();
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        System.out.println(loggedInAccount);
+                        loading.setVisible(false);
+                        super.done();
+                    }
+                }.execute();
+
+                loading.setVisible(true);
+            }else {
+                JOptionPane.showMessageDialog(mainView, "Invalid Username or Password");
+            }
+
+
+
 
             serverRemoteMethods().notification(ClientActions.LOGIN);
         } catch (RemoteException e) {
@@ -149,21 +181,17 @@ public class ClientController implements ClientObserver, Serializable {
         switch (clientPanels) {
 
             case HOME_PANEL -> {
-                SwingWorker<LinkedList<Book>, Void> worker = new SwingWorker<>() {
+                SwingWorker<Void, Void> worker = new SwingWorker<>() {
                     @Override
-                    protected LinkedList<Book> doInBackground() {
-                        return getBooks();
+                    protected Void doInBackground() {
+                        mainView.setContentPanel(new HomePanel(getBooks()));
+                        return null;
                     }
 
                     @Override
                     protected void done() {
-                        try {
-                            mainView.setContentPanel(new HomePanel(get()));
-                            mainView.getMenu().setCurrentButton(mainView.getMenu().getHomeButton());
-                            loading.setVisible(false);
-                        } catch (InterruptedException | ExecutionException e) {
-                            throw new RuntimeException(e);
-                        }
+                        mainView.getMenu().setCurrentButton(mainView.getMenu().getHomeButton());
+                        loading.setVisible(false);
 
                     }
                 };

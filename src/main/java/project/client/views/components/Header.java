@@ -13,6 +13,7 @@ import java.awt.*;
 public class Header extends JPanel {
 
     public Header(String studentName) {
+        setBackground(ColorFactory.blue());
 
         GridBagConstraints constraints = new GridBagConstraints();
 
@@ -21,7 +22,9 @@ public class Header extends JPanel {
         setBorder(new EmptyBorder(0, 10, 0, 30));
 
         Picture logo = new Picture("src/main/resources/images/logo/logo_vanni.png", 100, 100);
+        logo.setBackground(ColorFactory.blue());
         JLabel label = new JLabel(studentName.toUpperCase());
+        label.setForeground(Color.WHITE);
         label.setFont(FontFactory.newPoppinsBold(18));
         Button logout = new Button("LOGOUT", 150, 50, FontFactory.newPoppinsBold(13));
         logout.setForeground(Color.WHITE);

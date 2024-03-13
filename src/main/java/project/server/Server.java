@@ -4,6 +4,8 @@ import project.client.controller.ClientController;
 import project.server.controller.ServerController;
 import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
+import project.utilities.model.AccountModel;
+import project.utilities.model.BookModel;
 import project.utilities.referenceClasses.Account;
 
 import java.net.MalformedURLException;
@@ -23,13 +25,16 @@ public class Server {
 
     protected Server(){
 
+        BookModel bookModel = new BookModel();
+        AccountModel accountModel = new AccountModel();
+
         try {
             Registry registry = LocateRegistry.createRegistry(1099);
 
-            ClientRemoteMethods clientRemoteMethods = new ClientServant();
+            ClientRemoteMethods clientRemoteMethods = new ClientServant(bookModel, accountModel);
             registry.rebind("ClientRemote", clientRemoteMethods);
 
-            ServerRemoteMethods serverRemoteMethods = new ServerServant();
+            ServerRemoteMethods serverRemoteMethods = new ServerServant(bookModel, accountModel);
             registry.rebind("ServerRemote", serverRemoteMethods);
 
 

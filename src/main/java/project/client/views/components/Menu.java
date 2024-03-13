@@ -18,7 +18,8 @@ public class Menu extends JPanel {
     private final Button account;
 
     public Menu() {
-        homeButton = new Button("Home", 200, 50, FontFactory.newPoppinsBold(15));
+        setBackground(ColorFactory.blue());
+        homeButton = new Button("Books", 200, 50, FontFactory.newPoppinsBold(15));
         pendingBooks = new Button("Pending Books", 200, 50, FontFactory.newPoppinsBold(15));
         borrowedBooks = new Button("Borrowed Books", 200, 50, FontFactory.newPoppinsBold(15));
         account = new Button("Account", 200, 50, FontFactory.newPoppinsBold(15));
@@ -27,8 +28,6 @@ public class Menu extends JPanel {
         buttons.add(pendingBooks);
         buttons.add(borrowedBooks);
         buttons.add(account);
-
-       setCurrentButton(homeButton);
 
        GridBagConstraints constraints = new GridBagConstraints();
        constraints.insets = new Insets(0, 20, 0, 20);
