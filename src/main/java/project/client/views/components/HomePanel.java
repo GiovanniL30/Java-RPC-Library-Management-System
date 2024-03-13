@@ -3,10 +3,8 @@ package project.client.views.components;
 import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
+import project.utilities.viewComponents.*;
 import project.utilities.viewComponents.Button;
-import project.utilities.viewComponents.IconButton;
-import project.utilities.viewComponents.Picture;
-import project.utilities.viewComponents.SearchBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,16 +26,6 @@ public class HomePanel extends JPanel {
         gridLayout.setVgap(50);
         gridLayout.setHgap(10);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(gridLayout);
-
-        for(Book book : books) {
-            panel.add(new BookCardComponent(book));
-        }
-
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setPreferredSize(new Dimension(920, 400));
-
         Button searchButton = new Button("Search", 100, 50, FontFactory.newPoppinsDefault(13));
 
         JPanel header = new JPanel();
@@ -51,7 +39,28 @@ public class HomePanel extends JPanel {
         searchButton.setForeground(Color.white);
 
         add(header);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(gridLayout);
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setPreferredSize(new Dimension(920, 400));
         add(scrollPane);
+
+        new SwingWorker<>() {
+            @Override
+            protected Object doInBackground() {
+
+                for(Book book : books) {
+                    panel.add(new BookCardComponent(book));
+                    panel.revalidate();
+                    panel.repaint();
+                }
+
+                return null;
+            }
+
+
+        }.execute();
 
     }
 

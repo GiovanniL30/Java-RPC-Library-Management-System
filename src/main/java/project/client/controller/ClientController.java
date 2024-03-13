@@ -173,21 +173,17 @@ public class ClientController implements ClientObserver, Serializable {
         switch (clientPanels) {
 
             case HOME_PANEL -> {
-                SwingWorker<LinkedList<Book>, Void> worker = new SwingWorker<>() {
+                SwingWorker<Void, Void> worker = new SwingWorker<>() {
                     @Override
-                    protected LinkedList<Book> doInBackground() {
-                        return getBooks();
+                    protected Void doInBackground() {
+                        mainView.setContentPanel(new HomePanel(getBooks()));
+                        return null;
                     }
 
                     @Override
                     protected void done() {
-                        try {
-                            mainView.setContentPanel(new HomePanel(get()));
-                            mainView.getMenu().setCurrentButton(mainView.getMenu().getHomeButton());
-                            loading.setVisible(false);
-                        } catch (InterruptedException | ExecutionException e) {
-                            throw new RuntimeException(e);
-                        }
+                        mainView.getMenu().setCurrentButton(mainView.getMenu().getHomeButton());
+                        loading.setVisible(false);
 
                     }
                 };
