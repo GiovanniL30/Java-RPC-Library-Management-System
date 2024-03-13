@@ -4,6 +4,8 @@ import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
 import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
+import project.utilities.model.AccountModel;
+import project.utilities.model.BookModel;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
@@ -21,9 +23,13 @@ import java.util.LinkedList;
 public class ServerServant extends UnicastRemoteObject implements ServerRemoteMethods {
 
     private ServerController serverController;
+    private BookModel bookModel;
+    private AccountModel accountModel;
 
-    protected ServerServant() throws RemoteException {
+    protected ServerServant(BookModel bookModel, AccountModel accountModel) throws RemoteException {
         super();
+        this.bookModel = bookModel;
+        this.accountModel = accountModel;
     }
 
 

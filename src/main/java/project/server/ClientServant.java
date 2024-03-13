@@ -17,10 +17,11 @@ import java.util.LinkedList;
 public class ClientServant extends UnicastRemoteObject implements ClientRemoteMethods {
 
     private final HashMap<String, ClientController> clientsController;
-    private final BookModel bookModel = new BookModel();
+    private final BookModel bookModel;
 
-    public ClientServant() throws RemoteException {
+    public ClientServant(BookModel bookModel) throws RemoteException {
         super();
+        this.bookModel = bookModel;
         clientsController = new HashMap<>();
     }
 
