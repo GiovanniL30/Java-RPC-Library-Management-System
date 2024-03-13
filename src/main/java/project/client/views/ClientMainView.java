@@ -24,7 +24,7 @@ public class ClientMainView extends JFrame {
         initializeFrame();
 
         Login login = new Login(new Dimension(FRAME_WIDTH, 900));
-        login.getLoginButton().addActionListener( e -> clientController.logIn(null));
+        login.addClickEvent(this.clientController);
         this.getContentPane().add(login);
     }
 

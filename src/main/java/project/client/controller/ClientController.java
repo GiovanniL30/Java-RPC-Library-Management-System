@@ -47,30 +47,38 @@ public class ClientController implements ClientObserver, Serializable {
 
         try {
 
-            Response<String> response = clientRemoteMethods.logIn(credential, this);
+            Response<Student> response = clientRemoteMethods.logIn(credential, this);
 
-            //TODO: handle response
 
-            new SwingWorker<>() {
-                @Override
-                protected Object doInBackground() {
-                    mainView.getContentPane().removeAll();
-                    MainPanel mainPanel = new MainPanel(ClientController.this);
-                    mainView.setMainPanel(mainPanel);
-                    mainView.getContentPane().add(mainPanel);
-                    mainView.getContentPane().invalidate();
-                    mainView.getContentPane().repaint();
-                    return null;
-                }
+            if(response.isSuccess()) {
+                new SwingWorker<>() {
+                    @Override
+                    protected Object doInBackground() {
+                        loggedInAccount = response.getPayload();
+                        mainView.getContentPane().removeAll();
+                        MainPanel mainPanel = new MainPanel(ClientController.this);
+                        mainView.setMainPanel(mainPanel);
+                        mainView.getContentPane().add(mainPanel);
+                        mainView.getContentPane().invalidate();
+                        mainView.getContentPane().repaint();
+                        return null;
+                    }
 
-                @Override
-                protected void done() {
-                    loading.setVisible(false);
-                    super.done();
-                }
-            }.execute();
+                    @Override
+                    protected void done() {
+                        System.out.println(loggedInAccount);
+                        loading.setVisible(false);
+                        super.done();
+                    }
+                }.execute();
 
-            loading.setVisible(true);
+                loading.setVisible(true);
+            }else {
+                JOptionPane.showMessageDialog(mainView, "Invalid Username or Password");
+            }
+
+
+
 
             serverRemoteMethods().notification(ClientActions.LOGIN);
         } catch (RemoteException e) {

@@ -1,36 +1,43 @@
 package project.server;
 
 import project.client.controller.ClientController;
-import project.client.controller.ClientObserver;
 import project.utilities.RMI.ClientRemoteMethods;
+import project.utilities.model.AccountModel;
 import project.utilities.model.BookModel;
-import project.utilities.referenceClasses.Authentication;
-import project.utilities.referenceClasses.Book;
-import project.utilities.referenceClasses.Response;
+import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ServerActions;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Optional;
 
 public class ClientServant extends UnicastRemoteObject implements ClientRemoteMethods {
 
     private final HashMap<String, ClientController> clientsController;
     private final BookModel bookModel;
-
-    public ClientServant(BookModel bookModel) throws RemoteException {
+    private final AccountModel accountModel;
+    public ClientServant(BookModel bookModel, AccountModel accountModel) throws RemoteException {
         super();
         this.bookModel = bookModel;
+        this.accountModel = accountModel;
         clientsController = new HashMap<>();
     }
 
     @Override
-    public Response<String> logIn(Authentication credential, ClientController clientObserver) {
+    public Response<Student> logIn(Authentication credential, ClientController clientObserver) {
         System.out.println("Client Request to log in");
+        LinkedList<Account> allAccounts = accountModel.getAccounts();
 
-        //clientsController.put(credential.getUserName(), clientObserver);
-        return new Response<>(true, "Hi");
+        Optional<Account> account = allAccounts.stream().filter(ac -> ac.getUserName().equals(credential.getUserName()) && ac.getPassword().equals(credential.getPassword())).findFirst();
+
+        if(account.isPresent()) {
+            clientsController.put(account.get().getAccountId(), clientObserver);
+            return new Response<>(true, getStudentAccount(account.get()));
+        }else {
+            return new Response<>(false, null);
+        }
     }
 
     @Override
@@ -65,6 +72,36 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
     @Override
     public void notification(ServerActions serverActions) {
+
+    }
+
+    private Student getStudentAccount(Account account) {
+        LinkedList<Book> books = bookModel.getBooks();
+        LinkedList<Book> borrowedBooks = new LinkedList<>();
+        LinkedList<Book> pendingBooks = new LinkedList<>();
+
+        for(Book book: books) {
+
+            for(String borrowers: book.getCurrentBorrowers()) {
+
+                if(borrowers.equals(account.getAccountId())) {
+                    borrowedBooks.add(book);
+                }
+
+            }
+
+
+            for(String pending: book.getPendingBorrowers()) {
+
+                if(pending.equals(account.getAccountId())) {
+                    pendingBooks.add(book);
+                }
+
+            }
+
+        }
+
+        return new Student(account, borrowedBooks.size(), pendingBooks, borrowedBooks);
 
     }
 

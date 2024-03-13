@@ -2,6 +2,7 @@ package project.client.views;
 
 
 
+import project.client.controller.ClientController;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
@@ -79,6 +80,31 @@ public class Login extends JPanel {
         mainContent.setBorder(new EmptyBorder(150, 110, 0, 0));
         add(mainContent);
     } // end of constructor
+
+    /**
+     * Click event for login button
+     *
+     * @param controller
+     */
+    public void addClickEvent(ClientController controller) {
+        loginButton.addActionListener((e) -> {
+
+            //Retrieve the entered username and password
+            String enteredPassword = password.getInput();
+            String enteredUsername = userName.getInput();
+
+            //Check if username or password is null
+            if (enteredUsername == null || enteredPassword == null) {
+                // check if username or password is null
+                return;
+            } // end of if statement
+
+            password.getPasswordField().setText("");
+            userName.getTextField().setText("");
+            //Password authentication to the controller
+            controller.logIn(new Authentication(enteredUsername, enteredPassword));
+        });
+    } // end of addClickEvent
 
 
     public FieldInput getPassword() {

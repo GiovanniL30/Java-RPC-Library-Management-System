@@ -31,7 +31,7 @@ public class Server {
         try {
             Registry registry = LocateRegistry.createRegistry(1099);
 
-            ClientRemoteMethods clientRemoteMethods = new ClientServant(bookModel);
+            ClientRemoteMethods clientRemoteMethods = new ClientServant(bookModel, accountModel);
             registry.rebind("ClientRemote", clientRemoteMethods);
 
             ServerRemoteMethods serverRemoteMethods = new ServerServant(bookModel, accountModel);
