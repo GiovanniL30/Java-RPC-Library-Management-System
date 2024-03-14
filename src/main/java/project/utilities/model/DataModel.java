@@ -44,4 +44,25 @@ public class DataModel {
         return values;
     }
 
+    /**
+     * Method for saving a JSON file
+     *
+     * @param jsonObject the JSON object
+     * @param filePath   the path of the file
+     * @return true if the file is saved successfully, false otherwise
+     */
+    protected synchronized boolean saveJSON(JSONObject jsonObject, String filePath) {
+        try {
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(jsonObject.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
