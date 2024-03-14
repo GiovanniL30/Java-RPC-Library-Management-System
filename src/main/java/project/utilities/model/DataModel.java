@@ -25,4 +25,23 @@ public class DataModel {
     protected String getValue(JSONObject jsonObject, String key) {
         return (String) jsonObject.get(key);
     }
+
+    /**
+     * Get a list of strings from a JSON object based on the provided key.
+     *
+     * @param  jsonObject  the JSON object to retrieve strings from
+     * @param  key         the key to use for retrieving the strings
+     * @return             a LinkedList of strings retrieved from the JSON object
+     */
+    protected LinkedList<String> getStrings(JSONObject jsonObject, String key) {
+        LinkedList<String> values = new LinkedList<>();
+        JSONArray jsonArray = (JSONArray) jsonObject.get(key);
+        if (jsonArray != null) {
+            for (Object obj : jsonArray) {
+                values.add((String) obj);
+            }
+        }
+        return values;
+    }
+
 }
