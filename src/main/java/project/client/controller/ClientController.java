@@ -29,6 +29,7 @@ public class ClientController implements ClientObserver, Serializable {
     private ClientMainView mainView;
     private Loading loading;
     private Student loggedInAccount;
+    private BookViewer bookViewer;
 
     public ClientController() {
 
@@ -203,7 +204,7 @@ public class ClientController implements ClientObserver, Serializable {
                 SwingWorker<Void, Void> worker = new SwingWorker<>() {
                     @Override
                     protected Void doInBackground() {
-                        mainView.setContentPanel(new HomePanel(getBooks()));
+                        mainView.setContentPanel(new HomePanel(getBooks(), ClientController.this));
                         return null;
                     }
 
@@ -252,6 +253,11 @@ public class ClientController implements ClientObserver, Serializable {
             throw new RuntimeException(ex);
         }
 
+    }
+
+    public void openBook(Book book){
+        bookViewer = new BookViewer(mainView, book, this);
+        bookViewer.setVisible(true);
     }
 
     public LinkedList<Book> getBooks() {
