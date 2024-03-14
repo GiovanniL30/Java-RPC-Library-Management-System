@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class Header extends JPanel {
 
-    private Button logout;
+    private final Button logout;
 
     public Header(String studentName) {
         setBackground(ColorFactory.blue());

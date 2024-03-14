@@ -20,7 +20,6 @@ public class HomePanel extends JPanel {
 
     private final SearchBar searchBar;
     private final JPanel panel;
-    private JScrollPane scrollPane;
     private boolean haveSearched = false;
 
     public HomePanel(LinkedList<Book> books) {
@@ -49,7 +48,7 @@ public class HomePanel extends JPanel {
 
         panel = new JPanel();
         panel.setLayout(gridLayout);
-         scrollPane = new JScrollPane(panel);
+        JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(920, 400));
         add(scrollPane);
 
@@ -79,7 +78,6 @@ public class HomePanel extends JPanel {
                     panel.add(new BookCardComponent(book));
                     panel.revalidate();
                     panel.repaint();
-
                 }
 
                 return null;

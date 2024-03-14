@@ -42,8 +42,9 @@ public class AccountModel {
         String userName =  (String) o.get("userName");
         String firstName = (String) o.get("firstName");
         String lastName = (String) o.get("lastName");
+        String email = (String) o.get("email");
         String password = (String) o.get("password");
-        return new Account(id, userName, firstName ,lastName, password);
+        return new Account(id, userName, firstName ,lastName, email,  password);
     }
 
 }

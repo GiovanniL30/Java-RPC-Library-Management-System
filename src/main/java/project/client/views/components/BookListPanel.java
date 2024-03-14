@@ -13,7 +13,7 @@ import java.util.LinkedList;
 
 public class BookListPanel extends JPanel {
 
-    private boolean isPending;
+    private final boolean isPending;
     public BookListPanel(LinkedList<Book> pendingBooks, boolean isPending){
 
         this.isPending = isPending;
