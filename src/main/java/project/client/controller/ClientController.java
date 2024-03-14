@@ -50,6 +50,19 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void logIn(Authentication credential) {
 
+
+        this.mainView.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    clientRemoteMethods.logout(loggedInAccount);
+                    System.exit(0);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
         new SwingWorker<>() {
             @Override
             protected Response<Student> doInBackground() throws Exception {
@@ -214,7 +227,7 @@ public class ClientController implements ClientObserver, Serializable {
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
-                mainView.setContentPanel(new PendingBooksPanel());
+                mainView.setContentPanel(new PendingBooksPanel(loggedInAccount.getPendingBooks()));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
 
             }
@@ -231,7 +244,11 @@ public class ClientController implements ClientObserver, Serializable {
     public void logout() {
 
         try {
-            clientRemoteMethods.logout(loggedInAccount);
+
+            if(loggedInAccount != null) {
+                clientRemoteMethods.logout(loggedInAccount);
+            }
+
             loggedInAccount = null;
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
@@ -265,17 +282,7 @@ public class ClientController implements ClientObserver, Serializable {
         this.mainView = mainView;
         loading = new Loading(this.mainView);
 
-        this.mainView.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    clientRemoteMethods.logout(loggedInAccount);
-                    System.exit(0);
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
+
 
     }
 

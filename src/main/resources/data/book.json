@@ -8,8 +8,13 @@
       "genre": "Fantasy",
       "shortDescription": "Discover a magical world beyond imagination.",
       "imagePath": "src/main/resources/images/bookImages/realm_of_magic.jpg",
-      "currentBorrowers": [],
-      "pendingBorrowers": [],
+      "currentBorrowers": [
+      ],
+      "pendingBorrowers": [
+        {
+          "id": "1"
+        }
+      ],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },

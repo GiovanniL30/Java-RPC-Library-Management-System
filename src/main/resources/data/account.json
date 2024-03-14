@@ -1,13 +1,17 @@
 {
   "accounts": [
     {
-      "id": "asc",
+      "id": "1",
       "userName": "giovanni123",
       "email": "",
       "lastName": "Leo",
       "firstName": "Giovanni",
       "password": "12345678",
-      "pendingBooks": [],
+      "pendingBooks": [
+        {
+          "id": "001"
+        }
+      ],
       "borrowedBooks": [],
       "totalBorrowedBook": 1
     }

@@ -38,17 +38,12 @@ public class AccountModel {
     }
 
     private static Account getAccount(JSONObject o) {
-        JSONObject jsonObject = o;
-
-        String id = (String)jsonObject.get("id");
-        String userName =  (String) jsonObject.get("userName");
-        String firstName = (String) jsonObject.get("firstName");
-        String lastName = (String) jsonObject.get("lastName");
-        String password = (String) jsonObject.get("password");
-
-
-        Account account = new Account(id, userName, firstName ,lastName, password);
-        return account;
+        String id = (String) o.get("id");
+        String userName =  (String) o.get("userName");
+        String firstName = (String) o.get("firstName");
+        String lastName = (String) o.get("lastName");
+        String password = (String) o.get("password");
+        return new Account(id, userName, firstName ,lastName, password);
     }
 
 }

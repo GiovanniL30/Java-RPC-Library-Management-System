@@ -49,7 +49,7 @@ public class BookModel {
                 JSONArray prevBookBorrowers = (JSONArray) jsonObject.get("prevBookBorrowers");
 
 
-                Book book = new Book(bookId, bookTitle, author, genre, shortDescription, imagePath, (int)copies, getStudentID(currentBorrowers), getStudentID(pendingBorrowers), getStudentID(pendingBookReturners), getStudentID(prevBookBorrowers));
+                Book book = new Book(bookId, bookTitle, author, genre, shortDescription, imagePath, (int)copies, getStudentID(currentBorrowers), getStudentID(prevBookBorrowers), getStudentID(pendingBorrowers), getStudentID(pendingBookReturners));
                 books.add(book);
             }
 
