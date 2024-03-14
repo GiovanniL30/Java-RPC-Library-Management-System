@@ -107,9 +107,13 @@ public class ClientController implements ClientObserver, Serializable {
     public void borrowBook(Book book) {
 
         try {
-            Response<String> response = clientRemoteMethods.borrowBook(book);
+            Response<String> response = clientRemoteMethods.borrowBook(book, loggedInAccount);
 
-            //TODO: handle response
+            if(response.isSuccess()) {
+                //TODO: handle updating of the view
+            }else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
 
             serverRemoteMethods().notification(ClientActions.BORROW_BOOK);
         } catch (RemoteException e) {
@@ -121,7 +125,7 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void removePending(Book book) {
         try {
-            Response<String> response = clientRemoteMethods.removePending(book);
+            Response<String> response = clientRemoteMethods.removePending(book, loggedInAccount);
 
             //TODO: handle response
 
@@ -135,9 +139,9 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void returnBook(Book book) {
         try {
-            Response<String> response = clientRemoteMethods.returnBook(book);
+            Response<String> response = clientRemoteMethods.returnBook(book, loggedInAccount);
 
-            //TODO: handle response
+
 
             serverRemoteMethods().notification(ClientActions.RETURN_BOOK);
         } catch (RemoteException e) {

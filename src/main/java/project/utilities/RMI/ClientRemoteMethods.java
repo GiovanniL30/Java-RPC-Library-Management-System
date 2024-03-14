@@ -24,7 +24,7 @@ public interface ClientRemoteMethods extends Remote {
      *
      * @param book The book to be borrowed
      */
-    Response<String> borrowBook(Book book) throws RemoteException;
+    Response<String> borrowBook(Book book, Student student) throws RemoteException;
 
 
     /**
@@ -32,14 +32,14 @@ public interface ClientRemoteMethods extends Remote {
      *
      * @param book The book to be removed from pending list
      */
-    Response<String> removePending(Book book) throws RemoteException;
+    Response<String> removePending(Book book, Student student) throws RemoteException;
 
     /**
      * Handle returning a book event
      *
      * @param book The book to be returned
      */
-    Response<String> returnBook(Book book) throws RemoteException;
+    Response<String> returnBook(Book book, Student student) throws RemoteException;
 
 
     HashMap<String, ClientController> getClients() throws RemoteException;
