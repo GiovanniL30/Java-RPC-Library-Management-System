@@ -2,7 +2,11 @@
   "book": [
     {
       "prevBookBorrowers": [],
-      "currentBorrowers": [],
+      "currentBorrowers": [
+        {
+          "id": "1"
+        },
+      ],
       "copies": 9,
       "author": "Alice Williams",
       "imagePath": "src\/main\/resources\/images\/bookImages\/realm_of_magic.jpg",
@@ -15,7 +19,11 @@
     },
     {
       "prevBookBorrowers": [],
-      "currentBorrowers": [],
+      "currentBorrowers": [
+        {
+          "id": "1"
+        }
+      ],
       "copies": 6,
       "author": "David Turner",
       "imagePath": "src\/main\/resources\/images\/bookImages\/dangerous_pursuit.jpg",
