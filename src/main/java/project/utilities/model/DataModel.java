@@ -64,5 +64,22 @@ public class DataModel {
         }
     }
 
+    /**
+     * A method for reading a JSON file
+     *
+     * @param filePath the path of the file
+     * @return the JSON object
+     */
+    protected synchronized JSONObject readJSON(String filePath) {
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader(filePath));
+            return (JSONObject) obj;
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
