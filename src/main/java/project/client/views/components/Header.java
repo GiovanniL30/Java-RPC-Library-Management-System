@@ -1,5 +1,6 @@
 package project.client.views.components;
 
+import project.client.controller.ClientController;
 import project.client.views.ClientMainView;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
@@ -11,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class Header extends JPanel {
+
+    private Button logout;
 
     public Header(String studentName) {
         setBackground(ColorFactory.blue());
@@ -26,7 +29,7 @@ public class Header extends JPanel {
         JLabel label = new JLabel(studentName.toUpperCase());
         label.setForeground(Color.WHITE);
         label.setFont(FontFactory.newPoppinsBold(18));
-        Button logout = new Button("LOGOUT", 150, 50, FontFactory.newPoppinsBold(13));
+        logout = new Button("LOGOUT", 150, 50, FontFactory.newPoppinsBold(13));
         logout.setForeground(Color.WHITE);
         logout.setBackground(ColorFactory.red());
         logout.setMaximumSize(new Dimension(150, 50));
@@ -44,6 +47,10 @@ public class Header extends JPanel {
         constraints.weightx = 0.0;
         constraints.fill = 0;
         add(logout, constraints);
+    }
+
+    public void addLogoutAction(ClientController clientController) {
+        logout.addActionListener(e -> clientController.logout());
     }
 
 }

@@ -28,15 +28,22 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     @Override
     public Response<Student> logIn(Authentication credential, ClientController clientObserver) {
         System.out.println("Client Request to log in");
+
+
         LinkedList<Account> allAccounts = accountModel.getAccounts();
 
         Optional<Account> account = allAccounts.stream().filter(ac -> ac.getUserName().equals(credential.getUserName()) && ac.getPassword().equals(credential.getPassword())).findFirst();
 
         if(account.isPresent()) {
+
+            if(clientsController.containsKey(account.get().getAccountId())) {
+                return new Response<>(false, new Student(null, 1, null, null));
+            }
+
             clientsController.put(account.get().getAccountId(), clientObserver);
             return new Response<>(true, getStudentAccount(account.get()));
         }else {
-            return new Response<>(false, null);
+            return new Response<>(false, new Student(null, 0, null, null));
         }
     }
 
@@ -73,6 +80,12 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     @Override
     public void notification(ServerActions serverActions) {
 
+    }
+
+    @Override
+    public void logout(Student student) throws RemoteException {
+        System.out.println("A client requested to logout");
+        clientsController.remove(student.getAccount().getAccountId());
     }
 
     private Student getStudentAccount(Account account) {

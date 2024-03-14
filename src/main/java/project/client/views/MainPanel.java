@@ -50,6 +50,7 @@ public class MainPanel extends JPanel {
         menu.getPendingBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.PENDING_PANEL));
         menu.getBorrowedBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.BORROWED_PANEL));
         menu.getAccount().addActionListener(e -> this.clientController.changeFrame(ClientPanels.ACCOUNT_PANEL));
+        header.addLogoutAction(this.clientController);
     }
 
     public void setContentPanel(JPanel panel) {

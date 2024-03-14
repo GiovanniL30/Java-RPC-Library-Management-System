@@ -38,6 +38,8 @@ public interface ClientObserver {
 
     void changeFrame(ClientPanels clientPanels);
 
+    void logout();
+
 
 
 }
