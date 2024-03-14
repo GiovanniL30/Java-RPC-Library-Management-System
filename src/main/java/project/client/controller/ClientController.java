@@ -50,19 +50,6 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void logIn(Authentication credential) {
 
-
-        this.mainView.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    clientRemoteMethods.logout(loggedInAccount);
-                    System.exit(0);
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-
         new SwingWorker<>() {
             @Override
             protected Response<Student> doInBackground() throws Exception {
@@ -247,9 +234,9 @@ public class ClientController implements ClientObserver, Serializable {
 
             if(loggedInAccount != null) {
                 clientRemoteMethods.logout(loggedInAccount);
+                loggedInAccount = null;
             }
 
-            loggedInAccount = null;
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
             login.addClickEvent(this);
@@ -283,6 +270,17 @@ public class ClientController implements ClientObserver, Serializable {
         loading = new Loading(this.mainView);
 
 
+        this.mainView.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    clientRemoteMethods.logout(loggedInAccount);
+                    System.exit(0);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
     }
 
