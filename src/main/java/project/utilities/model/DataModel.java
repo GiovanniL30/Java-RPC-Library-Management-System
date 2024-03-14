@@ -81,5 +81,23 @@ public class DataModel {
         return null;
     }
 
+    /**
+     * Method for creating a JSON file
+     *
+     * @param filePath the path of the file
+     * @param root     the root object
+     */
+    private void createJSONFile(String filePath, JSONObject root) {
+        try {
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(root.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
