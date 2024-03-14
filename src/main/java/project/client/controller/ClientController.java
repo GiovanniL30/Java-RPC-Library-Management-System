@@ -4,10 +4,7 @@ import project.client.utility.ClientPanels;
 import project.client.views.ClientMainView;
 import project.client.views.Login;
 import project.client.views.MainPanel;
-import project.client.views.components.AccountPanel;
-import project.client.views.components.BorrowedBooksPanel;
-import project.client.views.components.HomePanel;
-import project.client.views.components.PendingBooksPanel;
+import project.client.views.components.*;
 import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
@@ -214,12 +211,12 @@ public class ClientController implements ClientObserver, Serializable {
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
-                mainView.setContentPanel(new PendingBooksPanel(loggedInAccount.getPendingBooks()));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), true));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
 
             }
             case BORROWED_PANEL -> {
-                mainView.setContentPanel(new BorrowedBooksPanel());
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), false));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
 
             }

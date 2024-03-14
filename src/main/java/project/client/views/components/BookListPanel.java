@@ -11,9 +11,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class PendingBooksPanel extends JPanel {
+public class BookListPanel extends JPanel {
 
-    public PendingBooksPanel(LinkedList<Book> pendingBooks){
+    private boolean isPending;
+    public BookListPanel(LinkedList<Book> pendingBooks, boolean isPending){
+
+        this.isPending = isPending;
 
         JPanel holder = new JPanel();
         GridLayout gridLayout = new GridLayout(0, 1);
@@ -29,10 +32,9 @@ public class PendingBooksPanel extends JPanel {
 
         add(scrollPane);
 
-
     }
 
-    private static class BookCard extends JPanel {
+    private  class BookCard extends JPanel {
 
         private BookCard(Book book) {
 
@@ -45,9 +47,16 @@ public class PendingBooksPanel extends JPanel {
             bookName.setFont(FontFactory.newPoppinsBold(18));
             JLabel author = new JLabel("by: " + book.getAuthor());
             author.setFont(FontFactory.newPoppinsDefault(12));
-            Button cancelPendingButton = new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(13));
-            cancelPendingButton.setForeground(Color.white);
-            cancelPendingButton.setBackground(ColorFactory.red());
+
+            Button button;
+            if(isPending){
+                button = new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(13));
+            }else {
+                button = new Button("Return", 100, 50, FontFactory.newPoppinsDefault(13));
+            }
+
+            button.setForeground(Color.white);
+            button.setBackground(ColorFactory.red());
 
             JPanel bookInfoPanel = new JPanel();
             JPanel bookPanel = new JPanel();
@@ -60,21 +69,22 @@ public class PendingBooksPanel extends JPanel {
             bookPanel.add(picture);
             bookPanel.add(bookInfoPanel);
 
-           GridBagConstraints constraints = new GridBagConstraints();
-           constraints.gridx = 0;
-           constraints.gridy = 0;
-           constraints.weightx = 2.0;
-           constraints.fill = 2;
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            constraints.weightx = 2.0;
+            constraints.fill = 2;
 
-           add(bookPanel, constraints);
+            add(bookPanel, constraints);
 
-           constraints.gridx  =1;
-           constraints.weightx = 0.0;
-           constraints.fill = 0;
-           add(cancelPendingButton, constraints);
+            constraints.gridx  =1;
+            constraints.weightx = 0.0;
+            constraints.fill = 0;
+            add(button, constraints);
         }
 
 
     }
+
 
 }
