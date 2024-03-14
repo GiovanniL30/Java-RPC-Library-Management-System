@@ -12,9 +12,8 @@ public class ClientApplication {
         SwingUtilities.invokeLater( () -> {
             ClientController clientController = new ClientController();
             ClientMainView mainView = new ClientMainView(clientController);
-            clientController.setMainView(mainView);
-
             mainView.setClientController(clientController);
+            clientController.setMainView(mainView);
         });
 
     }

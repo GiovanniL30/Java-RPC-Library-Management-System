@@ -75,9 +75,9 @@ public class ClientController implements ClientObserver, Serializable {
                             System.out.println(loggedInAccount);
                         } else {
 
-                            if(response.getPayload().getTotalBorrowedBooks() == 0) {
+                            if (response.getPayload().getTotalBorrowedBooks() == 0) {
                                 JOptionPane.showMessageDialog(mainView, "Invalid Username or Password");
-                            }else {
+                            } else {
                                 JOptionPane.showMessageDialog(mainView, "Your account is already logged in on another machine");
                             }
 
@@ -95,17 +95,6 @@ public class ClientController implements ClientObserver, Serializable {
 
         loading.setVisible(true);
 
-        mainView.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    clientRemoteMethods.logout(loggedInAccount);
-                    System.exit(0);
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
 
     }
 
@@ -242,15 +231,14 @@ public class ClientController implements ClientObserver, Serializable {
     public void logout() {
 
         try {
-
             clientRemoteMethods.logout(loggedInAccount);
+            loggedInAccount = null;
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
             login.addClickEvent(this);
             mainView.getContentPane().add(login);
             mainView.revalidate();
             mainView.repaint();
-
         } catch (RemoteException ex) {
             throw new RuntimeException(ex);
         }
@@ -276,6 +264,19 @@ public class ClientController implements ClientObserver, Serializable {
     public void setMainView(ClientMainView mainView) {
         this.mainView = mainView;
         loading = new Loading(this.mainView);
+
+        this.mainView.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    clientRemoteMethods.logout(loggedInAccount);
+                    System.exit(0);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
     }
 
     private ServerRemoteMethods serverRemoteMethods() {

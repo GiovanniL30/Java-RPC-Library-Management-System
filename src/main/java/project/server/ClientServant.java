@@ -41,6 +41,7 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
             }
 
             clientsController.put(account.get().getAccountId(), clientObserver);
+            System.out.println(account.get().getUserName() + " logged in successfully\n\n");
             return new Response<>(true, getStudentAccount(account.get()));
         }else {
             return new Response<>(false, new Student(null, 0, null, null));
@@ -84,8 +85,10 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
     @Override
     public void logout(Student student) throws RemoteException {
-        System.out.println("A client requested to logout");
+        System.out.println(student.getAccount().getUserName() +  " requested to logout");
         clientsController.remove(student.getAccount().getAccountId());
+        System.out.println(student.getAccount().getUserName() + " logged out successfully\n\n");
+
     }
 
     private Student getStudentAccount(Account account) {
