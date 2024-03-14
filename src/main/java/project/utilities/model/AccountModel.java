@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class AccountModel {
+public class AccountModel extends DataModel {
     
     public LinkedList<Account> getAccounts() {
         
@@ -36,6 +36,8 @@ public class AccountModel {
 
         return accounts;
     }
+
+
 
     private static Account getAccount(JSONObject o) {
         String id = (String) o.get("id");

@@ -108,6 +108,50 @@ public class DataModel {
         }
     }
 
+    public boolean addPending(String bookId, String studentId){
+        return pending(bookId, studentId, "src/main/resources/data/book.json", true) &&
+        pending(bookId, studentId, "src/main/resources/data/account.json", false);
+    }
+
+    public static void main(String[] args) {
+        DataModel dataModel = new DataModel();
+        dataModel.addPending("002", "1");
+    }
+
+    private boolean pending(String bookId, String studentId, String filePath, boolean isBookTarget) {
+
+        JSONObject json = readJSON(filePath);
+        JSONArray jsonArray = (JSONArray) json.get((isBookTarget ? "book": "accounts"));
+
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+
+            if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId))) {
+
+                System.out.println((isBookTarget ?  "bookId" : "id"));
+                JSONArray pendings = (JSONArray) jsonObject.get((isBookTarget ? "pendingBorrowers": "pendingBooks"));
+                JSONObject newId = new JSONObject();
+                newId.put("id", (isBookTarget? studentId : bookId));
+                pendings.add(newId);
+
+                // Create a new JSONArray with the updated pendingBorrowers array
+                JSONArray updatedJsonArray = new JSONArray();
+                for (int j = 0; j < jsonArray.size(); j++) {
+                    if (j == i) {
+                        updatedJsonArray.add(jsonObject);
+                    } else {
+                        updatedJsonArray.add(jsonArray.get(j));
+                    }
+                }
+
+                // Replace the old array with the new one
+                json.put((isBookTarget ? "book": "accounts"), updatedJsonArray);
+                return saveJSON(json, filePath);
+            }
+        }
+
+        return false;
+    }
 
 
 }

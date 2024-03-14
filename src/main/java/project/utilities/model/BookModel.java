@@ -12,7 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class BookModel {
+public class BookModel extends DataModel {
 
     public static void main(String[] args) {
         BookModel bookModel = new BookModel();
@@ -21,7 +21,15 @@ public class BookModel {
             System.out.println();
             System.out.println();
         }
+
+
+        for(Book book: bookModel.getBooks()) {
+            System.out.println(book);
+            System.out.println();
+            System.out.println();
+        }
     }
+
 
     public LinkedList<Book> getBooks() {
 
@@ -29,7 +37,7 @@ public class BookModel {
         JSONParser parser = new JSONParser();
 
         try {
-            JSONObject json = (JSONObject) parser.parse(new FileReader("src/main/resources/data/book.json"));
+            JSONObject json = readJSON("src/main/resources/data/book.json");
             JSONArray jsonArray = (JSONArray) json.get("book");
 
             for (Object object : jsonArray) {
@@ -53,7 +61,7 @@ public class BookModel {
                 books.add(book);
             }
 
-        } catch (IOException | ParseException  | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new RuntimeException(e);
         }
 
