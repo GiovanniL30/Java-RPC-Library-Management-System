@@ -1,23 +1,15 @@
 {
   "accounts": [
     {
-      "id": "1",
-      "userName": "giovanni123",
-      "email": "",
       "lastName": "Leo",
       "firstName": "Giovanni",
       "password": "12345678",
-      "pendingBooks": [
-        {
-          "id": "001"
-        }
-      ],
-      "borrowedBooks": [
-        {
-          "id": "002"
-        }
-      ],
-      "totalBorrowedBook": 1
+      "borrowedBooks": [],
+      "id": "1",
+      "totalBorrowedBook": 1,
+      "userName": "giovanni123",
+      "pendingBooks": [],
+      "email": "2232254@slu.edu.ph"
     }
   ]
 }

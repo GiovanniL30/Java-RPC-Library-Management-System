@@ -108,6 +108,64 @@ public class DataModel {
         }
     }
 
+    public boolean addPending(String bookId, String studentId){
+        return pending(bookId, studentId, "src/main/resources/data/book.json", true, false) &&
+        pending(bookId, studentId, "src/main/resources/data/account.json", false, false);
+    }
+
+    public boolean removePending(String bookId, String studentId){
+        return pending(bookId, studentId, "src/main/resources/data/book.json", true, pending(bookId, studentId, "src/main/resources/data/account.json", false, true));
+    }
+
+    public static void main(String[] args) {
+        DataModel dataModel = new DataModel();
+        dataModel.removePending("002", "1");
+    }
+
+    private boolean pending(String bookId, String studentId, String filePath, boolean isBookTarget, boolean isRemove) {
+
+        JSONObject json = readJSON(filePath);
+        JSONArray jsonArray = (JSONArray) json.get((isBookTarget ? "book": "accounts"));
+
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+
+            if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId))) {
+
+                JSONArray pendings = (JSONArray) jsonObject.get((isBookTarget ? "pendingBorrowers": "pendingBooks"));
+
+                if(isRemove) {
+
+                    for(Object o : pendings) {
+                        JSONObject object = (JSONObject) o;
+                        if (object.get("id").equals(isBookTarget ? studentId : bookId)) {
+                            pendings.remove(object);
+                            break;
+                        }
+                    }
+
+                } else {
+                    JSONObject newId = new JSONObject();
+                    newId.put("id", (isBookTarget? studentId : bookId));
+                    pendings.add(newId);
+                }
+
+                JSONArray updatedJsonArray = new JSONArray();
+                for (int j = 0; j < jsonArray.size(); j++) {
+                    if (j == i) {
+                        updatedJsonArray.add(jsonObject);
+                    } else {
+                        updatedJsonArray.add(jsonArray.get(j));
+                    }
+                }
+
+                json.put((isBookTarget ? "book": "accounts"), updatedJsonArray);
+                return saveJSON(json, filePath);
+            }
+        }
+
+        return false;
+    }
 
 
 }

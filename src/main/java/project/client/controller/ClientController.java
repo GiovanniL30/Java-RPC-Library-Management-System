@@ -7,10 +7,7 @@ import project.client.views.MainPanel;
 import project.client.views.components.*;
 import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
-import project.utilities.referenceClasses.Authentication;
-import project.utilities.referenceClasses.Book;
-import project.utilities.referenceClasses.Response;
-import project.utilities.referenceClasses.Student;
+import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
@@ -19,7 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -47,7 +43,19 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void logIn(Authentication credential) {
 
-        new SwingWorker<>() {
+        this.mainView.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    clientRemoteMethods.logout(loggedInAccount);
+                    System.exit(0);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        new SwingWorker<Response<Student>, Void>() {
             @Override
             protected Response<Student> doInBackground() throws Exception {
                 return clientRemoteMethods.logIn(credential, ClientController.this);
@@ -59,7 +67,7 @@ public class ClientController implements ClientObserver, Serializable {
 
                     if (isDone()) {
 
-                        Response<Student> response = (Response<Student>) get();
+                        Response<Student> response = get();
 
                         if (response.isSuccess()) {
                             loggedInAccount = response.getPayload();
@@ -207,7 +215,7 @@ public class ClientController implements ClientObserver, Serializable {
                 loading.setVisible(true);
             }
             case ACCOUNT_PANEL -> {
-                mainView.setContentPanel(new AccountPanel());
+                mainView.setContentPanel(new AccountPanel(loggedInAccount));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
@@ -228,12 +236,8 @@ public class ClientController implements ClientObserver, Serializable {
     public void logout() {
 
         try {
-
-            if(loggedInAccount != null) {
-                clientRemoteMethods.logout(loggedInAccount);
-                loggedInAccount = null;
-            }
-
+            clientRemoteMethods.logout(loggedInAccount);
+            loggedInAccount = new Student(new Account("", "", "", "", "", ""), 0, null, null);
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
             login.addClickEvent(this);
@@ -265,19 +269,6 @@ public class ClientController implements ClientObserver, Serializable {
     public void setMainView(ClientMainView mainView) {
         this.mainView = mainView;
         loading = new Loading(this.mainView);
-
-
-        this.mainView.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    clientRemoteMethods.logout(loggedInAccount);
-                    System.exit(0);
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
 
     }
 
