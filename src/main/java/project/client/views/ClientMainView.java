@@ -66,6 +66,7 @@ public class ClientMainView extends JFrame {
     public void setClientController(ClientController clientController) {
         this.clientController = clientController;
 
+
     }
 
     public void setMainPanel(MainPanel mainPanel) {

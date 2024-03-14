@@ -107,11 +107,11 @@ public class FieldInput extends JPanel {
      * @param  message the error message to be displayed
      */
     public void enableError(String message) {
-        if (isPasswordField) {
-            passwordField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED), new EmptyBorder(new Insets(10, 10, 10, 10))));
-        } else {
-            textField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED), new EmptyBorder(new Insets(10, 10, 10, 10))));
-        }
+//        if (isPasswordField) {
+//            passwordField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED), new EmptyBorder(new Insets(10, 10, 10, 10))));
+//        } else {
+//            textField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED), new EmptyBorder(new Insets(10, 10, 10, 10))));
+//        }
         errorMessage.setText(message);
         errorMessage.setVisible(true);
     } // end of enableError method
@@ -120,11 +120,11 @@ public class FieldInput extends JPanel {
      * Removes error display and restores the input field's appearance.
      */
     public void removeError() {
-        if (isPasswordField) {
-            passwordField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
-        } else {
-            textField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
-        }
+//        if (isPasswordField) {
+//            passwordField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
+//        } else {
+//            textField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), new EmptyBorder(new Insets(10, 10, 10, 10))));
+//        }
         errorMessage.setVisible(false);
     } // end of removeError method
     public void clearText() {

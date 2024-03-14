@@ -3,20 +3,27 @@ package project.client.views.components;
 import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
-import project.utilities.viewComponents.*;
 import project.utilities.viewComponents.Button;
+import project.utilities.viewComponents.IconButton;
+import project.utilities.viewComponents.SearchBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class HomePanel extends JPanel {
 
-    private LinkedList<Book> books;
+    private final LinkedList<Book> books;
 
-    private SearchBar searchBar;
+    private final SearchBar searchBar;
+    private final JPanel panel;
+    private JScrollPane scrollPane;
+    private boolean haveSearched = false;
 
-    public HomePanel(LinkedList<Book> books){
+    public HomePanel(LinkedList<Book> books) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.books = books;
 
@@ -40,20 +47,39 @@ public class HomePanel extends JPanel {
 
         add(header);
 
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setLayout(gridLayout);
-        JScrollPane scrollPane = new JScrollPane(panel);
+         scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(920, 400));
         add(scrollPane);
 
+        populateBookList(books, false);
+
+
+        searchButton.addActionListener(this::performSearch);
+        searchBar.getGenreDropDown().addItemListener(this::performGenreFiltering);
+        searchBar.getCancelButton().addActionListener(this::closeSearch);
+    }
+
+    public void populateBookList(LinkedList<Book> books, boolean isUpdate) {
         new SwingWorker<>() {
             @Override
             protected Object doInBackground() {
 
-                for(Book book : books) {
+                if (isUpdate) {
+                    panel.removeAll();
+                }
+
+                if(books.isEmpty()) {
+                    panel.revalidate();
+                    panel.repaint();
+                }
+
+                for (Book book : books) {
                     panel.add(new BookCardComponent(book));
                     panel.revalidate();
                     panel.repaint();
+
                 }
 
                 return null;
@@ -61,8 +87,53 @@ public class HomePanel extends JPanel {
 
 
         }.execute();
+    }
+
+    private void closeSearch(ActionEvent event){
+
+        if(haveSearched) {
+            populateBookList(books, true);
+            searchBar.getInput().getTextField().setText("");
+            haveSearched = false;
+        }
 
     }
+
+    private void performSearch(ActionEvent event) {
+
+        String searchInput = searchBar.getSearch();
+
+        if(searchInput == null){
+            searchBar.getInput().enableError("Enter something");
+            return;
+        }
+
+        if(searchInput.trim().isEmpty()) {
+            searchBar.getInput().enableError("Enter something");
+            return;
+        }
+
+        String filterType = searchBar.getFilterType();
+
+        LinkedList<Book> filteredBooks;
+
+        if(filterType.equals("Author")){
+            filteredBooks = books.stream().filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
+        }else {
+            filteredBooks = books.stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
+        }
+
+
+        haveSearched = true;
+        populateBookList(filteredBooks, true);
+    }
+
+    public void performGenreFiltering(ItemEvent e) {
+        LinkedList<Book> filtered = books.stream().filter(book -> book.getGenre().toLowerCase().contains(searchBar.getGenreDropDown().dropDownChoice().toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
+        haveSearched = true;
+        populateBookList(filtered, true);
+    }
+
 
     private static class BookCardComponent extends JPanel {
 

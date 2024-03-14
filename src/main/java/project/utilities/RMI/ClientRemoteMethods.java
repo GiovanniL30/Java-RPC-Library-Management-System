@@ -47,5 +47,7 @@ public interface ClientRemoteMethods extends Remote {
     Response<LinkedList<Book>> getBooks() throws RemoteException;
     void notification(ServerActions serverActions) throws RemoteException;
 
+    void logout(Student student) throws RemoteException;
+
 
 }

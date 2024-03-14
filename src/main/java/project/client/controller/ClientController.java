@@ -2,11 +2,9 @@ package project.client.controller;
 
 import project.client.utility.ClientPanels;
 import project.client.views.ClientMainView;
+import project.client.views.Login;
 import project.client.views.MainPanel;
-import project.client.views.components.AccountPanel;
-import project.client.views.components.BorrowedBooksPanel;
-import project.client.views.components.HomePanel;
-import project.client.views.components.PendingBooksPanel;
+import project.client.views.components.*;
 import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Authentication;
@@ -18,6 +16,10 @@ import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -45,45 +47,51 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void logIn(Authentication credential) {
 
-        try {
-
-            Response<Student> response = clientRemoteMethods.logIn(credential, this);
-
-
-            if(response.isSuccess()) {
-                new SwingWorker<>() {
-                    @Override
-                    protected Object doInBackground() {
-                        loggedInAccount = response.getPayload();
-                        mainView.getContentPane().removeAll();
-                        MainPanel mainPanel = new MainPanel(ClientController.this);
-                        mainView.setMainPanel(mainPanel);
-                        mainView.getContentPane().add(mainPanel);
-                        mainView.getContentPane().invalidate();
-                        mainView.getContentPane().repaint();
-                        return null;
-                    }
-
-                    @Override
-                    protected void done() {
-                        System.out.println(loggedInAccount);
-                        loading.setVisible(false);
-                        super.done();
-                    }
-                }.execute();
-
-                loading.setVisible(true);
-            }else {
-                JOptionPane.showMessageDialog(mainView, "Invalid Username or Password");
+        new SwingWorker<>() {
+            @Override
+            protected Response<Student> doInBackground() throws Exception {
+                return clientRemoteMethods.logIn(credential, ClientController.this);
             }
 
+            @Override
+            protected void done() {
+                try {
 
+                    if (isDone()) {
 
+                        Response<Student> response = (Response<Student>) get();
 
-            serverRemoteMethods().notification(ClientActions.LOGIN);
-        } catch (RemoteException e) {
-            System.out.println(e.getMessage());
-        }
+                        if (response.isSuccess()) {
+                            loggedInAccount = response.getPayload();
+                            mainView.getContentPane().removeAll();
+                            MainPanel mainPanel = new MainPanel(ClientController.this);
+                            mainView.setMainPanel(mainPanel);
+                            mainView.getContentPane().add(mainPanel);
+                            mainView.getContentPane().revalidate();
+                            mainView.getContentPane().repaint();
+                            System.out.println(loggedInAccount);
+                        } else {
+
+                            if (response.getPayload().getTotalBorrowedBooks() == 0) {
+                                JOptionPane.showMessageDialog(mainView, "Invalid Username or Password");
+                            } else {
+                                JOptionPane.showMessageDialog(mainView, "Your account is already logged in on another machine");
+                            }
+
+                        }
+
+                        loading.setVisible(false);
+
+                    }
+
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.execute();
+
+        loading.setVisible(true);
+
 
     }
 
@@ -174,7 +182,6 @@ public class ClientController implements ClientObserver, Serializable {
     }
 
 
-
     @Override
     public void changeFrame(ClientPanels clientPanels) {
 
@@ -204,15 +211,37 @@ public class ClientController implements ClientObserver, Serializable {
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
-                mainView.setContentPanel(new PendingBooksPanel());
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), true));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
 
             }
             case BORROWED_PANEL -> {
-                mainView.setContentPanel(new BorrowedBooksPanel());
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), false));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
 
             }
+        }
+
+    }
+
+    @Override
+    public void logout() {
+
+        try {
+
+            if(loggedInAccount != null) {
+                clientRemoteMethods.logout(loggedInAccount);
+                loggedInAccount = null;
+            }
+
+            mainView.getContentPane().removeAll();
+            Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
+            login.addClickEvent(this);
+            mainView.getContentPane().add(login);
+            mainView.revalidate();
+            mainView.repaint();
+        } catch (RemoteException ex) {
+            throw new RuntimeException(ex);
         }
 
     }
@@ -221,7 +250,7 @@ public class ClientController implements ClientObserver, Serializable {
         try {
             Response<LinkedList<Book>> response = clientRemoteMethods.getBooks();
 
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 return response.getPayload();
             }
 
@@ -236,6 +265,20 @@ public class ClientController implements ClientObserver, Serializable {
     public void setMainView(ClientMainView mainView) {
         this.mainView = mainView;
         loading = new Loading(this.mainView);
+
+
+        this.mainView.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    clientRemoteMethods.logout(loggedInAccount);
+                    System.exit(0);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
     }
 
     private ServerRemoteMethods serverRemoteMethods() {

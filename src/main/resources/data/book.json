@@ -8,8 +8,14 @@
       "genre": "Fantasy",
       "shortDescription": "Discover a magical world beyond imagination.",
       "imagePath": "src/main/resources/images/bookImages/realm_of_magic.jpg",
-      "currentBorrowers": [],
-      "pendingBorrowers": [],
+      "currentBorrowers": [
+
+      ],
+      "pendingBorrowers": [
+        {
+          "id": "1"
+        }
+      ],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
     },
@@ -21,7 +27,11 @@
       "genre": "Thriller",
       "shortDescription": "A gripping thriller that keeps you on the edge.",
       "imagePath": "src/main/resources/images/bookImages/dangerous_pursuit.jpg",
-      "currentBorrowers": [],
+      "currentBorrowers": [
+        {
+          "id": "1"
+        }
+      ],
       "pendingBorrowers": [],
       "pendingBookReturners": [],
       "prevBookBorrowers": []
