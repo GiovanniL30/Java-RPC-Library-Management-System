@@ -113,11 +113,6 @@ public class DataModel {
         pending(bookId, studentId, "src/main/resources/data/account.json", false);
     }
 
-    public static void main(String[] args) {
-        DataModel dataModel = new DataModel();
-        dataModel.addPending("002", "1");
-    }
-
     private boolean pending(String bookId, String studentId, String filePath, boolean isBookTarget) {
 
         JSONObject json = readJSON(filePath);
@@ -134,7 +129,7 @@ public class DataModel {
                 newId.put("id", (isBookTarget? studentId : bookId));
                 pendings.add(newId);
 
-                // Create a new JSONArray with the updated pendingBorrowers array
+
                 JSONArray updatedJsonArray = new JSONArray();
                 for (int j = 0; j < jsonArray.size(); j++) {
                     if (j == i) {
@@ -144,7 +139,7 @@ public class DataModel {
                     }
                 }
 
-                // Replace the old array with the new one
+
                 json.put((isBookTarget ? "book": "accounts"), updatedJsonArray);
                 return saveJSON(json, filePath);
             }
