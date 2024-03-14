@@ -8,11 +8,7 @@
       "id": "1",
       "totalBorrowedBook": 1,
       "userName": "giovanni123",
-      "pendingBooks": [
-        {
-          "id": "002"
-        }
-      ],
+      "pendingBooks": [],
       "email": "2232254@slu.edu.ph"
     }
   ]

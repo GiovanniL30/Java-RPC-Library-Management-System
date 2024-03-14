@@ -109,11 +109,20 @@ public class DataModel {
     }
 
     public boolean addPending(String bookId, String studentId){
-        return pending(bookId, studentId, "src/main/resources/data/book.json", true) &&
-        pending(bookId, studentId, "src/main/resources/data/account.json", false);
+        return pending(bookId, studentId, "src/main/resources/data/book.json", true, false) &&
+        pending(bookId, studentId, "src/main/resources/data/account.json", false, false);
     }
 
-    private boolean pending(String bookId, String studentId, String filePath, boolean isBookTarget) {
+    public boolean removePending(String bookId, String studentId){
+        return pending(bookId, studentId, "src/main/resources/data/book.json", true, pending(bookId, studentId, "src/main/resources/data/account.json", false, true));
+    }
+
+    public static void main(String[] args) {
+        DataModel dataModel = new DataModel();
+        dataModel.removePending("002", "1");
+    }
+
+    private boolean pending(String bookId, String studentId, String filePath, boolean isBookTarget, boolean isRemove) {
 
         JSONObject json = readJSON(filePath);
         JSONArray jsonArray = (JSONArray) json.get((isBookTarget ? "book": "accounts"));
@@ -123,12 +132,23 @@ public class DataModel {
 
             if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId))) {
 
-                System.out.println((isBookTarget ?  "bookId" : "id"));
                 JSONArray pendings = (JSONArray) jsonObject.get((isBookTarget ? "pendingBorrowers": "pendingBooks"));
-                JSONObject newId = new JSONObject();
-                newId.put("id", (isBookTarget? studentId : bookId));
-                pendings.add(newId);
 
+                if(isRemove) {
+
+                    for(Object o : pendings) {
+                        JSONObject object = (JSONObject) o;
+                        if (object.get("id").equals(isBookTarget ? studentId : bookId)) {
+                            pendings.remove(object);
+                            break;
+                        }
+                    }
+
+                } else {
+                    JSONObject newId = new JSONObject();
+                    newId.put("id", (isBookTarget? studentId : bookId));
+                    pendings.add(newId);
+                }
 
                 JSONArray updatedJsonArray = new JSONArray();
                 for (int j = 0; j < jsonArray.size(); j++) {
@@ -138,7 +158,6 @@ public class DataModel {
                         updatedJsonArray.add(jsonArray.get(j));
                     }
                 }
-
 
                 json.put((isBookTarget ? "book": "accounts"), updatedJsonArray);
                 return saveJSON(json, filePath);

@@ -24,11 +24,7 @@
       "pendingBookReturners": [],
       "bookId": "002",
       "bookTitle": "Dangerous Pursuit",
-      "pendingBorrowers": [
-        {
-          "id": "1"
-        }
-      ]
+      "pendingBorrowers": []
     },
     {
       "prevBookBorrowers": [],
