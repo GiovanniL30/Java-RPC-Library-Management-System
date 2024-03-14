@@ -16,6 +16,16 @@ import java.util.LinkedList;
 public class DataModel {
 
     /**
+     * A method to check if the given JSONObject is empty.
+     *
+     * @param jsonObject the JSONObject to be checked
+     * @return true if the JSONObject is empty, false otherwise
+     */
+    protected boolean isEmpty(JSONObject jsonObject) {
+        return jsonObject.isEmpty();
+    }
+
+    /**
      * Retrieves text content from the specified JSON object by key.
      *
      * @param jsonObject the JSON object from which to retrieve the value
