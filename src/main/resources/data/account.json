@@ -4,14 +4,7 @@
       "lastName": "Leo",
       "firstName": "Giovanni",
       "password": "12345678",
-      "borrowedBooks": [
-        {
-          "id": "001"
-        },
-        {
-          "id": "002"
-        }
-      ],
+      "borrowedBooks": [],
       "id": "1",
       "totalBorrowedBook": 1,
       "userName": "giovanni123",

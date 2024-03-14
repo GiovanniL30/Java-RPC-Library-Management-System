@@ -1,12 +1,13 @@
 {
   "book": [
     {
-      "prevBookBorrowers": [],
-      "currentBorrowers": [
+      "prevBookBorrowers": [
         {
+          "dateRetrieved": "Thu Mar 14 23:41:25 SGT 2024",
           "id": "1"
-        },
+        }
       ],
+      "currentBorrowers": [],
       "copies": 9,
       "author": "Alice Williams",
       "imagePath": "src\/main\/resources\/images\/bookImages\/realm_of_magic.jpg",
@@ -19,11 +20,7 @@
     },
     {
       "prevBookBorrowers": [],
-      "currentBorrowers": [
-        {
-          "id": "1"
-        }
-      ],
+      "currentBorrowers": [],
       "copies": 6,
       "author": "David Turner",
       "imagePath": "src\/main\/resources\/images\/bookImages\/dangerous_pursuit.jpg",
