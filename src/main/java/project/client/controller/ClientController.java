@@ -112,8 +112,8 @@ public class ClientController implements ClientObserver, Serializable {
             Response<String> response = clientRemoteMethods.borrowBook(book, loggedInAccount);
 
             if(response.isSuccess()) {
-                changeFrame(ClientPanels.HOME_PANEL);
                 loggedInAccount.getPendingBooks().add(book);
+                changeFrame(ClientPanels.HOME_PANEL);
             }else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
@@ -130,7 +130,12 @@ public class ClientController implements ClientObserver, Serializable {
         try {
             Response<String> response = clientRemoteMethods.removePending(book, loggedInAccount);
 
-            //TODO: handle response
+            if(response.isSuccess()) {
+                loggedInAccount.getPendingBooks().remove(book);
+                changeFrame(ClientPanels.PENDING_PANEL);
+            }else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
 
             serverRemoteMethods().notification(ClientActions.CANCEL_PENDING);
         } catch (RemoteException e) {
@@ -226,12 +231,12 @@ public class ClientController implements ClientObserver, Serializable {
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), true));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), this, true));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
 
             }
             case BORROWED_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), false));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), this, false));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
 
             }

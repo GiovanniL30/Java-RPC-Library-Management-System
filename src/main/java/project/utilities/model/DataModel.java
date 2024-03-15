@@ -118,7 +118,8 @@ public class DataModel {
     }
 
     public boolean removePending(String bookId, Student studentId){
-        return pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/book.json", true, pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/account.json", false, true));
+        return pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/book.json", true,true )
+                && pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/account.json", false, true);
     }
 
     public boolean addBorrowed(String bookId, Student studentId){
@@ -146,8 +147,14 @@ public class DataModel {
             if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId))) {
 
                 if(isBookTarget) {
-                    long copies = (long) jsonObject.get("copies") - 1;
-                    jsonObject.put("copies", copies);
+                    long copies = (long) jsonObject.get("copies");
+
+                    if(isRemove) {
+                        jsonObject.put("copies", copies + 1);
+                    }else {
+                        jsonObject.put("copies", copies - 1);
+                    }
+
                 }
 
                 JSONArray pendings = (JSONArray) jsonObject.get((isBookTarget ? "pendingBorrowers": "pendingBooks"));
@@ -197,6 +204,17 @@ public class DataModel {
             JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
             if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId.getAccount().getAccountId()))) {
+
+                if(isBookTarget) {
+                    long copies = (long) jsonObject.get("copies");
+
+                    if(isRemove) {
+                        jsonObject.put("copies", copies + 1);
+                    }else {
+                        jsonObject.put("copies", copies - 1);
+                    }
+
+                }
 
                 JSONArray borrowers = (JSONArray) jsonObject.get((isBookTarget ? "currentBorrowers": "borrowedBooks"));
 

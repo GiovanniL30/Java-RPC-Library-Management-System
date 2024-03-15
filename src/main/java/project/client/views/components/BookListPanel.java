@@ -1,5 +1,6 @@
 package project.client.views.components;
 
+import project.client.controller.ClientController;
 import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
@@ -14,9 +15,11 @@ import java.util.LinkedList;
 public class BookListPanel extends JPanel {
 
     private final boolean isPending;
-    public BookListPanel(LinkedList<Book> pendingBooks, boolean isPending){
+    private final ClientController clientController;
+    public BookListPanel(LinkedList<Book> pendingBooks, ClientController clientController, boolean isPending){
 
         this.isPending = isPending;
+        this.clientController = clientController;
 
         JPanel holder = new JPanel();
         GridLayout gridLayout = new GridLayout(0, 1);
@@ -81,6 +84,19 @@ public class BookListPanel extends JPanel {
             constraints.weightx = 0.0;
             constraints.fill = 0;
             add(button, constraints);
+
+
+            button.addActionListener( e ->  {
+
+                if(isPending) {
+                    clientController.removePending(book);
+                }else{
+                    clientController.returnBook(book);
+                }
+
+            });
+
+
         }
 
 
