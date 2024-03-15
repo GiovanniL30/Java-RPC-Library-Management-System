@@ -45,8 +45,11 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
 
     @Override
     public Response<String> retrieveBook(Book book, Student student) {
-        System.out.println("Server Retrieves a book");
-        return null;
+        System.out.println("Server retrieves" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
+        if (bookModel.removeBorrowed(book.getBookId(), student, false)) {
+            return new Response<>(true, "Book was successfully retrieved");
+        }
+        return new Response<>(false, "Book was not retrieved");
     }
 
     @Override
