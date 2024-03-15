@@ -3,10 +3,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Student;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -108,19 +112,29 @@ public class DataModel {
         }
     }
 
-    public boolean addPending(String bookId, String studentId){
-        return pending(bookId, studentId, "src/main/resources/data/book.json", true, false) &&
-        pending(bookId, studentId, "src/main/resources/data/account.json", false, false);
+    public boolean addPending(String bookId, Student studentId){
+        return pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/book.json", true, false) &&
+        pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/account.json", false, false);
     }
 
-    public boolean removePending(String bookId, String studentId){
-        return pending(bookId, studentId, "src/main/resources/data/book.json", true, pending(bookId, studentId, "src/main/resources/data/account.json", false, true));
+    public boolean removePending(String bookId, Student studentId){
+        return pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/book.json", true,true )
+                && pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/account.json", false, true);
     }
 
-    public static void main(String[] args) {
-        DataModel dataModel = new DataModel();
-        dataModel.removePending("002", "1");
+    public boolean addBorrowed(String bookId, Student studentId){
+        return removePending(bookId, studentId) &&
+        borrow(bookId, studentId,"src/main/resources/data/book.json", true, false, false) &&
+        borrow(bookId, studentId,"src/main/resources/data/account.json", false, false, false);
     }
+
+    public boolean removeBorrowed(String bookId, Student studentId, boolean isClient){
+      return borrow(bookId, studentId,"src/main/resources/data/book.json", true, true, isClient) &&
+       borrow(bookId, studentId,"src/main/resources/data/account.json", false, true, isClient);
+
+
+    }
+
 
     private boolean pending(String bookId, String studentId, String filePath, boolean isBookTarget, boolean isRemove) {
 
@@ -131,6 +145,17 @@ public class DataModel {
             JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
             if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId))) {
+
+                if(isBookTarget) {
+                    long copies = (long) jsonObject.get("copies");
+
+                    if(isRemove) {
+                        jsonObject.put("copies", copies + 1);
+                    }else {
+                        jsonObject.put("copies", copies - 1);
+                    }
+
+                }
 
                 JSONArray pendings = (JSONArray) jsonObject.get((isBookTarget ? "pendingBorrowers": "pendingBooks"));
 
@@ -148,6 +173,95 @@ public class DataModel {
                     JSONObject newId = new JSONObject();
                     newId.put("id", (isBookTarget? studentId : bookId));
                     pendings.add(newId);
+                }
+
+
+
+                JSONArray updatedJsonArray = new JSONArray();
+                for (int j = 0; j < jsonArray.size(); j++) {
+                    if (j == i) {
+                        updatedJsonArray.add(jsonObject);
+                    } else {
+                        updatedJsonArray.add(jsonArray.get(j));
+                    }
+                }
+
+                json.put((isBookTarget ? "book": "accounts"), updatedJsonArray);
+                return saveJSON(json, filePath);
+            }
+        }
+
+        return false;
+    }
+
+
+    private boolean borrow(String bookId, Student studentId, String filePath, boolean isBookTarget, boolean isRemove , boolean isClient) {
+
+        JSONObject json = readJSON(filePath);
+        JSONArray jsonArray = (JSONArray) json.get((isBookTarget ? "book": "accounts"));
+
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+
+            if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId.getAccount().getAccountId()))) {
+
+                if(isBookTarget) {
+                    long copies = (long) jsonObject.get("copies");
+
+                    if(isRemove) {
+                        jsonObject.put("copies", copies + 1);
+                    }else {
+                        jsonObject.put("copies", copies - 1);
+                    }
+
+                }
+
+                JSONArray borrowers = (JSONArray) jsonObject.get((isBookTarget ? "currentBorrowers": "borrowedBooks"));
+
+                if(isRemove) {
+
+                    JSONArray prevBookBorrowers = null;
+
+                    if(isBookTarget) {
+
+                        if(!isClient){
+                            prevBookBorrowers = (JSONArray) jsonObject.get("prevBookBorrowers");
+                        }else {
+                            prevBookBorrowers = (JSONArray) jsonObject.get("pendingBookReturners");
+                        }
+
+                    }
+
+
+                    for(Object o : borrowers) {
+                        JSONObject object = (JSONObject) o;
+                        if (object.get("id").equals(isBookTarget ? studentId.getAccount().getAccountId() : bookId)) {
+
+                            if(prevBookBorrowers != null) {
+
+                                if(!isClient){
+                                    JSONObject prevBorrower = new JSONObject();
+                                    prevBorrower.put("id", object.get("id"));
+                                    prevBorrower.put("dateRetrieved", Calendar.getInstance().getTime().toString());
+                                    prevBookBorrowers.add(prevBorrower);
+                                    //TODO: add more
+                                }else {
+                                    JSONObject prevBorrower = new JSONObject();
+                                    prevBorrower.put("id", object.get("id"));
+                                    prevBookBorrowers.add(prevBorrower);
+                                }
+
+                            }
+
+                            borrowers.remove(object);
+                            break;
+                        }
+                    }
+
+                } else {
+                    JSONObject newId = new JSONObject();
+                    newId.put("id", (isBookTarget? studentId.getAccount().getAccountId() : bookId));
+                    borrowers.add(newId);
                 }
 
                 JSONArray updatedJsonArray = new JSONArray();

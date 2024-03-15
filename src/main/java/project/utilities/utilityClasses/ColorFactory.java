@@ -11,4 +11,8 @@ public class ColorFactory {
     public static Color blue(){
         return new Color(68, 137, 240);
     }
+
+    public static Color green(){
+        return new Color(43, 152, 43);
+    }
 }

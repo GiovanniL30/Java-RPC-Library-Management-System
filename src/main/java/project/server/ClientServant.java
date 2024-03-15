@@ -49,21 +49,39 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     }
 
     @Override
-    public Response<String> borrowBook(Book book) {
-        System.out.println("Client Request to borrow a book");
-        return null;
+    public Response<String> borrowBook(Book book, Student student) {
+        System.out.println(student.getAccount().getUserName() + " Requested to borrow the book " + book.getBookTitle() + "\n\n");
+
+        if(student.getBorrowedBooks().size() == 5 || student.getPendingBooks().size() == 5 || student.getPendingBooks().size() + student.getBorrowedBooks().size() == 5) {
+            return new Response<>(false, "You have reached the limit of 5 book being pending and borrowed");
+        }
+
+        if(bookModel.addPending(book.getBookId(), student)) {
+            return new Response<>(true, "Book was successfully added for pending");
+        }
+
+        return new Response<>(true, "Book was not successfully added for pending");
     }
 
     @Override
-    public Response<String> removePending(Book book) {
-        System.out.println("Client Request to remove a book pending");
-        return null;
+    public Response<String> removePending(Book book, Student student) {
+        System.out.println(student.getAccount().getUserName() + " Requested to remove a book pending " + book.getBookTitle() + "\n\n");
+
+        if(bookModel.removePending(book.getBookId(), student)) {
+            return new Response<>(true, "Book was successfully removed for pending");
+        }
+
+        return new Response<>(true, "Book was not successfully removed for pending");
     }
 
     @Override
-    public Response<String> returnBook(Book book) {
-        System.out.println("Client Request to return a book");
-        return null;
+    public Response<String> returnBook(Book book, Student student) {
+        System.out.println(student.getAccount().getUserName() + " Requested to return a borrowed book" + book.getBookTitle() + "\n\n");
+
+        if(bookModel.removeBorrowed(book.getBookId(), student, true)){
+            return new Response<>(true, "Book was successfully returned for pending");
+        }
+        return new Response<>(true, "Book was not successfully returned for pending");
     }
 
 

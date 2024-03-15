@@ -1,5 +1,6 @@
 package project.client.views.components;
 
+import project.client.controller.ClientController;
 import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
@@ -21,10 +22,12 @@ public class HomePanel extends JPanel {
     private final SearchBar searchBar;
     private final JPanel panel;
     private boolean haveSearched = false;
+    private  ClientController clientController;
 
-    public HomePanel(LinkedList<Book> books) {
+    public HomePanel(LinkedList<Book> books, ClientController clientController) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.books = books;
+        this.clientController = clientController;
 
         searchBar = new SearchBar(new Dimension(800, 100), false);
 
@@ -75,7 +78,7 @@ public class HomePanel extends JPanel {
                 }
 
                 for (Book book : books) {
-                    panel.add(new BookCardComponent(book));
+                    panel.add(new BookCardComponent(book, clientController));
                     panel.revalidate();
                     panel.repaint();
                 }
@@ -135,7 +138,7 @@ public class HomePanel extends JPanel {
 
     private static class BookCardComponent extends JPanel {
 
-        private BookCardComponent(Book book) {
+        private BookCardComponent(Book book, ClientController clientController) {
 
             setSize(new Dimension(100, 200));
 
@@ -152,6 +155,7 @@ public class HomePanel extends JPanel {
             constraints.gridy = 1;
             add(label, constraints);
 
+            button.addActionListener(e -> clientController.openBook(book));
         }
 
     }

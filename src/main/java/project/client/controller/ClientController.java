@@ -29,6 +29,7 @@ public class ClientController implements ClientObserver, Serializable {
     private ClientMainView mainView;
     private Loading loading;
     private Student loggedInAccount;
+    private BookViewer bookViewer;
 
     public ClientController() {
 
@@ -105,11 +106,17 @@ public class ClientController implements ClientObserver, Serializable {
 
     @Override
     public void borrowBook(Book book) {
+        bookViewer.setVisible(false);
 
         try {
-            Response<String> response = clientRemoteMethods.borrowBook(book);
+            Response<String> response = clientRemoteMethods.borrowBook(book, loggedInAccount);
 
-            //TODO: handle response
+            if(response.isSuccess()) {
+                loggedInAccount.getPendingBooks().add(book);
+                changeFrame(ClientPanels.HOME_PANEL);
+            }else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
 
             serverRemoteMethods().notification(ClientActions.BORROW_BOOK);
         } catch (RemoteException e) {
@@ -121,9 +128,14 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void removePending(Book book) {
         try {
-            Response<String> response = clientRemoteMethods.removePending(book);
+            Response<String> response = clientRemoteMethods.removePending(book, loggedInAccount);
 
-            //TODO: handle response
+            if(response.isSuccess()) {
+                loggedInAccount.getPendingBooks().remove(book);
+                changeFrame(ClientPanels.PENDING_PANEL);
+            }else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
 
             serverRemoteMethods().notification(ClientActions.CANCEL_PENDING);
         } catch (RemoteException e) {
@@ -135,9 +147,9 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void returnBook(Book book) {
         try {
-            Response<String> response = clientRemoteMethods.returnBook(book);
+            Response<String> response = clientRemoteMethods.returnBook(book, loggedInAccount);
 
-            //TODO: handle response
+
 
             serverRemoteMethods().notification(ClientActions.RETURN_BOOK);
         } catch (RemoteException e) {
@@ -199,7 +211,7 @@ public class ClientController implements ClientObserver, Serializable {
                 SwingWorker<Void, Void> worker = new SwingWorker<>() {
                     @Override
                     protected Void doInBackground() {
-                        mainView.setContentPanel(new HomePanel(getBooks()));
+                        mainView.setContentPanel(new HomePanel(getBooks(), ClientController.this));
                         return null;
                     }
 
@@ -219,12 +231,12 @@ public class ClientController implements ClientObserver, Serializable {
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), true));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), this, true));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
 
             }
             case BORROWED_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), false));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), this, false));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
 
             }
@@ -248,6 +260,11 @@ public class ClientController implements ClientObserver, Serializable {
             throw new RuntimeException(ex);
         }
 
+    }
+
+    public void openBook(Book book){
+        bookViewer = new BookViewer(mainView, book, loggedInAccount,this);
+        bookViewer.setVisible(true);
     }
 
     public LinkedList<Book> getBooks() {
