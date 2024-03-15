@@ -108,14 +108,14 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
 
     @Override
     public Response<String> changeUserPassword(Account account, String newPassword) {
-        System.out.println("Sever changed a password for a student");
+        System.out.println("Server changed a password for a student");
         return null;
     }
 
     @Override
     public Response<LinkedList<Book>> getBooks() {
-        System.out.println("Server get all books");
-        return null;
+        System.out.println("Server gets all the books");
+        return new Response<>(true, bookModel.getBooks());
     }
 
     @Override
