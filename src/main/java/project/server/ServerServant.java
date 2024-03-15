@@ -125,8 +125,12 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
 
     @Override
     public void notification(ClientActions clientActions) {
-        System.out.println("A client sent a notification");
-        serverController.updateView(clientActions);
+
+        new Thread(() -> {
+            System.out.println("A client sent a notification");
+            serverController.updateView(clientActions);
+        }).start();
+
     }
 
 

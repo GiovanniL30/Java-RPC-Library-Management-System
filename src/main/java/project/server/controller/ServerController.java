@@ -100,7 +100,7 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void updateView(ClientActions clientActions) {
-        System.out.println("I will now be updating my view");
+        System.out.println("I will now be updating my view action = " + clientActions.toString());
     }
 
 

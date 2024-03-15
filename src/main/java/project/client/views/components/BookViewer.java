@@ -2,15 +2,19 @@ package project.client.views.components;
 
 import project.client.controller.ClientController;
 import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Student;
+import project.utilities.utilityClasses.ColorFactory;
+import project.utilities.utilityClasses.FontFactory;
 import  project.utilities.viewComponents.Button;
 import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 public class BookViewer extends JDialog {
 
-    public BookViewer(Frame owner, Book book, ClientController controller) {
+    public BookViewer(Frame owner, Book book, Student student, ClientController controller) {
         super(owner, book.getBookTitle(), true);
 
         setPreferredSize(new Dimension(400, 600));
@@ -32,6 +36,8 @@ public class BookViewer extends JDialog {
         textArea.setEditable(false);
         JScrollPane textScrollPane = new JScrollPane(textArea);
         textScrollPane.setPreferredSize(new Dimension(200, 120));
+
+        JPanel buttonPanel = getjPanel(book, student, controller);
 
         constraints.gridx = 2;
         constraints.gridy = 0;
@@ -63,10 +69,70 @@ public class BookViewer extends JDialog {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         panel.add(textScrollPane, constraints);
 
-        add(panel);
-        pack(); // Adjust the size of the dialog to fit its contents
+        constraints.gridy = 5;
+        constraints.weightx = 3.0;
+        panel.add(buttonPanel, constraints);
 
-        // Center the dialog on the screen
+        add(panel);
+        pack();
+
         setLocationRelativeTo(null);
     }
+
+    private static JPanel getjPanel(Book book, Student student, ClientController clientController) {
+        JPanel buttonPanel = new JPanel();
+        JLabel errorMessage = new JLabel();
+
+        Button addBookButton =  new Button("Add Book", 200, 80, FontFactory.newPoppinsDefault(14));
+        addBookButton.setForeground(Color.WHITE);
+        addBookButton.setBackground(ColorFactory.green());
+
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+
+        if(book.getCopies() == 0) {
+            errorMessage.setText("There are no copies of the book already");
+            addBookButton.setEnabled(false);
+        }
+
+        for(String studentId: book.getPendingBorrowers()) {
+
+            if(studentId.equals(student.getAccount().getAccountId())){
+                errorMessage.setText("This book is already added on your pending");
+                addBookButton.setEnabled(false);
+                break;
+            }
+
+        }
+
+        for(String studentId: book.getCurrentBorrowers()) {
+
+            if(studentId.equals(student.getAccount().getAccountId())){
+                errorMessage.setText("You are already borrowing this book");
+                addBookButton.setEnabled(false);
+                break;
+            }
+
+        }
+
+        for(String studentId: book.getPendingBookReturners()) {
+
+            if(studentId.equals(student.getAccount().getAccountId())){
+                errorMessage.setText("This book is pending for return");
+                addBookButton.setEnabled(false);
+                break;
+            }
+
+        }
+
+
+        if(!errorMessage.getText().isEmpty()){
+            buttonPanel.add(errorMessage);
+        }
+
+        buttonPanel.add(addBookButton);
+        addBookButton.addActionListener(e -> clientController.borrowBook(book));
+        return buttonPanel;
+    }
+
+
 }

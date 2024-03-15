@@ -3,6 +3,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
 
 import java.io.FileReader;
@@ -144,6 +145,11 @@ public class DataModel {
 
             if (jsonObject.get((isBookTarget ?  "bookId" : "id")).equals((isBookTarget ?  bookId : studentId))) {
 
+                if(isBookTarget) {
+                    long copies = (long) jsonObject.get("copies") - 1;
+                    jsonObject.put("copies", copies);
+                }
+
                 JSONArray pendings = (JSONArray) jsonObject.get((isBookTarget ? "pendingBorrowers": "pendingBooks"));
 
                 if(isRemove) {
@@ -161,6 +167,8 @@ public class DataModel {
                     newId.put("id", (isBookTarget? studentId : bookId));
                     pendings.add(newId);
                 }
+
+
 
                 JSONArray updatedJsonArray = new JSONArray();
                 for (int j = 0; j < jsonArray.size(); j++) {

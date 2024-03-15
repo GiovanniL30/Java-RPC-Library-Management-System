@@ -106,12 +106,14 @@ public class ClientController implements ClientObserver, Serializable {
 
     @Override
     public void borrowBook(Book book) {
+        bookViewer.setVisible(false);
 
         try {
             Response<String> response = clientRemoteMethods.borrowBook(book, loggedInAccount);
 
             if(response.isSuccess()) {
-                //TODO: handle updating of the view
+                changeFrame(ClientPanels.HOME_PANEL);
+                loggedInAccount.getPendingBooks().add(book);
             }else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
@@ -256,7 +258,7 @@ public class ClientController implements ClientObserver, Serializable {
     }
 
     public void openBook(Book book){
-        bookViewer = new BookViewer(mainView, book, this);
+        bookViewer = new BookViewer(mainView, book, loggedInAccount,this);
         bookViewer.setVisible(true);
     }
 
