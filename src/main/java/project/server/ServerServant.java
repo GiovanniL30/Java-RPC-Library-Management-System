@@ -35,15 +35,12 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
 
     @Override
     public Response<String> acceptBook(Book book, Student student) {
-        System.out.println("Server accepts book");
+        System.out.println("Server accepts" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
 
-        try {
-            clientRemoteMethods().getClients().get(student.getAccount().getUserName()).updateView(ServerActions.ACCEPT_BOOK_PENDING);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if(bookModel.addBorrowed(book.getBookId(), student)) {
+            return new Response<>(true, "Book was successfully added for pending");
         }
-
-        return null;
+            return new Response<>(false, "Book was not added for pending");
     }
 
     @Override
@@ -130,17 +127,6 @@ public class ServerServant extends UnicastRemoteObject implements ServerRemoteMe
             System.out.println("A client sent a notification");
             serverController.updateView(clientActions);
         }).start();
-
-    }
-
-
-    private ClientRemoteMethods clientRemoteMethods() {
-
-        try {
-            return (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
-        } catch (NotBoundException | RemoteException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 }

@@ -1,11 +1,16 @@
 package project.server.controller;
 
 import project.server.Server;
+import project.utilities.RMI.ClientRemoteMethods;
 import project.utilities.RMI.ServerRemoteMethods;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.ServerActions;
+
+import javax.swing.*;
 
 
 import java.io.Serializable;
@@ -36,7 +41,13 @@ public class ServerController implements ServerObserver, Serializable {
     public void acceptBook(Book book, Student student) {
 
         try {
-            serverRemoteMethods.acceptBook(book, student);
+            Response<String> response = serverRemoteMethods.acceptBook(book, student);
+            if (response.isSuccess()) {
+                student.getPendingBooks().remove(book);
+            } else {
+                JOptionPane.showMessageDialog(null, response.getPayload());
+            }
+            clientRemoteMethods().notification(ServerActions.ACCEPT_BOOK_PENDING);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -103,5 +114,14 @@ public class ServerController implements ServerObserver, Serializable {
         System.out.println("I will now be updating my view action = " + clientActions.toString());
     }
 
+    private ClientRemoteMethods clientRemoteMethods() {
+
+        try {
+            return (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
+        } catch (NotBoundException | RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }
