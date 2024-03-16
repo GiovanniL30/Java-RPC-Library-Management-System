@@ -1,8 +1,9 @@
 package project.utilities.utilityClasses;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class ColorFactory {
+public class ColorFactory implements Serializable {
 
     public static Color red(){
         return new Color(120, 20, 20);

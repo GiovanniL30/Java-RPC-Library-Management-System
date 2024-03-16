@@ -13,6 +13,8 @@ import java.util.Objects;
 
 public interface ClientRemoteMethods extends Remote {
 
+     HashMap<String, ClientController> clients = new HashMap<>();
+
     /**
      * Handle login event
      *
@@ -52,7 +54,7 @@ public interface ClientRemoteMethods extends Remote {
 
     void logout(Student student) throws RemoteException;
 
-    Response<Student> sendMessage(Student sender) throws RemoteException;
+   void sendMessage(String message, Student sender) throws RemoteException;
 
 
 }

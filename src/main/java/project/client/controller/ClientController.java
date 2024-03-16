@@ -18,6 +18,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -25,7 +26,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
-public class ClientController implements ClientObserver, Serializable {
+public class ClientController  implements ClientObserver, Serializable {
 
     private final ClientRemoteMethods clientRemoteMethods;
     private ClientMainView mainView;
@@ -35,7 +36,6 @@ public class ClientController implements ClientObserver, Serializable {
     private ChatView chatView;
 
     public ClientController()  {
-
 
         try {
             clientRemoteMethods = (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
@@ -96,10 +96,11 @@ public class ClientController implements ClientObserver, Serializable {
                         //loading.setVisible(false);
                         chatView = new ChatView(mainView, "Messages", ClientController.this);
                         mainView.getHeader().addMessageAction(ClientController.this);
-                        clientRemoteMethods.addController(loggedInAccount.getAccount().getAccountId(), ClientController.this);
+                        //clientRemoteMethods.addController(loggedInAccount.getAccount().getAccountId(), ClientController.this);
+
                     }
 
-                } catch (InterruptedException | ExecutionException | RemoteException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -268,6 +269,11 @@ public class ClientController implements ClientObserver, Serializable {
 
     }
 
+    @Override
+    public void receiveMessage(String message, Student sender) {
+        System.out.println(message);
+    }
+
     public void openBook(Book book) {
         bookViewer = new BookViewer(mainView, book, loggedInAccount, this);
         bookViewer.setVisible(true);
@@ -284,8 +290,7 @@ public class ClientController implements ClientObserver, Serializable {
 
     public void sendMessage(String message) {
         try {
-            Response<Student> response = clientRemoteMethods.sendMessage(loggedInAccount);
-            addMessage(message, response.getPayload());
+            clientRemoteMethods.sendMessage(message, loggedInAccount);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

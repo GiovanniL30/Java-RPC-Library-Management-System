@@ -41,4 +41,6 @@ public interface ClientObserver {
 
     void logout();
 
+    void receiveMessage(String message, Student sender);
+
 }

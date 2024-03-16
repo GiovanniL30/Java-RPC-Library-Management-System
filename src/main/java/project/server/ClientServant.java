@@ -16,7 +16,6 @@ import java.util.Optional;
 
 public class ClientServant extends UnicastRemoteObject implements ClientRemoteMethods {
 
-    private final HashMap<String, ClientController> clientsController;
     private final BookModel bookModel;
     private final AccountModel accountModel;
 
@@ -24,7 +23,6 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
         super();
         this.bookModel = bookModel;
         this.accountModel = accountModel;
-        clientsController = new HashMap<>();
     }
 
     @Override
@@ -37,10 +35,11 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
         if (account.isPresent()) {
 
-            if (clientsController.containsKey(account.get().getAccountId())) {
+            if (ClientRemoteMethods.clients.containsKey(account.get().getAccountId())) {
                 return new Response<>(false, new Student(null, 1, null, null));
             }
 
+            ClientRemoteMethods.clients.put(account.get().getAccountId(), clientObserver);
             System.out.println(account.get().getUserName() + " logged in successfully\n\n");
             return new Response<>(true, getStudentAccount(account.get()));
         } else {
@@ -86,12 +85,12 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
     @Override
     public HashMap<String, ClientController> getClients() {
-        return clientsController;
+        return ClientRemoteMethods.clients;
     }
 
     @Override
     public void addController(String accountId, ClientController clientController) throws RemoteException {
-        clientsController.put(accountId, clientController);
+        ClientRemoteMethods.clients.put(accountId, clientController);
     }
 
     @Override
@@ -108,20 +107,18 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     @Override
     public void logout(Student student) throws RemoteException {
         System.out.println(student.getAccount().getUserName() + " requested to logout");
-        clientsController.remove(student.getAccount().getAccountId());
+        ClientRemoteMethods.clients.remove(student.getAccount().getAccountId());
         System.out.println(student.getAccount().getUserName() + " logged out successfully\n\n");
     }
 
     @Override
-    public Response<Student> sendMessage(Student sender) throws RemoteException {
-
-        try {
-            return new Response<>(true,  sender);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return new Response<>(false, null);
+    public void sendMessage(String message, Student sender) throws RemoteException {
+        for(ClientController clientController: ClientRemoteMethods.clients.values()) {
+            clientController.receiveMessage(message, sender);
         }
     }
+
+
 
     private Student getStudentAccount(Account account) {
         LinkedList<Book> books = bookModel.getBooks();
