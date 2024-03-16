@@ -2,6 +2,7 @@ package project.client.views;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import project.client.controller.ClientController;
+import project.client.views.components.ChatView;
 import project.client.views.components.Header;
 import project.client.views.components.Menu;
 import project.utilities.viewComponents.Loading;
@@ -17,6 +18,7 @@ public class ClientMainView extends JFrame {
     private ClientController clientController;
 
     private MainPanel mainPanel;
+
 
     public ClientMainView(ClientController clientController) {
 

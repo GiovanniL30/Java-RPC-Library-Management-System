@@ -106,7 +106,6 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
         System.out.println(student.getAccount().getUserName() +  " requested to logout");
         clientsController.remove(student.getAccount().getAccountId());
         System.out.println(student.getAccount().getUserName() + " logged out successfully\n\n");
-
     }
 
     private Student getStudentAccount(Account account) {

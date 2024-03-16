@@ -30,6 +30,7 @@ public class ClientController implements ClientObserver, Serializable {
     private Loading loading;
     private Student loggedInAccount;
     private BookViewer bookViewer;
+    private  ChatView chatView;
 
     public ClientController() {
 
@@ -90,6 +91,8 @@ public class ClientController implements ClientObserver, Serializable {
                         }
 
                         loading.setVisible(false);
+                        chatView = new ChatView(mainView, "Messages", ClientController.this);
+                        mainView.getHeader().addMessageAction(ClientController.this);
 
                     }
 
@@ -265,6 +268,10 @@ public class ClientController implements ClientObserver, Serializable {
     public void openBook(Book book){
         bookViewer = new BookViewer(mainView, book, loggedInAccount,this);
         bookViewer.setVisible(true);
+    }
+
+    public void openMessageChat(){
+      chatView.setVisible(true);
     }
 
     public LinkedList<Book> getBooks() {
