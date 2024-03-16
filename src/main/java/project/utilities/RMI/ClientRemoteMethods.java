@@ -9,6 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public interface ClientRemoteMethods extends Remote {
 
@@ -43,11 +44,15 @@ public interface ClientRemoteMethods extends Remote {
 
 
     HashMap<String, ClientController> getClients() throws RemoteException;
+    void addController(String accountId, ClientController clientController) throws RemoteException;
 
     Response<LinkedList<Book>> getBooks() throws RemoteException;
+
     void notification(ServerActions serverActions) throws RemoteException;
 
     void logout(Student student) throws RemoteException;
+
+    Response<Student> sendMessage(Student sender) throws RemoteException;
 
 
 }

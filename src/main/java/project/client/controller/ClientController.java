@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
@@ -30,9 +32,10 @@ public class ClientController implements ClientObserver, Serializable {
     private Loading loading;
     private Student loggedInAccount;
     private BookViewer bookViewer;
-    private  ChatView chatView;
+    private ChatView chatView;
 
-    public ClientController() {
+    public ClientController()  {
+
 
         try {
             clientRemoteMethods = (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
@@ -90,19 +93,19 @@ public class ClientController implements ClientObserver, Serializable {
 
                         }
 
-                        loading.setVisible(false);
+                        //loading.setVisible(false);
                         chatView = new ChatView(mainView, "Messages", ClientController.this);
                         mainView.getHeader().addMessageAction(ClientController.this);
-
+                        clientRemoteMethods.addController(loggedInAccount.getAccount().getAccountId(), ClientController.this);
                     }
 
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (InterruptedException | ExecutionException | RemoteException e) {
                     throw new RuntimeException(e);
                 }
             }
         }.execute();
 
-        loading.setVisible(true);
+        //loading.setVisible(true);
 
 
     }
@@ -114,10 +117,10 @@ public class ClientController implements ClientObserver, Serializable {
         try {
             Response<String> response = clientRemoteMethods.borrowBook(book, loggedInAccount);
 
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().add(book);
                 changeFrame(ClientPanels.HOME_PANEL);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
 
@@ -133,10 +136,10 @@ public class ClientController implements ClientObserver, Serializable {
         try {
             Response<String> response = clientRemoteMethods.removePending(book, loggedInAccount);
 
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().remove(book);
                 changeFrame(ClientPanels.PENDING_PANEL);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
 
@@ -151,7 +154,6 @@ public class ClientController implements ClientObserver, Serializable {
     public void returnBook(Book book) {
         try {
             Response<String> response = clientRemoteMethods.returnBook(book, loggedInAccount);
-
 
 
             serverRemoteMethods().notification(ClientActions.RETURN_BOOK);
@@ -198,6 +200,7 @@ public class ClientController implements ClientObserver, Serializable {
             case CANCEL_BOOK_PENDING -> {
 
             }
+
             default -> {
             }
         }
@@ -265,13 +268,27 @@ public class ClientController implements ClientObserver, Serializable {
 
     }
 
-    public void openBook(Book book){
-        bookViewer = new BookViewer(mainView, book, loggedInAccount,this);
+    public void openBook(Book book) {
+        bookViewer = new BookViewer(mainView, book, loggedInAccount, this);
         bookViewer.setVisible(true);
     }
 
-    public void openMessageChat(){
-      chatView.setVisible(true);
+    public void openMessageChat() {
+        chatView.setVisible(true);
+    }
+
+    private void addMessage(String message, Student sender) {
+        MessageBlock messageBlock = new MessageBlock(sender, loggedInAccount, message, Calendar.getInstance().getTime().toString());
+        this.chatView.addMessage(messageBlock);
+    }
+
+    public void sendMessage(String message) {
+        try {
+            Response<Student> response = clientRemoteMethods.sendMessage(loggedInAccount);
+            addMessage(message, response.getPayload());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public LinkedList<Book> getBooks() {
@@ -306,5 +323,12 @@ public class ClientController implements ClientObserver, Serializable {
 
     }
 
+    public void setLoggedInAccount(Student loggedInAccount) {
+        this.loggedInAccount = loggedInAccount;
+    }
+
+    public void setChatView(ChatView chatView) {
+        this.chatView = chatView;
+    }
 
 }

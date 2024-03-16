@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ClientServant extends UnicastRemoteObject implements ClientRemoteMethods {
@@ -18,6 +19,7 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     private final HashMap<String, ClientController> clientsController;
     private final BookModel bookModel;
     private final AccountModel accountModel;
+
     public ClientServant(BookModel bookModel, AccountModel accountModel) throws RemoteException {
         super();
         this.bookModel = bookModel;
@@ -29,21 +31,19 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     public Response<Student> logIn(Authentication credential, ClientController clientObserver) {
         System.out.println("Client Request to log in");
 
-
         LinkedList<Account> allAccounts = accountModel.getAccounts();
 
         Optional<Account> account = allAccounts.stream().filter(ac -> ac.getUserName().equals(credential.getUserName()) && ac.getPassword().equals(credential.getPassword())).findFirst();
 
-        if(account.isPresent()) {
+        if (account.isPresent()) {
 
-            if(clientsController.containsKey(account.get().getAccountId())) {
+            if (clientsController.containsKey(account.get().getAccountId())) {
                 return new Response<>(false, new Student(null, 1, null, null));
             }
 
-            clientsController.put(account.get().getAccountId(), clientObserver);
             System.out.println(account.get().getUserName() + " logged in successfully\n\n");
             return new Response<>(true, getStudentAccount(account.get()));
-        }else {
+        } else {
             return new Response<>(false, new Student(null, 0, null, null));
         }
     }
@@ -52,11 +52,11 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     public Response<String> borrowBook(Book book, Student student) {
         System.out.println(student.getAccount().getUserName() + " Requested to borrow the book " + book.getBookTitle() + "\n\n");
 
-        if(student.getBorrowedBooks().size() == 5 || student.getPendingBooks().size() == 5 || student.getPendingBooks().size() + student.getBorrowedBooks().size() == 5) {
+        if (student.getBorrowedBooks().size() == 5 || student.getPendingBooks().size() == 5 || student.getPendingBooks().size() + student.getBorrowedBooks().size() == 5) {
             return new Response<>(false, "You have reached the limit of 5 book being pending and borrowed");
         }
 
-        if(bookModel.addPending(book.getBookId(), student)) {
+        if (bookModel.addPending(book.getBookId(), student)) {
             return new Response<>(true, "Book was successfully added for pending");
         }
 
@@ -67,7 +67,7 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     public Response<String> removePending(Book book, Student student) {
         System.out.println(student.getAccount().getUserName() + " Requested to remove a book pending " + book.getBookTitle() + "\n\n");
 
-        if(bookModel.removePending(book.getBookId(), student)) {
+        if (bookModel.removePending(book.getBookId(), student)) {
             return new Response<>(true, "Book was successfully removed for pending");
         }
 
@@ -78,16 +78,20 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
     public Response<String> returnBook(Book book, Student student) {
         System.out.println(student.getAccount().getUserName() + " Requested to return a borrowed book" + book.getBookTitle() + "\n\n");
 
-        if(bookModel.removeBorrowed(book.getBookId(), student, true)){
+        if (bookModel.removeBorrowed(book.getBookId(), student, true)) {
             return new Response<>(true, "Book was successfully returned for pending");
         }
         return new Response<>(true, "Book was not successfully returned for pending");
     }
 
-
     @Override
     public HashMap<String, ClientController> getClients() {
         return clientsController;
+    }
+
+    @Override
+    public void addController(String accountId, ClientController clientController) throws RemoteException {
+        clientsController.put(accountId, clientController);
     }
 
     @Override
@@ -103,9 +107,20 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
     @Override
     public void logout(Student student) throws RemoteException {
-        System.out.println(student.getAccount().getUserName() +  " requested to logout");
+        System.out.println(student.getAccount().getUserName() + " requested to logout");
         clientsController.remove(student.getAccount().getAccountId());
         System.out.println(student.getAccount().getUserName() + " logged out successfully\n\n");
+    }
+
+    @Override
+    public Response<Student> sendMessage(Student sender) throws RemoteException {
+
+        try {
+            return new Response<>(true,  sender);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new Response<>(false, null);
+        }
     }
 
     private Student getStudentAccount(Account account) {
@@ -113,20 +128,20 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
         LinkedList<Book> borrowedBooks = new LinkedList<>();
         LinkedList<Book> pendingBooks = new LinkedList<>();
 
-        for(Book book: books) {
+        for (Book book : books) {
 
-            for(String borrowers: book.getCurrentBorrowers()) {
+            for (String borrowers : book.getCurrentBorrowers()) {
 
-                if(borrowers.equals(account.getAccountId())) {
+                if (borrowers.equals(account.getAccountId())) {
                     borrowedBooks.add(book);
                 }
 
             }
 
 
-            for(String pending: book.getPendingBorrowers()) {
+            for (String pending : book.getPendingBorrowers()) {
 
-                if(pending.equals(account.getAccountId())) {
+                if (pending.equals(account.getAccountId())) {
                     pendingBooks.add(book);
                 }
 

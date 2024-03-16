@@ -34,13 +34,12 @@ public class ChatView extends JDialog {
         fieldPanel.add(fieldInput);
         fieldPanel.add(sendButton);
 
-//        sendButton.addActionListener(e -> {
-//            String message = fieldInput.getInput();
-//            if(message == null) return;
-//            fieldInput.getTextField().setText("");
-//            observer.sendMessage(message);
-//        });
-
+        sendButton.addActionListener(e -> {
+            String message = fieldInput.getInput();
+            if(message == null) return;
+            fieldInput.getTextField().setText("");
+            clientController.sendMessage(message);
+        });
 
         add(scrollPane);
         add(fieldPanel);

@@ -14,6 +14,5 @@ public enum ServerActions implements Serializable {
     CHANGE_PASSWORD,
     BAN_ACCOUNT,
     UNBAN_ACCOUNT,
-    DELETE_ACCOUNT
-
+    DELETE_ACCOUNT,
 }
