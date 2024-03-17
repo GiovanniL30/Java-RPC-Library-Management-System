@@ -16,7 +16,8 @@ public class BookListPanel extends JPanel {
 
     private final boolean isPending;
     private final ClientController clientController;
-    public BookListPanel(LinkedList<Book> pendingBooks, ClientController clientController, boolean isPending){
+
+    public BookListPanel(LinkedList<Book> pendingBooks, ClientController clientController, boolean isPending) {
 
         this.isPending = isPending;
         this.clientController = clientController;
@@ -26,7 +27,7 @@ public class BookListPanel extends JPanel {
         gridLayout.setVgap(20);
         holder.setLayout(gridLayout);
 
-        for(Book book: pendingBooks) {
+        for (Book book : pendingBooks) {
             holder.add(new BookCard(book));
         }
 
@@ -37,7 +38,7 @@ public class BookListPanel extends JPanel {
 
     }
 
-    private  class BookCard extends JPanel {
+    private class BookCard extends JPanel {
 
         private BookCard(Book book) {
 
@@ -52,9 +53,9 @@ public class BookListPanel extends JPanel {
             author.setFont(FontFactory.newPoppinsDefault(12));
 
             Button button;
-            if(isPending){
+            if (isPending) {
                 button = new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(13));
-            }else {
+            } else {
                 button = new Button("Return", 100, 50, FontFactory.newPoppinsDefault(13));
             }
 
@@ -80,18 +81,27 @@ public class BookListPanel extends JPanel {
 
             add(bookPanel, constraints);
 
-            constraints.gridx  =1;
+            constraints.gridx = 1;
             constraints.weightx = 0.0;
             constraints.fill = 0;
             add(button, constraints);
 
 
-            button.addActionListener( e ->  {
+            button.addActionListener(e -> {
 
-                if(isPending) {
-                    clientController.removePending(book);
-                }else{
-                    clientController.returnBook(book);
+                if (isPending) {
+
+                    int option = JOptionPane.showConfirmDialog(clientController.getMainView(), "Are you sure you want to cancel " + book.getBookTitle() + "?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+                    if (option == JOptionPane.YES_OPTION) {
+                        clientController.removePending(book);
+                    }
+
+
+                } else {
+                    int option = JOptionPane.showConfirmDialog(clientController.getMainView(), "Are you sure you want to cancel " + book.getBookTitle() + "?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+                    if (option == JOptionPane.YES_OPTION) {
+                        clientController.returnBook(book);
+                    }
                 }
 
             });

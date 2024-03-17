@@ -56,8 +56,14 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     @Override
-    public Response<String> borrowBook(Book book, Student student) throws RemoteException {
+    public synchronized Response<String> borrowBook(Book book, Student student) throws RemoteException {
         System.out.println(student.getAccount().getUserName() + " Requested to borrow the book " + book.getBookTitle() + "\n\n");
+
+        int latestBookCopies = getBooks().getPayload().stream().filter(b -> b.getBookId().equals(book.getBookId())).findFirst().get().getCopies();
+
+        if(latestBookCopies == 0) {
+            return new Response<>(false, "Unfortunately, there are no copies of the book left");
+        }
 
         if (student.getBorrowedBooks().size() == 5 || student.getPendingBooks().size() == 5 || student.getPendingBooks().size() + student.getBorrowedBooks().size() == 5) {
             return new Response<>(false, "You have reached the limit of 5 book being pending and borrowed");
@@ -67,7 +73,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
             return new Response<>(true, "Book was successfully added for pending");
         }
 
-        return new Response<>(true, "Book was not successfully added for pending");
+        return new Response<>(false, "Book was not successfully added for pending");
     }
 
     @Override

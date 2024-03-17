@@ -117,6 +117,7 @@ public class ClientController implements ClientObserver {
 
             if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().add(book);
+                JOptionPane.showMessageDialog(mainView,  book.getBookTitle() + " is added for pending");
             } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
@@ -314,5 +315,11 @@ public class ClientController implements ClientObserver {
 
     }
 
+    public ClientMainView getMainView() {
+        return mainView;
+    }
 
+    public Student getLoggedInAccount() {
+        return loggedInAccount;
+    }
 }
