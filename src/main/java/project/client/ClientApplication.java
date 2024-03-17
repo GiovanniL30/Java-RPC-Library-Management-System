@@ -10,7 +10,10 @@ public class ClientApplication {
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater( () -> {
-            ClientController clientController = new ClientController();
+
+            ClientController clientController;
+            clientController = new ClientController();
+
             ClientMainView mainView = new ClientMainView(clientController);
             mainView.setClientController(clientController);
             clientController.setMainView(mainView);

@@ -1,51 +1,35 @@
 package project.server.controller;
 
-import project.server.Server;
-import project.utilities.RMI.ClientRemoteMethods;
-import project.utilities.RMI.ServerRemoteMethods;
+import project.utilities.RMI.GlobalRemoteMethods;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
-import project.utilities.utilityClasses.ServerActions;
 
 import javax.swing.*;
 
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 public class ServerController implements ServerObserver, Serializable {
 
-    private final ServerRemoteMethods serverRemoteMethods;
-
-    public ServerController() {
-
-        try {
-            serverRemoteMethods = (ServerRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ServerRemote");
-            serverRemoteMethods.registerServer(this);
-        }catch (RemoteException | NotBoundException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
+    private  GlobalRemoteMethods serverMethods;
 
     @Override
     public void acceptBook(Book book, Student student) {
 
         try {
-            Response<String> response = serverRemoteMethods.acceptBook(book, student);
+            Response<String> response = serverMethods.acceptBook(book, student);
             if (response.isSuccess()) {
                 student.getPendingBooks().remove(book);
             } else {
                 JOptionPane.showMessageDialog(null, response.getPayload());
             }
-            clientRemoteMethods().notification(ServerActions.ACCEPT_BOOK_PENDING);
+
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -112,14 +96,11 @@ public class ServerController implements ServerObserver, Serializable {
         System.out.println("I will now be updating my view action = " + clientActions.toString());
     }
 
-    private ClientRemoteMethods clientRemoteMethods() {
-
+    public void setServerMethods() {
         try {
-            return (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
-        } catch (NotBoundException | RemoteException e) {
+            serverMethods = (GlobalRemoteMethods) LocateRegistry.getRegistry(1099).lookup("server");
+        }catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
-
     }
-
 }
