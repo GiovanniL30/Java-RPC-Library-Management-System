@@ -1,14 +1,13 @@
 package project.client.controller;
 
+import project.client.RMI.ClientServant;
 import project.client.utility.ClientPanels;
 import project.client.views.ClientMainView;
 import project.client.views.Login;
 import project.client.views.MainPanel;
 import project.client.views.components.*;
-import project.utilities.RMI.ClientRemoteMethods;
-import project.utilities.RMI.ServerRemoteMethods;
+import project.utilities.RMI.GlobalRemoteMethods;
 import project.utilities.referenceClasses.*;
-import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
@@ -16,30 +15,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
-public class ClientController implements ClientObserver, Serializable {
+public class ClientController implements ClientObserver {
 
-    private final ClientRemoteMethods clientRemoteMethods;
+    private final GlobalRemoteMethods serverMethods;
     private ClientMainView mainView;
     private Loading loading;
     private Student loggedInAccount;
     private BookViewer bookViewer;
+    private ChatView chatView;
+    private ClientServant clientServant;
 
     public ClientController() {
 
         try {
-            clientRemoteMethods = (ClientRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ClientRemote");
+            serverMethods = (GlobalRemoteMethods) LocateRegistry.getRegistry(1099).lookup("server");
+            clientServant = new ClientServant(this);
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
 
     }
+
+
 
     @Override
     public void logIn(Authentication credential) {
@@ -48,7 +52,7 @@ public class ClientController implements ClientObserver, Serializable {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
-                    clientRemoteMethods.logout(loggedInAccount);
+                    serverMethods.logout(loggedInAccount);
                     System.exit(0);
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
@@ -59,7 +63,7 @@ public class ClientController implements ClientObserver, Serializable {
         new SwingWorker<Response<Student>, Void>() {
             @Override
             protected Response<Student> doInBackground() throws Exception {
-                return clientRemoteMethods.logIn(credential, ClientController.this);
+                return serverMethods.logIn(credential, clientServant);
             }
 
             @Override
@@ -89,8 +93,9 @@ public class ClientController implements ClientObserver, Serializable {
 
                         }
 
-                        loading.setVisible(false);
-
+                       // loading.setVisible(false);
+                        chatView = new ChatView(mainView, "Messages", ClientController.this);
+                        mainView.getHeader().addMessageAction(ClientController.this);
                     }
 
                 } catch (InterruptedException | ExecutionException e) {
@@ -99,8 +104,7 @@ public class ClientController implements ClientObserver, Serializable {
             }
         }.execute();
 
-        loading.setVisible(true);
-
+       // loading.setVisible(true);
 
     }
 
@@ -109,16 +113,15 @@ public class ClientController implements ClientObserver, Serializable {
         bookViewer.setVisible(false);
 
         try {
-            Response<String> response = clientRemoteMethods.borrowBook(book, loggedInAccount);
+            Response<String> response = serverMethods.borrowBook(book, loggedInAccount);
 
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().add(book);
                 changeFrame(ClientPanels.HOME_PANEL);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
 
-            serverRemoteMethods().notification(ClientActions.BORROW_BOOK);
         } catch (RemoteException e) {
 
         }
@@ -128,16 +131,15 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void removePending(Book book) {
         try {
-            Response<String> response = clientRemoteMethods.removePending(book, loggedInAccount);
+            Response<String> response = serverMethods.removePending(book, loggedInAccount);
 
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().remove(book);
                 changeFrame(ClientPanels.PENDING_PANEL);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
 
-            serverRemoteMethods().notification(ClientActions.CANCEL_PENDING);
         } catch (RemoteException e) {
 
         }
@@ -147,11 +149,8 @@ public class ClientController implements ClientObserver, Serializable {
     @Override
     public void returnBook(Book book) {
         try {
-            Response<String> response = clientRemoteMethods.returnBook(book, loggedInAccount);
+            Response<String> response = serverMethods.returnBook(book, loggedInAccount);
 
-
-
-            serverRemoteMethods().notification(ClientActions.RETURN_BOOK);
         } catch (RemoteException e) {
 
         }
@@ -159,7 +158,7 @@ public class ClientController implements ClientObserver, Serializable {
     }
 
     @Override
-    public void updateView(ServerActions serverActions) {
+    public void updateView(ServerActions serverActions)  {
 
         switch (serverActions) {
             case EDIT_BOOK -> {
@@ -195,6 +194,7 @@ public class ClientController implements ClientObserver, Serializable {
             case CANCEL_BOOK_PENDING -> {
 
             }
+
             default -> {
             }
         }
@@ -248,7 +248,7 @@ public class ClientController implements ClientObserver, Serializable {
     public void logout() {
 
         try {
-            clientRemoteMethods.logout(loggedInAccount);
+            serverMethods.logout(loggedInAccount);
             loggedInAccount = new Student(new Account("", "", "", "", "", ""), 0, null, null);
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
@@ -262,20 +262,39 @@ public class ClientController implements ClientObserver, Serializable {
 
     }
 
-    public void openBook(Book book){
-        bookViewer = new BookViewer(mainView, book, loggedInAccount,this);
+    @Override
+    public void receiveMessage(String message, Student sender) {
+        MessageBlock messageBlock = new MessageBlock(sender, loggedInAccount, message, Calendar.getInstance().getTime().toString());
+        chatView.addMessage(messageBlock);
+    }
+
+    public void openBook(Book book) {
+        bookViewer = new BookViewer(mainView, book, loggedInAccount, this);
         bookViewer.setVisible(true);
+    }
+
+    public void openMessageChat() {
+        chatView.setVisible(true);
+    }
+
+
+
+    public void sendMessage(String message) {
+        try {
+            serverMethods.sendMessage(message, loggedInAccount);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public LinkedList<Book> getBooks() {
         try {
-            Response<LinkedList<Book>> response = clientRemoteMethods.getBooks();
+            Response<LinkedList<Book>> response = serverMethods.getBooks();
 
             if (response.isSuccess()) {
                 return response.getPayload();
             }
 
-            serverRemoteMethods().notification(ClientActions.RETURN_BOOK);
         } catch (RemoteException e) {
             return new LinkedList<>();
         }
@@ -286,16 +305,6 @@ public class ClientController implements ClientObserver, Serializable {
     public void setMainView(ClientMainView mainView) {
         this.mainView = mainView;
         loading = new Loading(this.mainView);
-
-    }
-
-    private ServerRemoteMethods serverRemoteMethods() {
-
-        try {
-            return (ServerRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ServerRemote");
-        } catch (NotBoundException | RemoteException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 

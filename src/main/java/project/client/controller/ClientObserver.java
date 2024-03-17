@@ -3,6 +3,7 @@ package project.client.controller;
 import project.client.utility.ClientPanels;
 import project.utilities.referenceClasses.Authentication;
 import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 
@@ -40,6 +41,6 @@ public interface ClientObserver {
 
     void logout();
 
-
+    void receiveMessage(String message, Student sender);
 
 }

@@ -2,9 +2,11 @@ package project.client.views.components;
 
 import project.client.controller.ClientController;
 import project.client.views.ClientMainView;
+import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;
+import project.utilities.viewComponents.IconButton;
 import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
@@ -14,6 +16,7 @@ import java.awt.*;
 public class Header extends JPanel {
 
     private final Button logout;
+    private final IconButton message;
 
     public Header(String studentName) {
         setBackground(ColorFactory.blue());
@@ -34,6 +37,8 @@ public class Header extends JPanel {
         logout.setBackground(ColorFactory.red());
         logout.setMaximumSize(new Dimension(150, 50));
 
+        message = new IconButton("src/main/resources/images/icons/icons8-message-96.png", 65, 65);
+
         constraints.gridy = 0;
         constraints.gridx = 0;
         add(logo,constraints);
@@ -43,14 +48,24 @@ public class Header extends JPanel {
         constraints.gridx = 1;
         add(label, constraints);
 
+
         constraints.gridx = 2;
         constraints.weightx = 0.0;
         constraints.fill = 0;
+        constraints.insets = new Insets(0, 0, 0, 15);
+        add(message, constraints);
+
+        constraints.gridx = 3;
+        constraints.insets = new Insets(0, 0, 0, 0);
         add(logout, constraints);
     }
 
     public void addLogoutAction(ClientController clientController) {
         logout.addActionListener(e -> clientController.logout());
+    }
+
+    public void addMessageAction(ClientController clientController) {
+        message.addActionListener(e -> clientController.openMessageChat());
     }
 
 }

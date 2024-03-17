@@ -1,8 +1,9 @@
 package project.utilities.utilityClasses;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class FontFactory {
+public class FontFactory implements Serializable {
 
     /**
      * Creates a new Font object with the "Poppins" font family, plain style, and the specified font size.
