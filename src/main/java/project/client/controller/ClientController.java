@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
-public class ClientController  implements ClientObserver, Serializable {
+public class ClientController implements ClientObserver, Serializable {
 
     private final ClientRemoteMethods clientRemoteMethods;
     private ClientMainView mainView;
@@ -46,7 +46,7 @@ public class ClientController  implements ClientObserver, Serializable {
     }
 
     @Override
-    public void logIn(Authentication credential) {
+    public void logIn(Authentication credential)  {
 
         this.mainView.addWindowListener(new WindowAdapter() {
             @Override
@@ -93,10 +93,10 @@ public class ClientController  implements ClientObserver, Serializable {
 
                         }
 
-                        //loading.setVisible(false);
+                        loading.setVisible(false);
                         chatView = new ChatView(mainView, "Messages", ClientController.this);
                         mainView.getHeader().addMessageAction(ClientController.this);
-                        //clientRemoteMethods.addController(loggedInAccount.getAccount().getAccountId(), ClientController.this);
+
 
                     }
 
@@ -106,7 +106,7 @@ public class ClientController  implements ClientObserver, Serializable {
             }
         }.execute();
 
-        //loading.setVisible(true);
+        loading.setVisible(true);
 
 
     }
@@ -165,7 +165,7 @@ public class ClientController  implements ClientObserver, Serializable {
     }
 
     @Override
-    public void updateView(ServerActions serverActions) {
+    public void updateView(ServerActions serverActions)  {
 
         switch (serverActions) {
             case EDIT_BOOK -> {

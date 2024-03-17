@@ -21,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
 
-    private static ServerController serverController;
 
     protected Server(){
 
@@ -38,7 +37,6 @@ public class Server {
             registry.rebind("ServerRemote", serverRemoteMethods);
 
 
-            serverController = new ServerController();
             System.out.println("Server is running...");
         } catch (RuntimeException | RemoteException e) {
             throw  new RuntimeException(e);
@@ -47,9 +45,6 @@ public class Server {
     }
 
 
-    public static ServerController getServerController() {
-        return serverController;
-    }
 
     public static void main(String[] args) {
         new Server();

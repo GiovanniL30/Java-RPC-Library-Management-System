@@ -7,6 +7,7 @@ import project.utilities.model.BookModel;
 import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ServerActions;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
@@ -39,7 +40,11 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
                 return new Response<>(false, new Student(null, 1, null, null));
             }
 
-            ClientRemoteMethods.clients.put(account.get().getAccountId(), clientObserver);
+            try {
+                addController(account.get().getAccountId(), clientObserver);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println(account.get().getUserName() + " logged in successfully\n\n");
             return new Response<>(true, getStudentAccount(account.get()));
         } else {
@@ -90,6 +95,9 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
     @Override
     public void addController(String accountId, ClientController clientController) throws RemoteException {
+        if (clientController == null) {
+            throw new IllegalArgumentException("ClientController must implement the Remote interface");
+        }
         ClientRemoteMethods.clients.put(accountId, clientController);
     }
 

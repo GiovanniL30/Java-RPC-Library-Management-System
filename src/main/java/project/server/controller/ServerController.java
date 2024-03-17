@@ -27,10 +27,8 @@ public class ServerController implements ServerObserver, Serializable {
     public ServerController() {
 
         try {
-
             serverRemoteMethods = (ServerRemoteMethods) LocateRegistry.getRegistry(1099).lookup("ServerRemote");
             serverRemoteMethods.registerServer(this);
-
         }catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
