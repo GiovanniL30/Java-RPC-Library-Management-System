@@ -12,7 +12,6 @@ public class ClientServant extends UnicastRemoteObject implements ClientRemoteMe
 
     private final ClientController clientController;
 
-
     public ClientServant(ClientController clientController) throws RemoteException {
         this.clientController = clientController;
     }

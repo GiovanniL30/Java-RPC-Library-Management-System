@@ -5,6 +5,7 @@ import project.client.utility.ClientPanels;
 import project.client.views.components.Header;
 import project.client.views.components.HomePanel;
 import project.client.views.components.Menu;
+import project.utilities.referenceClasses.Account;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Loading;
 
@@ -26,7 +27,8 @@ public class MainPanel extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        header = new Header("Giovanni Leo");
+        Account account = clientController.getLoggedInAccount().getAccount();
+        header = new Header(account.getFirstName() + " " + account.getLastName());
         menu = new Menu();
         contentHolder.setPreferredSize(new Dimension(FRAME_WIDTH, 550));
         contentHolder.setBackground(Color.white);

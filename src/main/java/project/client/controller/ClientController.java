@@ -117,7 +117,7 @@ public class ClientController implements ClientObserver {
 
             if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().add(book);
-                changeFrame(ClientPanels.HOME_PANEL);
+                JOptionPane.showMessageDialog(mainView,  book.getBookTitle() + " is added for pending");
             } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
@@ -269,8 +269,15 @@ public class ClientController implements ClientObserver {
     }
 
     public void openBook(Book book) {
-        bookViewer = new BookViewer(mainView, book, loggedInAccount, this);
-        bookViewer.setVisible(true);
+
+        try {
+            Book viewBook = serverMethods.getBooks().getPayload().stream().filter( b -> b.getBookId().equals(book.getBookId())).findFirst().get();
+            bookViewer = new BookViewer(mainView, viewBook, loggedInAccount, this);
+            bookViewer.setVisible(true);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void openMessageChat() {
@@ -308,5 +315,11 @@ public class ClientController implements ClientObserver {
 
     }
 
+    public ClientMainView getMainView() {
+        return mainView;
+    }
 
+    public Student getLoggedInAccount() {
+        return loggedInAccount;
+    }
 }
