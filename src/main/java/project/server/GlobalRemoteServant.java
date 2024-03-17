@@ -236,7 +236,4 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     }
 
-    public void setServerRemoteMethods(ServerRemoteMethods serverRemoteMethods) {
-        this.serverRemoteMethods = serverRemoteMethods;
-    }
 }
