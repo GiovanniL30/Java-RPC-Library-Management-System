@@ -15,7 +15,7 @@ public class LibrarianMainFrame extends JFrame {
 
     LibrarianMainFrame() {
        initializeFrame();
-       add(serverGuiHeader);
+       getContentPane().add(serverGuiHeader);
 
     }
 
@@ -39,6 +39,7 @@ public class LibrarianMainFrame extends JFrame {
         setSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+
 
 
         setVisible(true);

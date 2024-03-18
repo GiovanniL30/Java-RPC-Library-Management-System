@@ -1,4 +1,7 @@
 package project.server.views.panels;
 
-public class MangeBookPanel {
+import javax.swing.*;
+
+public class MangeBookPanel extends JPanel {
+
 }
