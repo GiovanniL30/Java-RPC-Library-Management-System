@@ -68,6 +68,37 @@ public class BookModel extends DataModel {
         return books;
     }
 
+    private boolean editBook(Book book) {
+
+        JSONObject json = readJSON("src/main/resources/data/book.json");
+        JSONArray jsonArray = (JSONArray) json.get("book");
+
+
+        if (jsonArray.isEmpty()) return false;
+
+
+        for(Object o : jsonArray) {
+
+            JSONObject bookJson =  (JSONObject) o;
+
+            if(bookJson.get("bookId").equals(book.getBookId())) {
+
+                jsonArray.remove(o);
+
+                JSONObject updatedBook = new JSONObject();
+                //addAllNece
+
+            }
+
+
+        }
+
+
+        // Return false if the book to be edited was not found
+        return false;
+    } // end of editBook method
+
+
     private LinkedList<String> getStudentID(JSONArray jsonArray){
 
         LinkedList<String> students = new LinkedList<>();
@@ -81,7 +112,5 @@ public class BookModel extends DataModel {
 
         return students;
     }
-
-
 
 }
