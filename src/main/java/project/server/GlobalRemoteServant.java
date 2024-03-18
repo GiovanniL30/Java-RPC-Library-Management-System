@@ -167,7 +167,13 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> cancelPending(Book book, Student student) throws RemoteException {
-        return null;
+        System.out.println("Server cancels" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
+
+        if (bookModel.removePending(book.getBookId(), student)) {
+            clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.CANCEL_BOOK_PENDING);
+            return new Response<>(true, "Book was successfully cancelled");
+        }
+        return new Response<>(false, "Book was not cancelled");
     }
 
     @Override
