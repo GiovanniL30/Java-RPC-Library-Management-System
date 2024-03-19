@@ -59,7 +59,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public synchronized Response<String> borrowBook(Book book, Student student) throws RemoteException {
         System.out.println(student.getAccount().getUserName() + " Requested to borrow the book " + book.getBookTitle() + "\n\n");
 
-        int latestBookCopies = getBooks().getPayload().stream().filter(b -> b.getBookId().equals(book.getBookId())).findFirst().get().getCopies();
+        int latestBookCopies = getUpdatedBook(book.getBookId()).getCopies();
 
         if(latestBookCopies == 0) {
             return new Response<>(false, "Unfortunately, there are no copies of the book left");
@@ -239,6 +239,16 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         }
 
         return new Student(account, borrowedBooks.size(), pendingBooks, borrowedBooks);
+
+    }
+
+    private synchronized Book getUpdatedBook(String bookId) {
+
+        try {
+            return getBooks().getPayload().stream().filter(book -> book.getBookId().equals(bookId)).findAny().get();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
