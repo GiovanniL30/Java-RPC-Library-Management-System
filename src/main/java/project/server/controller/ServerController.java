@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.LinkedList;
 
 public class ServerController implements ServerObserver, Serializable {
 
@@ -59,6 +60,88 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void createNewBook(Book book) {
 
+    }
+
+    @Override
+    public LinkedList<Book> viewAvailableBooks() {
+        try {
+            Response<LinkedList<Book>> response = serverMethods.viewAvailableBooks();
+            if (response.isSuccess()) {
+                return response.getPayload();
+            }
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+        return new LinkedList<>();
+    }
+
+
+    @Override
+    public LinkedList<Book> viewUnavailableBooks() {
+        try {
+            Response<LinkedList<Book>> response = serverMethods.viewUnavailableBooks();
+            if (response.isSuccess()) {
+                return response.getPayload();
+            }
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+        return new LinkedList<>();
+    }
+
+
+    @Override
+    public LinkedList<Book> viewCurrentBorrowedBooks() {
+        try {
+            Response<LinkedList<Book>> response = serverMethods.viewCurrentBorrowedBooks();
+            if (response.isSuccess()) {
+                return response.getPayload();
+            }
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+        return new LinkedList<>();
+    }
+
+
+    @Override
+    public LinkedList<Book> viewPreviousBorrowedBooks() {
+        try {
+            Response<LinkedList<Book>> response = serverMethods.viewPreviousBorrowedBooks();
+            if (response.isSuccess()) {
+                return response.getPayload();
+            }
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+        return new LinkedList<>();
+    }
+
+
+    @Override
+    public LinkedList<Book> viewPendingBorrowingBooks() {
+        try {
+            Response<LinkedList<Book>> response = serverMethods.viewPendingBorrowingBooks();
+            if (response.isSuccess()) {
+                return response.getPayload();
+            }
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+        return new LinkedList<>();
+    }
+
+    @Override
+    public LinkedList<Book> viewPendingReturningBooks() {
+        try {
+            Response<LinkedList<Book>> response = serverMethods.viewPendingReturningBooks();
+            if (response.isSuccess()) {
+                return response.getPayload();
+            }
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+        return new LinkedList<>();
     }
 
     @Override
