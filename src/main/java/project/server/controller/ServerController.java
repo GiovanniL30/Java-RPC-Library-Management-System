@@ -1,6 +1,5 @@
 package project.server.controller;
 
-import project.client.views.ClientMainView;
 import project.server.views.LibrarianMainFrame;
 import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
@@ -249,8 +248,11 @@ public class ServerController implements ServerObserver, Serializable {
             throw new RuntimeException(e);
         }
     }
-    public void setMainView(LibrarianMainFrame mainView) {
+    public void setServerMainView(LibrarianMainFrame mainView) {
         this.mainView = mainView;
         loading = new Loading(this.mainView);
+    }
+    public LibrarianMainFrame getServerMainView() {
+        return mainView;
     }
 }

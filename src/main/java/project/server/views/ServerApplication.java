@@ -9,7 +9,7 @@ public class ServerApplication {
             ServerController serverController = new ServerController();
             LibrarianMainFrame mainFrame = new LibrarianMainFrame(serverController);
             mainFrame.setServerController(serverController);
-            serverController.setMainView(mainFrame);
+            serverController.setServerMainView(mainFrame);
         });
     }
 }
