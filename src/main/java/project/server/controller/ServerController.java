@@ -176,7 +176,20 @@ public class ServerController implements ServerObserver, Serializable {
     public void changeUserPassword(Account account, String newPassword) {
 
     }
+    public LinkedList<Book> getBooks() {
+        try {
+            Response<LinkedList<Book>> response = serverMethods.getBooks();
 
+            if (response.isSuccess()) {
+                return response.getPayload();
+            }
+
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+
+        return new LinkedList<>();
+    }
     public void changeFrame(ServerPanels serverPanels) {
 
         switch (serverPanels) {
