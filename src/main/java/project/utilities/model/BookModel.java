@@ -32,12 +32,12 @@ public class BookModel extends DataModel {
 
 
     public LinkedList<Book> getBooks() {
-
+        String filePath = "src/main/resources/data/book.json";
         LinkedList<Book> books = new LinkedList<>();
         JSONParser parser = new JSONParser();
 
         try {
-            JSONObject json = readJSON("src/main/resources/data/book.json");
+            JSONObject json = readJSON(filePath);
             JSONArray jsonArray = (JSONArray) json.get("book");
 
             for (Object object : jsonArray) {
@@ -113,4 +113,19 @@ public class BookModel extends DataModel {
         return students;
     }
 
+    private LinkedList<Book> getBooksWithCurrentBorrowers() {
+        LinkedList<Book> BorrowedBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                // if there are borrowers of a book
+                if (!book.getCurrentBorrowers().isEmpty()) {
+                    // add it to the list of borrowed books
+                    BorrowedBooks.add(book);
+                }
+            }
+        }
+        // Return the list of Unavailable Books
+        return BorrowedBooks;
+    }
 }
