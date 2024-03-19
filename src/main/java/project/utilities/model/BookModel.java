@@ -20,6 +20,8 @@ public class BookModel extends DataModel {
         }
 
 
+        bookModel.deleteBook(new Book("new001", "Giovanni Book", "", "", "", "",1, new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
+
         for (Book book : bookModel.getBooks()) {
             System.out.println(book);
             System.out.println();
@@ -74,6 +76,7 @@ public class BookModel extends DataModel {
             if (books.get(i).getBookId().equals(book.getBookId())) {
                 books.remove(i);
                 books.add(i, book);
+                saveBookData(books);
                 return true;
             }
 
@@ -85,6 +88,10 @@ public class BookModel extends DataModel {
     public void addBook(Book book) {
         LinkedList<Book> books = getBooks();
         books.addFirst(book);
+        saveBookData(books);
+    }
+
+    public void saveBookData(LinkedList<Book> books) {
         JSONObject jsonObject = readJSON(bookJSONPath);
         JSONArray bookArray = new JSONArray();
 
@@ -93,32 +100,42 @@ public class BookModel extends DataModel {
         }
 
         jsonObject.put("book", bookArray);
+        saveJSON(jsonObject, bookJSONPath);
     }
+
+
 
     public void deleteBook(Book book) {
         LinkedList<Book> books = getBooks();
 
-        books.remove(book);
-        JSONObject jsonObject = readJSON(bookJSONPath);
-        JSONArray bookArray = new JSONArray();
+        for(Book b : books) {
 
-        for (Book b : books) {
-            bookArray.add(b.toJson());
+            if(b.getBookId().equals(book.getBookId())) {
+                books.remove(b);
+                saveBookData(books);
+                break;
+            }
+
         }
 
-        jsonObject.put("book", bookArray);
     }
 
 
     private LinkedList<String> getStudentID(JSONArray jsonArray) {
 
+
         LinkedList<String> students = new LinkedList<>();
 
         for (Object object : jsonArray) {
-
             JSONObject jsonObject = (JSONObject) object;
-            String studentID = (String) jsonObject.get("id");
-            students.add(studentID);
+
+            try {
+                String studentID = (String) jsonObject.get("id");
+                students.add(studentID);
+            }catch (NullPointerException e) {
+                return new LinkedList<>();
+            }
+
         }
 
         return students;
