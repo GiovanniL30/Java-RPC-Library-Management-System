@@ -1,11 +1,13 @@
 package project.server.controller;
 
+import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
+import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
 
@@ -19,6 +21,7 @@ import java.util.LinkedList;
 public class ServerController implements ServerObserver, Serializable {
 
     private  GlobalRemoteMethods serverMethods;
+    private Loading loading;
 
     @Override
     public void acceptBook(Book book, Student student) {
@@ -174,6 +177,41 @@ public class ServerController implements ServerObserver, Serializable {
 
     }
 
+    public void changeFrame(ServerPanels serverPanels) {
+
+        switch (serverPanels) {
+
+            case HOME_PANEL -> {
+                SwingWorker<Void, Void> worker = new SwingWorker<>() {
+                    @Override
+                    protected Void doInBackground() {
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+
+                        loading.setVisible(false);
+
+                    }
+                };
+                worker.execute();
+
+                loading.setVisible(true);
+            }
+            case VIEW_PANEL -> {
+
+            }
+            case MANAGE_PANEL -> {
+
+            }
+            case ACCOUNTS_PANEL -> {
+
+            }
+        }
+
+    }
     @Override
     public void updateView(ClientActions clientActions) {
         System.out.println("I will now be updating my view action = " + clientActions.toString());
