@@ -113,7 +113,7 @@ public class BookModel extends DataModel {
         return students;
     }
 
-    private LinkedList<Book> getBooksWithCurrentBorrowers() {
+    public LinkedList<Book> getBooksWithCurrentBorrowers() {
         LinkedList<Book> currentBorrowedBooks = new LinkedList<>();
         LinkedList<Book> books = getBooks();
         if (books != null) {
@@ -126,7 +126,7 @@ public class BookModel extends DataModel {
         return currentBorrowedBooks;
     }
 
-    private LinkedList<Book> getBooksWithPendingBorrowers() {
+    public LinkedList<Book> getBooksWithPendingBorrowers() {
         LinkedList<Book> pendingBorrowedBooks = new LinkedList<>();
         LinkedList<Book> books = getBooks();
         if (books != null) {
@@ -139,7 +139,7 @@ public class BookModel extends DataModel {
         return pendingBorrowedBooks;
     }
 
-    private LinkedList<Book> getBooksWithPreviousBorrowers() {
+    public LinkedList<Book> getBooksWithPreviousBorrowers() {
         LinkedList<Book> previousBorrowedBooks = new LinkedList<>();
         LinkedList<Book> books = getBooks();
         if (books != null) {
@@ -153,7 +153,20 @@ public class BookModel extends DataModel {
         return previousBorrowedBooks;
     }
 
-    private LinkedList<Book> getAvailableBooks() {
+    public LinkedList<Book> getBooksWithPendingBookReturners() {
+        LinkedList<Book> pendingBookReturners = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (!book.getPendingBookReturners().isEmpty()) {
+                    pendingBookReturners.add(book);
+                }
+            }
+        }
+        return pendingBookReturners;
+    }
+
+    public LinkedList<Book> getAvailableBooks() {
         LinkedList<Book> availableBooks = new LinkedList<>();
         LinkedList<Book> books = getBooks();
         if (books != null) {
@@ -167,7 +180,7 @@ public class BookModel extends DataModel {
         return availableBooks;
     }
 
-    private LinkedList<Book> getUnavailableBooks() {
+    public LinkedList<Book> getUnavailableBooks() {
         LinkedList<Book> unavailableBooks = new LinkedList<>();
         LinkedList<Book> books = getBooks();
         if (books != null) {
