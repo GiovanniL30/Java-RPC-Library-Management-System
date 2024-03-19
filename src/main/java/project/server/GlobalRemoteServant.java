@@ -218,7 +218,15 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> broadcastMessage(String message) throws RemoteException {
-        return null;
+        try {
+            System.out.println("Server broadcasts: " + message);
+            for (ClientRemoteMethods clientRemoteMethods : clientsHashMap.values()) {
+                clientRemoteMethods.receiveMessage(message, null);
+            }
+            return new Response<>(true, "Message broadcasted successfully.");
+        } catch (Exception e) {
+            return new Response<>(false, "Failed to broadcast message: " + e.getMessage());
+        }
     }
 
     @Override
