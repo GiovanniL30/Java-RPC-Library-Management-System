@@ -166,4 +166,18 @@ public class BookModel extends DataModel {
         // Return the list of Unavailable Books
         return availableBooks;
     }
+
+    private LinkedList<Book> getUnavailableBooks() {
+        LinkedList<Book> unavailableBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (book.getCopies() == 0) {
+                    unavailableBooks.add(book);
+                }
+            }
+        }
+        // Return the list of Unavailable Books
+        return unavailableBooks;
+    }
 }
