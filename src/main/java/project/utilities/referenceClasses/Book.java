@@ -1,5 +1,8 @@
 package project.utilities.referenceClasses;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -134,5 +137,51 @@ public class Book implements Serializable {
                 ", pendingBorrowers=" + pendingBorrowers +
                 ", pendingBookReturners=" + pendingBookReturners +
                 '}';
+    }
+
+    public JSONObject toJson(){
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("bookId", getBookId());
+        jsonObject.put("bookTitle", getBookTitle());
+        jsonObject.put("author", getAuthor());
+        jsonObject.put("genre", getGenre());
+        jsonObject.put("copies", getCopies());
+        jsonObject.put("shortDescription", getShortDescription());
+        jsonObject.put("imagePath", getImagePath());
+
+
+        JSONArray currentBorrowers = getObjects("currentBorrowers");
+        JSONArray pendingBorrowers = getObjects("pendingBorrowers");
+        JSONArray pendingBookReturners = getObjects("pendingBookReturners");
+        JSONArray prevBookBorrowers = getObjects("prevBookBorrowers");
+
+        jsonObject.put("currentBorrowers", currentBorrowers);
+        jsonObject.put("pendingBorrowers", pendingBorrowers);
+        jsonObject.put("pendingBookReturners", pendingBookReturners);
+        jsonObject.put("prevBookBorrowers", prevBookBorrowers);
+
+
+        return jsonObject;
+    }
+
+    private JSONArray getObjects(String type){
+        JSONArray jsonArray = new JSONArray();
+
+        LinkedList<String> strings;
+
+        switch (type) {
+            case "currentBorrowers" -> strings = getCurrentBorrowers();
+            case "pendingBorrowers" -> strings = getPendingBorrowers();
+            case "pendingBookReturners" -> strings = getPendingBookReturners();
+            case "prevBookBorrowers" -> strings = getPreviousBorrowers();
+            default -> strings = new LinkedList<>();
+        }
+
+        for(String string : strings) {
+            jsonArray.add(new JSONObject().put("id", string));
+        }
+
+        return jsonArray;
     }
 }
