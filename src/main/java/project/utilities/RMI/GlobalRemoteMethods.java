@@ -69,5 +69,17 @@ public interface GlobalRemoteMethods extends Remote {
     Response<String> changeUserPassword(Account account, String newPassword) throws RemoteException;
     void sendNotificationToClient(ServerActions serverActions) throws RemoteException;
 
+    Response<LinkedList<Book>> viewPendingBorrowingBooks() throws RemoteException;
+
+    Response<LinkedList<Book>> viewCurrentBorrowedBooks() throws RemoteException;
+
+    Response<LinkedList<Book>> viewPreviousBorrowedBooks() throws RemoteException;
+
+    Response<LinkedList<Book>> viewAvailableBooks() throws RemoteException;
+
+    Response<LinkedList<Book>> viewUnavailableBooks() throws RemoteException;
+
+    Response<LinkedList<Book>> viewPendingReturningBooks() throws RemoteException;
+
 
 }
