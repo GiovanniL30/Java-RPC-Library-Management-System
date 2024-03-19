@@ -3,8 +3,12 @@ package project.server.controller;
 import project.client.controller.ClientController;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
+
+import java.rmi.RemoteException;
+import java.util.LinkedList;
 
 public interface ServerObserver {
 
@@ -20,6 +24,19 @@ public interface ServerObserver {
 
     void createNewBook(Book book);
 
+    //Methods for showing book information
+
+    LinkedList<Book> viewAvailableBooks();
+
+    LinkedList<Book> viewUnavailableBooks();
+
+    LinkedList<Book> viewPendingBorrowingBooks();
+
+    LinkedList<Book> viewCurrentBorrowedBooks();
+
+    LinkedList<Book> viewPreviousBorrowedBooks();
+
+    LinkedList<Book> viewPendingReturningBooks();
 
     // Methods for handling account-related actions
     void broadcastMessage(String message);
