@@ -1,4 +1,4 @@
-package project.server.views.components.manageBookPanel;
+package project.server.views.components.viewBookPanel;
 
 import javax.swing.*;
 
