@@ -32,12 +32,12 @@ public class BookModel extends DataModel {
 
 
     public LinkedList<Book> getBooks() {
-
+        String filePath = "src/main/resources/data/book.json";
         LinkedList<Book> books = new LinkedList<>();
         JSONParser parser = new JSONParser();
 
         try {
-            JSONObject json = readJSON("src/main/resources/data/book.json");
+            JSONObject json = readJSON(filePath);
             JSONArray jsonArray = (JSONArray) json.get("book");
 
             for (Object object : jsonArray) {
@@ -68,6 +68,37 @@ public class BookModel extends DataModel {
         return books;
     }
 
+    private boolean editBook(Book book) {
+
+        JSONObject json = readJSON("src/main/resources/data/book.json");
+        JSONArray jsonArray = (JSONArray) json.get("book");
+
+
+        if (jsonArray.isEmpty()) return false;
+
+
+        for(Object o : jsonArray) {
+
+            JSONObject bookJson =  (JSONObject) o;
+
+            if(bookJson.get("bookId").equals(book.getBookId())) {
+
+                jsonArray.remove(o);
+
+                JSONObject updatedBook = new JSONObject();
+                //addAllNece
+
+            }
+
+
+        }
+
+
+        // Return false if the book to be edited was not found
+        return false;
+    } // end of editBook method
+
+
     private LinkedList<String> getStudentID(JSONArray jsonArray){
 
         LinkedList<String> students = new LinkedList<>();
@@ -82,6 +113,71 @@ public class BookModel extends DataModel {
         return students;
     }
 
+    private LinkedList<Book> getBooksWithCurrentBorrowers() {
+        LinkedList<Book> currentBorrowedBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (!book.getCurrentBorrowers().isEmpty()) {
+                    currentBorrowedBooks.add(book);
+                }
+            }
+        }
+        return currentBorrowedBooks;
+    }
 
+    private LinkedList<Book> getBooksWithPendingBorrowers() {
+        LinkedList<Book> pendingBorrowedBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (!book.getPendingBorrowers().isEmpty()) {
+                    pendingBorrowedBooks.add(book);
+                }
+            }
+        }
+        return pendingBorrowedBooks;
+    }
 
+    private LinkedList<Book> getBooksWithPreviousBorrowers() {
+        LinkedList<Book> previousBorrowedBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (!book.getPreviousBorrowers().isEmpty()) {
+                    previousBorrowedBooks.add(book);
+                }
+            }
+        }
+        // Return the list of Unavailable Books
+        return previousBorrowedBooks;
+    }
+
+    private LinkedList<Book> getAvailableBooks() {
+        LinkedList<Book> availableBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (book.getCopies() > 0) {
+                    availableBooks.add(book);
+                }
+            }
+        }
+        // Return the list of Unavailable Books
+        return availableBooks;
+    }
+
+    private LinkedList<Book> getUnavailableBooks() {
+        LinkedList<Book> unavailableBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (book.getCopies() == 0) {
+                    unavailableBooks.add(book);
+                }
+            }
+        }
+        // Return the list of Unavailable Books
+        return unavailableBooks;
+    }
 }
