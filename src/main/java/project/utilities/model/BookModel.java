@@ -3,27 +3,24 @@ package project.utilities.model;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import project.utilities.referenceClasses.Book;
-import project.utilities.referenceClasses.Student;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.LinkedList;
 
 public class BookModel extends DataModel {
 
+    private final String bookJSONPath = "src/main/resources/data/book.json";
+
     public static void main(String[] args) {
         BookModel bookModel = new BookModel();
-        for(Book book: bookModel.getBooks()) {
+        for (Book book : bookModel.getBooks()) {
             System.out.println(book);
             System.out.println();
             System.out.println();
         }
 
 
-        for(Book book: bookModel.getBooks()) {
+        for (Book book : bookModel.getBooks()) {
             System.out.println(book);
             System.out.println();
             System.out.println();
@@ -34,7 +31,7 @@ public class BookModel extends DataModel {
     public LinkedList<Book> getBooks() {
         String filePath = "src/main/resources/data/book.json";
         LinkedList<Book> books = new LinkedList<>();
-        JSONParser parser = new JSONParser();
+
 
         try {
             JSONObject json = readJSON(filePath);
@@ -57,7 +54,7 @@ public class BookModel extends DataModel {
                 JSONArray prevBookBorrowers = (JSONArray) jsonObject.get("prevBookBorrowers");
 
 
-                Book book = new Book(bookId, bookTitle, author, genre, shortDescription, imagePath, (int)copies, getStudentID(currentBorrowers), getStudentID(prevBookBorrowers), getStudentID(pendingBorrowers), getStudentID(pendingBookReturners));
+                Book book = new Book(bookId, bookTitle, author, genre, shortDescription, imagePath, (int) copies, getStudentID(currentBorrowers), getStudentID(prevBookBorrowers), getStudentID(pendingBorrowers), getStudentID(pendingBookReturners));
                 books.add(book);
             }
 
@@ -68,42 +65,56 @@ public class BookModel extends DataModel {
         return books;
     }
 
-    private boolean editBook(Book book) {
+    public boolean editBook(Book book) {
 
-        JSONObject json = readJSON("src/main/resources/data/book.json");
-        JSONArray jsonArray = (JSONArray) json.get("book");
+        LinkedList<Book> books = getBooks();
 
+        for (int i = 0; i < books.size(); i++) {
 
-        if (jsonArray.isEmpty()) return false;
-
-
-        for(Object o : jsonArray) {
-
-            JSONObject bookJson =  (JSONObject) o;
-
-            if(bookJson.get("bookId").equals(book.getBookId())) {
-
-                jsonArray.remove(o);
-
-                JSONObject updatedBook = new JSONObject();
-                //addAllNece
-
+            if (books.get(i).getBookId().equals(book.getBookId())) {
+                books.remove(i);
+                books.add(i, book);
+                return true;
             }
-
 
         }
 
-
-        // Return false if the book to be edited was not found
         return false;
     } // end of editBook method
 
+    public void addBook(Book book) {
+        LinkedList<Book> books = getBooks();
+        books.addFirst(book);
+        JSONObject jsonObject = readJSON(bookJSONPath);
+        JSONArray bookArray = new JSONArray();
 
-    private LinkedList<String> getStudentID(JSONArray jsonArray){
+        for (Book b : books) {
+            bookArray.add(b.toJson());
+        }
+
+        jsonObject.put("book", bookArray);
+    }
+
+    public void deleteBook(Book book) {
+        LinkedList<Book> books = getBooks();
+
+        books.remove(book);
+        JSONObject jsonObject = readJSON(bookJSONPath);
+        JSONArray bookArray = new JSONArray();
+
+        for (Book b : books) {
+            bookArray.add(b.toJson());
+        }
+
+        jsonObject.put("book", bookArray);
+    }
+
+
+    private LinkedList<String> getStudentID(JSONArray jsonArray) {
 
         LinkedList<String> students = new LinkedList<>();
 
-        for(Object object: jsonArray) {
+        for (Object object : jsonArray) {
 
             JSONObject jsonObject = (JSONObject) object;
             String studentID = (String) jsonObject.get("id");
