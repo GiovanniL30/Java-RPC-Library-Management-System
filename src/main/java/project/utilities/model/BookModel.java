@@ -118,14 +118,11 @@ public class BookModel extends DataModel {
         LinkedList<Book> books = getBooks();
         if (books != null) {
             for (Book book : books) {
-                // if there are borrowers of a book
                 if (!book.getCurrentBorrowers().isEmpty()) {
-                    // add it to the list of borrowed books
                     currentBorrowedBooks.add(book);
                 }
             }
         }
-        // Return the list of Unavailable Books
         return currentBorrowedBooks;
     }
 
@@ -134,14 +131,25 @@ public class BookModel extends DataModel {
         LinkedList<Book> books = getBooks();
         if (books != null) {
             for (Book book : books) {
-                // if there are borrowers of a book
                 if (!book.getPendingBorrowers().isEmpty()) {
-                    // add it to the list of borrowed books
                     pendingBorrowedBooks.add(book);
                 }
             }
         }
-        // Return the list of Unavailable Books
         return pendingBorrowedBooks;
+    }
+
+    private LinkedList<Book> getBooksWithPreviousBorrowers() {
+        LinkedList<Book> previousBorrowedBooks = new LinkedList<>();
+        LinkedList<Book> books = getBooks();
+        if (books != null) {
+            for (Book book : books) {
+                if (!book.getPreviousBorrowers().isEmpty()) {
+                    previousBorrowedBooks.add(book);
+                }
+            }
+        }
+        // Return the list of Unavailable Books
+        return previousBorrowedBooks;
     }
 }
