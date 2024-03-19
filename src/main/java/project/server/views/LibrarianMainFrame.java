@@ -1,6 +1,8 @@
 package project.server.views;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import project.server.GlobalRemoteServant;
+import project.server.controller.ServerController;
 import project.server.views.components.ServerGuiHeader;
 
 import javax.swing.*;
@@ -12,15 +14,17 @@ public class LibrarianMainFrame extends JFrame {
     public static int HEIGHT = 800;
 
     private ServerGuiHeader serverGuiHeader = new ServerGuiHeader();
+    private ServerController serverController;
 
-    LibrarianMainFrame() {
+    LibrarianMainFrame(ServerController serverController) {
+        this.serverController = serverController;
        initializeFrame();
-       getContentPane().add(serverGuiHeader);
-
+       this.getContentPane().add(serverGuiHeader);
     }
 
-    public static void main(String[] args) {
-        new LibrarianMainFrame();
+
+    public void setServerController(ServerController controller) {
+        this.serverController = controller;
     }
 
     private void initializeFrame() {

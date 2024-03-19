@@ -1,5 +1,7 @@
 package project.server.controller;
 
+import project.client.views.ClientMainView;
+import project.server.views.LibrarianMainFrame;
 import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
 import project.utilities.referenceClasses.Account;
@@ -22,6 +24,7 @@ public class ServerController implements ServerObserver, Serializable {
 
     private  GlobalRemoteMethods serverMethods;
     private Loading loading;
+    private LibrarianMainFrame mainView;
 
     @Override
     public void acceptBook(Book book, Student student) {
@@ -245,5 +248,9 @@ public class ServerController implements ServerObserver, Serializable {
         }catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void setMainView(LibrarianMainFrame mainView) {
+        this.mainView = mainView;
+        loading = new Loading(this.mainView);
     }
 }
