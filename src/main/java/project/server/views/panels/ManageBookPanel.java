@@ -53,7 +53,7 @@ public class ManageBookPanel extends JPanel {
         scrollPane.setPreferredSize(new Dimension(920, 400));
         add(scrollPane);
 
-        populateBookList(books, false);
+        //populateBookList(books, false);
 
     }
 
@@ -86,7 +86,7 @@ public class ManageBookPanel extends JPanel {
 
     private static class BookCardComponent extends JPanel {
 
-        private BookCardComponent(Book book, ClientController clientController) {
+        private BookCardComponent(Book book, ServerController serverController) {
 
             setSize(new Dimension(100, 200));
 
@@ -103,7 +103,7 @@ public class ManageBookPanel extends JPanel {
             constraints.gridy = 1;
             add(label, constraints);
 
-            button.addActionListener(e -> clientController.openBook(book));
+            //button.addActionListener(e -> serverController.openBook(book));
         }
 
     }
