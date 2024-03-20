@@ -11,8 +11,8 @@ import java.awt.*;
 
 public class LibrarianMainFrame extends JFrame {
 
-    public static int WIDTH = 1000;
-    public static int HEIGHT = 800;
+    public static int FRAME_WIDTH = 1000;
+    public static int FRAME_HEIGHT = 800;
 
     private ServerGuiHeader serverGuiHeader = new ServerGuiHeader();
     private ServerController serverController;
@@ -39,7 +39,7 @@ public class LibrarianMainFrame extends JFrame {
             System.err.println("Failed to initialize LaF");
         }
 
-        setSize(new Dimension(WIDTH, HEIGHT));
+        setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
