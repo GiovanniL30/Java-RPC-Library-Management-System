@@ -16,16 +16,12 @@ public class LibrarianMainFrame extends JFrame {
     private ServerGuiHeader serverGuiHeader = new ServerGuiHeader();
     private ServerController serverController;
 
-    LibrarianMainFrame(ServerController serverController) {
+    public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
-       initializeFrame();
+        initializeFrame();
        this.getContentPane().add(serverGuiHeader);
     }
 
-
-    public void setServerController(ServerController controller) {
-        this.serverController = controller;
-    }
 
     private void initializeFrame() {
 
