@@ -11,18 +11,18 @@ import java.awt.*;
 
 public class LibrarianMainFrame extends JFrame {
 
-    public static int WIDTH = 1000;
-    public static int HEIGHT = 800;
+    public static int FRAME_WIDTH = 1000;
+    public static int FRAME_HEIGHT = 800;
 
     private ServerGuiHeader serverGuiHeader = new ServerGuiHeader();
     private ServerController serverController;
-    private HomePanel homePanel;
+    private ServerMainPanel serverMainPanel;
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
         initializeFrame();
        this.getContentPane().add(serverGuiHeader);
-       this.getContentPane().add(homePanel = new HomePanel(serverController));
+       this.getContentPane().add(serverMainPanel = new ServerMainPanel(serverController));
     }
 
 
@@ -39,7 +39,7 @@ public class LibrarianMainFrame extends JFrame {
             System.err.println("Failed to initialize LaF");
         }
 
-        setSize(new Dimension(WIDTH, HEIGHT));
+        setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -49,6 +49,11 @@ public class LibrarianMainFrame extends JFrame {
     }
 
     public ServerGuiHeader getServerGuiHeader() {
-        return serverGuiHeader;
+        return serverMainPanel.getServerGuiHeader();
     }
+
+    public void setServerContentPanel(JPanel panel) {
+        serverMainPanel.setServerContentPanel(panel);
+    }
+
 }

@@ -1,6 +1,8 @@
 package project.server.controller;
 
 import project.server.views.LibrarianMainFrame;
+import project.server.views.ServerMainPanel;
+import project.server.views.panels.HomePanel;
 import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
 import project.utilities.referenceClasses.Account;
@@ -229,13 +231,13 @@ public class ServerController implements ServerObserver, Serializable {
                 SwingWorker<Void, Void> worker = new SwingWorker<>() {
                     @Override
                     protected Void doInBackground() {
-
+                        mainView.setServerContentPanel(new HomePanel(ServerController.this));
                         return null;
                     }
 
                     @Override
                     protected void done() {
-
+                        mainView.getServerGuiHeader().setCurrentClickableText(mainView.getServerGuiHeader().getHome());
                         loading.setVisible(false);
 
                     }

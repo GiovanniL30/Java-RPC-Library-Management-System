@@ -23,6 +23,11 @@ public class ServerGuiHeader extends JPanel {
 
     public ServerGuiHeader() {
 
+        clickableTexts.add(home);
+        clickableTexts.add(viewBooks);
+        clickableTexts.add(manageBooks);
+        clickableTexts.add(accounts);
+
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridy = 0;
         constraints.gridx = 0;
