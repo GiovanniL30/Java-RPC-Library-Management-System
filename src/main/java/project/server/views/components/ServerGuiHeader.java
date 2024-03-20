@@ -79,4 +79,7 @@ public class ServerGuiHeader extends JPanel {
         return viewBooks;
     }
 
+    public JPanel getClickablePanel() {
+        return clickablePanel;
+    }
 }
