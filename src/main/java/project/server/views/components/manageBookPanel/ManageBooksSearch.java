@@ -8,11 +8,11 @@ import project.utilities.viewComponents.Button;
 import javax.swing.*;
 import java.awt.*;
 
-public class manageBooksSearch extends JPanel {
+public class ManageBooksSearch extends JPanel {
     private final FieldInput input;
     private final Button cancelSearch;
 
-    public manageBooksSearch(Dimension dimension) {
+    public ManageBooksSearch(Dimension dimension) {
         setPreferredSize(dimension);
         setLayout(new GridBagLayout());
         setBackground(Color.white);

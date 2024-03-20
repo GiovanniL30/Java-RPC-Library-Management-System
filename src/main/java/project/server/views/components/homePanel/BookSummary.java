@@ -18,17 +18,17 @@ public class BookSummary extends JPanel {
         JTextArea summaryTitle = new JTextArea("\tSummary Report");
                 JTextArea summary = new JTextArea("\n" +
                         "Number of Available Books: "
-                        + serverController.viewAvailableBooks().size()
+                        + serverController.getAvailableBooks().size()
                         + "\n\nNumber of Unavailable Books: "
-                        + serverController.viewUnavailableBooks().size()
+                        + serverController.getUnavailableBooks().size()
                         + "\n\nNumber of Pending Books for Borrowing: "
-                        + serverController.viewPendingBorrowingBooks().size()
+                        + serverController.getPendingBorrowingBooks().size()
                         + "\n\nNumber of Pending Books for Returning: "
-                        + serverController.viewPendingReturningBooks().size()
+                        + serverController.getPendingReturningBooks().size()
                         + "\n\nNumber of Current Borrowed Books: "
-                        + serverController.viewCurrentBorrowedBooks().size()
+                        + serverController.getCurrentBorrowedBooks().size()
                         + "\n\nNumber of Previous Borrowed Books: "
-                        + serverController.viewPreviousBorrowedBooks().size()
+                        + serverController.getPreviousBorrowedBooks().size()
                 );
 
         // configure summary title panel

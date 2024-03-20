@@ -26,17 +26,17 @@ public interface ServerObserver {
 
     //Methods for showing book information
 
-    LinkedList<Book> viewAvailableBooks();
+    LinkedList<Book> getAvailableBooks();
 
-    LinkedList<Book> viewUnavailableBooks();
+    LinkedList<Book> getUnavailableBooks();
 
-    LinkedList<Book> viewPendingBorrowingBooks();
+    LinkedList<Book> getPendingBorrowingBooks();
 
-    LinkedList<Book> viewCurrentBorrowedBooks();
+    LinkedList<Book> getCurrentBorrowedBooks();
 
-    LinkedList<Book> viewPreviousBorrowedBooks();
+    LinkedList<Book> getPreviousBorrowedBooks();
 
-    LinkedList<Book> viewPendingReturningBooks();
+    LinkedList<Book> getPendingReturningBooks();
 
     // Methods for handling account-related actions
     void broadcastMessage(String message);

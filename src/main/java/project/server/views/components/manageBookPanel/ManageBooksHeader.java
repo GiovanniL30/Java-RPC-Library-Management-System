@@ -8,14 +8,14 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class manageBooksHeader extends JPanel {
+public class ManageBooksHeader extends JPanel {
     private final ClickableText pendingBorrow = new ClickableText("Pending Borrow", 100, 50, FontFactory.newPoppinsBold(18));
     private final ClickableText pendingReturn = new ClickableText("Pending Return", 100, 50, FontFactory.newPoppinsBold(18));
     private final ClickableText borrowed = new ClickableText("Borrowed", 100, 50, FontFactory.newPoppinsBold(18));
-    private final manageBooksSearch search = new manageBooksSearch(new Dimension(200, 50));
+    private final ManageBooksSearch search = new ManageBooksSearch(new Dimension(200, 50));
     private final JPanel clickablePanel;
 
-    public manageBooksHeader() {
+    public ManageBooksHeader() {
         setBorder(new EmptyBorder(0, 10, 0, 15));
         setLayout(new BorderLayout());
         setSize(new Dimension(LibrarianMainFrame.WIDTH, 150));

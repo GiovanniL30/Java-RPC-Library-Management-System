@@ -68,9 +68,9 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
-    public LinkedList<Book> viewAvailableBooks() {
+    public LinkedList<Book> getAvailableBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.viewAvailableBooks();
+            Response<LinkedList<Book>> response = serverMethods.getAvailableBooks();
             if (response.isSuccess()) {
                 return response.getPayload();
             }
@@ -82,9 +82,9 @@ public class ServerController implements ServerObserver, Serializable {
 
 
     @Override
-    public LinkedList<Book> viewUnavailableBooks() {
+    public LinkedList<Book> getUnavailableBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.viewUnavailableBooks();
+            Response<LinkedList<Book>> response = serverMethods.getUnavailableBooks();
             if (response.isSuccess()) {
                 return response.getPayload();
             }
@@ -96,9 +96,9 @@ public class ServerController implements ServerObserver, Serializable {
 
 
     @Override
-    public LinkedList<Book> viewCurrentBorrowedBooks() {
+    public LinkedList<Book> getCurrentBorrowedBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.viewCurrentBorrowedBooks();
+            Response<LinkedList<Book>> response = serverMethods.getCurrentBorrowedBooks();
             if (response.isSuccess()) {
                 return response.getPayload();
             }
@@ -110,9 +110,9 @@ public class ServerController implements ServerObserver, Serializable {
 
 
     @Override
-    public LinkedList<Book> viewPreviousBorrowedBooks() {
+    public LinkedList<Book> getPreviousBorrowedBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.viewPreviousBorrowedBooks();
+            Response<LinkedList<Book>> response = serverMethods.getPreviousBorrowedBooks();
             if (response.isSuccess()) {
                 return response.getPayload();
             }
@@ -124,9 +124,9 @@ public class ServerController implements ServerObserver, Serializable {
 
 
     @Override
-    public LinkedList<Book> viewPendingBorrowingBooks() {
+    public LinkedList<Book> getPendingBorrowingBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.viewPendingBorrowingBooks();
+            Response<LinkedList<Book>> response = serverMethods.getPendingBorrowingBooks();
             if (response.isSuccess()) {
                 return response.getPayload();
             }
@@ -137,9 +137,9 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
-    public LinkedList<Book> viewPendingReturningBooks() {
+    public LinkedList<Book> getPendingReturningBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.viewPendingReturningBooks();
+            Response<LinkedList<Book>> response = serverMethods.getPendingReturningBooks();
             if (response.isSuccess()) {
                 return response.getPayload();
             }

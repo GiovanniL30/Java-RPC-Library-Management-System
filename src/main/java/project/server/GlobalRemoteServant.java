@@ -182,36 +182,36 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     @Override
-    public Response<LinkedList<Book>> viewAvailableBooks() throws RemoteException {
+    public Response<LinkedList<Book>> getAvailableBooks() throws RemoteException {
         System.out.println("Server shows the available number of books");
         return new Response<>(true, bookModel.getAvailableBooks());
     }
 
     @Override
-    public Response<LinkedList<Book>> viewUnavailableBooks() throws RemoteException {
+    public Response<LinkedList<Book>> getUnavailableBooks() throws RemoteException {
         System.out.println("Server shows the unavailable number of books");
         return new Response<>(true, bookModel.getUnavailableBooks());
     }
 
     @Override
-    public Response<LinkedList<Book>> viewCurrentBorrowedBooks() throws RemoteException {
+    public Response<LinkedList<Book>> getCurrentBorrowedBooks() throws RemoteException {
         System.out.println("Server shows the number of borrowed books with current borrowers");
         return new Response<>(true, bookModel.getBooksWithCurrentBorrowers());
     }
 
-    public Response<LinkedList<Book>> viewPreviousBorrowedBooks() throws RemoteException {
+    public Response<LinkedList<Book>> getPreviousBorrowedBooks() throws RemoteException {
         System.out.println("Server shows the number of borrowed books with previous borrowers");
         return new Response<>(true, bookModel.getBooksWithPreviousBorrowers());
     }
 
     @Override
-    public Response<LinkedList<Book>> viewPendingBorrowingBooks() throws RemoteException {
+    public Response<LinkedList<Book>> getPendingBorrowingBooks() throws RemoteException {
         System.out.println("Server shows the number of pending books that were requested for borrowing");
         return new Response<>(true, bookModel.getBooksWithPendingBorrowers());
     }
 
     @Override
-    public Response<LinkedList<Book>> viewPendingReturningBooks() throws RemoteException {
+    public Response<LinkedList<Book>> getPendingReturningBooks() throws RemoteException {
         System.out.println("Server shows the number of pending books that were requested for returning");
         return new Response<>(true, bookModel.getBooksWithPendingBookReturners());
     }
