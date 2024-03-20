@@ -7,6 +7,7 @@ import project.utilities.viewComponents.Picture;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.LinkedList;
 
 public class ServerGuiHeader extends JPanel {
 
@@ -15,7 +16,7 @@ public class ServerGuiHeader extends JPanel {
     private ClickableText viewBooks  = new ClickableText("View Books", 100, 50, FontFactory.newPoppinsBold(18));
     private ClickableText manageBooks = new ClickableText("Manage Books", 100, 50, FontFactory.newPoppinsBold(18));
     private ClickableText accounts = new ClickableText("Accounts", 100, 50, FontFactory.newPoppinsBold(18));
-
+    private LinkedList<ClickableText> clickableTexts = new LinkedList<>();;
 
     //Panel Holders
     private JPanel clickablePanel;
@@ -62,7 +63,19 @@ public class ServerGuiHeader extends JPanel {
 
 
     }
+    public void setCurrentClickableText(ClickableText currentText) {
 
+        currentText.setEnabled(false);
+
+
+        for(ClickableText clickableText: clickableTexts) {
+
+            if(!clickableText.equals(currentText)){
+                clickableText.setEnabled(true);
+            }
+
+        }
+    }
     public ClickableText getAccounts() {
         return accounts;
     }
