@@ -37,7 +37,7 @@ public class ManageAccountsPanel extends JPanel{
 
     private void populatePanel(LinkedList<Student> accounts){
         for (Student account : accounts){
-            // AccountCard accountCard = new AccountCard(account);
+            AccountCard accountCard = new AccountCard(account);
             // accountsPanel.add(accountCard);
         }
     }
@@ -50,6 +50,8 @@ public class ManageAccountsPanel extends JPanel{
     }
 
     private class AccountCard extends JPanel{
+        AccountCard(Student account) {
 
+        }
     }
 }

@@ -63,5 +63,23 @@ public class ServerGuiHeader extends JPanel {
 
     }
 
+    public ClickableText getAccounts() {
+        return accounts;
+    }
 
+    public ClickableText getHome() {
+        return home;
+    }
+
+    public ClickableText getManageBooks() {
+        return manageBooks;
+    }
+
+    public ClickableText getViewBooks() {
+        return viewBooks;
+    }
+
+    public JPanel getClickablePanel() {
+        return clickablePanel;
+    }
 }

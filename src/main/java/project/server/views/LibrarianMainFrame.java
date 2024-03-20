@@ -48,4 +48,7 @@ public class LibrarianMainFrame extends JFrame {
         setVisible(true);
     }
 
+    public ServerGuiHeader getServerGuiHeader() {
+        return serverGuiHeader;
+    }
 }

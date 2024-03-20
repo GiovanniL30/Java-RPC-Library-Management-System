@@ -175,12 +175,32 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void deleteAccount(Student account) {
+        try {
+            Response<String> response = serverMethods.deleteAccount(account);
 
+            if (response.isSuccess()) {
+                System.out.println("Account deleted successfully.");
+            } else {
+                JOptionPane.showMessageDialog(null, response.getPayload());
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void createAccount(Account account) {
+        try {
+            Response<String> response = serverMethods.createAccount(account);
 
+            if (response.isSuccess()) {
+                System.out.println("Account created successfully.");
+            } else {
+                JOptionPane.showMessageDialog(null, response.getPayload());
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
