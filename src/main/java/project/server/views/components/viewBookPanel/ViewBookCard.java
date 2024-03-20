@@ -96,6 +96,10 @@ public class ViewBookCard extends JPanel implements BookCard {
 
         });
 
+        prevOwnersButton.addActionListener(e -> {
+
+        });
+
 
     }
 
