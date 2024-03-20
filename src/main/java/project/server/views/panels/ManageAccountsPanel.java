@@ -43,7 +43,10 @@ public class ManageAccountsPanel extends JPanel{
     }
 
     public void refresh(LinkedList<Student> accounts){
-
+        accountsPanel.removeAll();
+        populatePanel(accounts);
+        accountsPanel.revalidate();
+        accountsPanel.repaint();
     }
 
     private class AccountCard extends JPanel{
