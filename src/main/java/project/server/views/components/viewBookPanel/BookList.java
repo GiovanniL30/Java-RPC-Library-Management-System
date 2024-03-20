@@ -8,12 +8,10 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class BookList extends JPanel {
-    private final boolean isPending;
     private final ServerController serverController;
 
-    public BookList(LinkedList<Book> books, ServerController serverController, boolean isPending) {
+    public BookList(LinkedList<Book> books, ServerController serverController) {
 
-        this.isPending = isPending;
         this.serverController = serverController;
 
         JPanel holder = new JPanel();
