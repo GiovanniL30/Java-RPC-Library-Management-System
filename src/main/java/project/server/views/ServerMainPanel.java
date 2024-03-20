@@ -26,10 +26,10 @@ public class ServerMainPanel extends JPanel {
         serverContentHolder.setPreferredSize(new Dimension(FRAME_WIDTH, 550));
         serverContentHolder.setBackground(Color.white);
         serverGuiHeader = new ServerGuiHeader();
+        homePanel = new HomePanel(serverController);
+        setServerContentPanel(homePanel);
         add(serverGuiHeader);
         add(serverContentHolder);
-        homePanel = new HomePanel(serverController);
-        setContentPanel(homePanel);
 
         serverGuiHeader.getHome().addActionListener(e -> this.serverController.changeFrame(ServerPanels.HOME_PANEL));
         serverGuiHeader.getManageBooks().addActionListener(e -> this.serverController.changeFrame(ServerPanels.MANAGE_PANEL));
@@ -38,7 +38,7 @@ public class ServerMainPanel extends JPanel {
 
     }
 
-    public void setContentPanel(JPanel panel) {
+    public void setServerContentPanel(JPanel panel) {
 
         new SwingWorker<>() {
             @Override

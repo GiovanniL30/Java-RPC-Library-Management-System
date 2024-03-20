@@ -16,13 +16,13 @@ public class LibrarianMainFrame extends JFrame {
 
     private ServerGuiHeader serverGuiHeader = new ServerGuiHeader();
     private ServerController serverController;
-    private HomePanel homePanel;
+    private ServerMainPanel serverMainPanel;
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
         initializeFrame();
        this.getContentPane().add(serverGuiHeader);
-       this.getContentPane().add(homePanel = new HomePanel(serverController));
+       this.getContentPane().add(serverMainPanel = new ServerMainPanel(serverController));
     }
 
 
@@ -49,6 +49,11 @@ public class LibrarianMainFrame extends JFrame {
     }
 
     public ServerGuiHeader getServerGuiHeader() {
-        return serverGuiHeader;
+        return serverMainPanel.getServerGuiHeader();
     }
+
+    public void setServerContentPanel(JPanel panel) {
+        serverMainPanel.setServerContentPanel(panel);
+    }
+
 }
