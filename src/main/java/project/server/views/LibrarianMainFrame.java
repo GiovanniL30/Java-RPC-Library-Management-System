@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import project.server.GlobalRemoteServant;
 import project.server.controller.ServerController;
 import project.server.views.components.ServerGuiHeader;
+import project.server.views.panels.HomePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +16,13 @@ public class LibrarianMainFrame extends JFrame {
 
     private ServerGuiHeader serverGuiHeader = new ServerGuiHeader();
     private ServerController serverController;
+    private HomePanel homePanel;
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
         initializeFrame();
        this.getContentPane().add(serverGuiHeader);
+       this.getContentPane().add(homePanel = new HomePanel(serverController));
     }
 
 
