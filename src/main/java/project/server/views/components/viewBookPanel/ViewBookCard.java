@@ -14,8 +14,10 @@ import java.awt.*;
 
 public class ViewBookCard extends JPanel implements BookCard {
     private ServerController serverController;;
+    private Button editBookButton = new Button("Edit", 100, 50, FontFactory.newPoppinsDefault(13));
+    private Button deleteBookButton = new Button("Delete", 100, 50, FontFactory.newPoppinsDefault(13));
+    private Button prevOwnersButton = new Button("Previous Owners", 130, 50, FontFactory.newPoppinsDefault(13));
     public ViewBookCard(Book book) {
-
         setSize(new Dimension(300, 200));
         setLayout(new GridBagLayout());
         setBorder(new EmptyBorder(0, 10, 0, 20));
@@ -26,24 +28,40 @@ public class ViewBookCard extends JPanel implements BookCard {
         JLabel bookCopies = new JLabel("Copies: " + book.getCopies());
         bookCopies.setFont(FontFactory.newPoppinsDefault(12));
 
-        Button editBookButton = new Button("Edit", 100, 50, FontFactory.newPoppinsDefault(13));
         editBookButton.setForeground(Color.white);
         editBookButton.setBackground(ColorFactory.blue());
 
-        Button deleteBookButton = new Button("Delete", 100, 50, FontFactory.newPoppinsDefault(13));
         deleteBookButton.setForeground(Color.white);
         deleteBookButton.setBackground(ColorFactory.red());
 
-        Button prevOwnersButton = new Button("Previous Owners", 100, 50, FontFactory.newPoppinsDefault(13));
         prevOwnersButton.setForeground(Color.white);
         prevOwnersButton.setBackground(ColorFactory.green());
 
         JPanel bookPanel = new JPanel();
         JPanel bookInfoPanel = new JPanel();
+        JPanel bookTitlePanel = new JPanel();
+        JPanel bookCopiesPanel = new JPanel();
+        JPanel buttonsPanel = new JPanel();
+        JPanel prevButtonPanel = new JPanel();
 
         bookInfoPanel.setLayout(new BoxLayout(bookInfoPanel, BoxLayout.Y_AXIS));
-        bookInfoPanel.add(bookTitle);
-        bookInfoPanel.add(bookCopies);
+
+        bookTitlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookCopiesPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookTitlePanel.add(bookTitle);
+        bookCopiesPanel.add(bookCopies);
+
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        buttonsPanel.add(editBookButton);
+        buttonsPanel.add(deleteBookButton);
+
+        prevButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        prevButtonPanel.add(prevOwnersButton);
+
+        bookInfoPanel.add(bookTitlePanel);
+        bookInfoPanel.add(bookCopiesPanel);
+        bookInfoPanel.add(buttonsPanel);
+        bookInfoPanel.add(prevButtonPanel);
 
         bookPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         bookPanel.add(bookPicture);
@@ -55,21 +73,6 @@ public class ViewBookCard extends JPanel implements BookCard {
         constraints.weightx = 2.0;
         constraints.fill = 2;
         add(bookPanel, constraints);
-
-        constraints.gridx = 1;
-        constraints.weightx = 0.0;
-        constraints.fill = 0;
-        add(editBookButton, constraints);
-
-        constraints.gridx = 2;
-        constraints.weightx = 0.0;
-        constraints.fill = 0;
-        add(deleteBookButton, constraints);
-
-        constraints.gridx = 3;
-        constraints.weightx = 0.0;
-        constraints.fill = 0;
-        add(prevOwnersButton, constraints);
 
         editBookButton.addActionListener(e -> {
 
@@ -99,8 +102,6 @@ public class ViewBookCard extends JPanel implements BookCard {
         prevOwnersButton.addActionListener(e -> {
 
         });
-
-
     }
 
 }
