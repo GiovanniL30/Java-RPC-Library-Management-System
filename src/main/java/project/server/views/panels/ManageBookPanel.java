@@ -29,7 +29,7 @@ public class ManageBookPanel extends JPanel {
         this.serverController = serverController;
 
         ManageBooksSearch search = new ManageBooksSearch(new Dimension(350, 50));
-        ManageBooksHeader manageBooksHeader = new ManageBooksHeader();
+        ManageBooksHeader manageBooksHeader = new ManageBooksHeader(serverController);
         GridLayout gridLayout = new GridLayout(0, 2);
         gridLayout.setVgap(50);
         gridLayout.setHgap(10);
