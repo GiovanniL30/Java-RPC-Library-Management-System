@@ -16,13 +16,13 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class ManageBookPanel extends JPanel {
-    private final Book books;
-    private final Student students;
+    private final LinkedList<Book> books;
+    private final LinkedList<Student> students;
     private final ServerObserver serverObserver;
     private final JPanel panel;
     private final ServerController serverController;
 
-    public ManageBookPanel(Book books, Student students, ServerObserver serverObserver, ServerController serverController){
+    public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver, ServerController serverController){
         this.books = books;
         this.students = students;
         this.serverObserver = serverObserver;
@@ -53,7 +53,7 @@ public class ManageBookPanel extends JPanel {
         scrollPane.setPreferredSize(new Dimension(920, 400));
         add(scrollPane);
 
-        //populateBookList(books, false);
+        populateBookList(books, false);
 
     }
 
