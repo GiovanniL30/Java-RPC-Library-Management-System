@@ -259,6 +259,9 @@ public class ServerController implements ServerObserver, Serializable {
                 }
                 mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getAccounts());
             }
+            case BORROWED_PANEL -> {
+
+            }
         }
 
         mainView.getContentPane().revalidate();
