@@ -66,6 +66,7 @@ public class Signup extends JFrame {
             }
 
             Account account = new Account(generateRandomID(), enteredUserName, enteredFirstName, enteredLastName, enteredEmail, enteredPassword);
+            clearAll();
             serverController.createAccount(account);
         });
     }
@@ -73,4 +74,12 @@ public class Signup extends JFrame {
     private void addComponent(JComponent component, int y, int x) {
     }
 
+    public void clearAll() {
+        firstName.getTextField().setText("");
+        lastName.getTextField().setText("");
+        userName.getTextField().setText("");
+        password.getTextField().setText("");
+        userName.getTextField().setText("");
+        email.getTextField().setText("");
+    }
 }
