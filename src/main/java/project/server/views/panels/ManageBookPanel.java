@@ -3,6 +3,7 @@ package project.server.views.panels;
 import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
 import project.server.views.components.manageBookPanel.ManageBooksHeader;
+import project.server.views.components.manageBookPanel.ManageBooksSearch;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ColorFactory;
@@ -27,6 +28,7 @@ public class ManageBookPanel extends JPanel {
         this.serverObserver = serverObserver;
         this.serverController = serverController;
 
+        ManageBooksSearch search = new ManageBooksSearch(new Dimension(350, 50));
         ManageBooksHeader manageBooksHeader = new ManageBooksHeader();
         GridLayout gridLayout = new GridLayout(0, 2);
         gridLayout.setVgap(50);
@@ -38,7 +40,8 @@ public class ManageBookPanel extends JPanel {
         header.setLayout(new FlowLayout(FlowLayout.LEFT));
         header.setBackground(Color.WHITE);
 
-        header.add(manageBooksHeader);
+        header.add(manageBooksHeader, BorderLayout.WEST);
+        header.add(search, BorderLayout.EAST);
         header.add(searchButton);
 
         searchButton.setBackground(ColorFactory.blue());
