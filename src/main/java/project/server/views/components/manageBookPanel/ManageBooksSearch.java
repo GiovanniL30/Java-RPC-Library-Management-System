@@ -22,8 +22,8 @@ public class ManageBooksSearch extends JPanel {
         layout.gridx = 0;
         layout.gridy = 1;
         layout.weightx = 2.0;
-        layout.insets = new Insets(0, 70, 0, 0);
-        input = new FieldInput("", new Dimension((int) (dimension.getWidth() / 1.5), (int) (dimension.getHeight() - 50)), 30, 0, false);
+        layout.insets = new Insets(0, 10, 0, 0);
+        input = new FieldInput("", new Dimension((int) (dimension.getWidth()), (int) (dimension.getHeight())), 30, 0, false);
         input.setBackground(Color.white);
         add(input, layout);
 
