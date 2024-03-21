@@ -12,7 +12,6 @@ public class ManageBooksHeader extends JPanel {
     private final ClickableText pendingBorrow = new ClickableText("Pending Borrow", 100, 50, FontFactory.newPoppinsBold(18));
     private final ClickableText pendingReturn = new ClickableText("Pending Return", 100, 50, FontFactory.newPoppinsBold(18));
     private final ClickableText borrowed = new ClickableText("Borrowed", 100, 50, FontFactory.newPoppinsBold(18));
-    private final ManageBooksSearch search = new ManageBooksSearch(new Dimension(200, 50));
     private final JPanel clickablePanel;
 
     public ManageBooksHeader() {
@@ -26,11 +25,7 @@ public class ManageBooksHeader extends JPanel {
         clickablePanel.add(pendingReturn);
         clickablePanel.add(borrowed);
 
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        searchPanel.add(search);
+        add(clickablePanel);
 
-        add(clickablePanel, BorderLayout.WEST);
-        add(searchPanel, BorderLayout.EAST);
     }
 }
