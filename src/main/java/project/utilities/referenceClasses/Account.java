@@ -1,5 +1,8 @@
 package project.utilities.referenceClasses;
 
+import netscape.javascript.JSObject;
+import org.json.simple.JSONObject;
+
 import java.io.Serializable;
 
 public class Account implements Serializable {
@@ -79,4 +82,17 @@ public class Account implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("lastName", lastName);
+        jsonObject.put("firstName", firstName);
+        jsonObject.put("email", email);
+        jsonObject.put("password", password);
+        jsonObject.put("id", accountId);
+
+
+        return jsonObject;
+    }
+
 }
