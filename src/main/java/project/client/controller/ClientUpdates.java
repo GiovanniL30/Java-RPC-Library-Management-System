@@ -1,6 +1,5 @@
-package project.client.RMI;
+package project.client.controller;
 
-import project.client.controller.ClientController;
 import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ServerActions;
 
@@ -8,11 +7,11 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientServant extends UnicastRemoteObject implements ClientRemoteMethods, Serializable {
+public class ClientUpdates extends UnicastRemoteObject implements ClientUpdateReceiver, Serializable {
 
     private final ClientController clientController;
 
-    public ClientServant(ClientController clientController) throws RemoteException {
+    public ClientUpdates(ClientController clientController) throws RemoteException {
         this.clientController = clientController;
     }
 

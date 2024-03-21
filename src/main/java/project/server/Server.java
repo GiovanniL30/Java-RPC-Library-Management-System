@@ -1,6 +1,6 @@
 package project.server;
 
-import project.server.RMI.ServerServant;
+import project.server.controller.ServerUpdates;
 import project.server.controller.ServerController;
 import project.server.views.LibrarianMainFrame;
 import project.utilities.RMI.GlobalRemoteMethods;
@@ -19,7 +19,7 @@ public class Server {
             Registry registry = LocateRegistry.createRegistry(1099);
 
             ServerController serverController = new ServerController();
-            ServerServant servant = new ServerServant(serverController);
+            ServerUpdates servant = new ServerUpdates(serverController);
 
             GlobalRemoteMethods globalRemoteMethods = new GlobalRemoteServant(servant);
             registry.bind("server", globalRemoteMethods);
