@@ -1,6 +1,8 @@
 package project.client.views;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import project.client.controller.ClientController;
 import project.client.views.components.ChatView;
 import project.client.views.components.Header;
@@ -34,7 +36,7 @@ public class ClientMainView extends JFrame {
     private void initializeFrame() {
 
         try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
             UIManager.put("Button.arc", 10);
             UIManager.put("TextComponent.arc", 5);
             UIManager.put("ScrollBar.width", 10);

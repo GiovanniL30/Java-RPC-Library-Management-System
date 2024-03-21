@@ -35,7 +35,6 @@ public interface GlobalRemoteMethods extends Remote {
      */
     Response<String> returnBook(Book book, Student student) throws RemoteException;
 
-
     Response<LinkedList<Book>> getBooks() throws RemoteException;
 
     void logout(Student student) throws RemoteException;
@@ -80,6 +79,8 @@ public interface GlobalRemoteMethods extends Remote {
     Response<LinkedList<Book>> getUnavailableBooks() throws RemoteException;
 
     Response<LinkedList<Book>> getPendingReturningBooks() throws RemoteException;
+    Response<LinkedList<Account>> getAccounts() throws RemoteException;
+    Response<LinkedList<Student>> getStudentAccounts() throws RemoteException;
 
 
 }

@@ -217,6 +217,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     @Override
+    public Response<LinkedList<Account>> getAccounts() throws RemoteException {
+        return new Response<>(true, accountModel.getAccounts());
+    }
+
+    @Override
     public Response<String> broadcastMessage(String message) throws RemoteException {
         try {
             System.out.println("Server broadcasts: " + message);
@@ -261,6 +266,53 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         }
     }
 
+    public Response<LinkedList<Student>> getStudentAccounts() {
+        LinkedList<Student> studentAccounts = new LinkedList<>();
+        try {
+
+
+            LinkedList<Account> accounts = getAccounts().getPayload();
+            LinkedList<Book> books = getBooks().getPayload();
+
+            for(Account account: accounts) {
+                LinkedList<Book> studentBorrowedBooks = new LinkedList<>();
+                LinkedList<Book> studentPendingBooks = new LinkedList<>();
+
+
+                books.stream().filter(book -> {
+
+                    LinkedList<String> borrowers = book.getCurrentBorrowers();
+                    if (borrowers.isEmpty()) return false;
+
+                    for (String id : borrowers) {
+                        if (id.equals(account.getAccountId())) return true;
+                    }
+
+                    return false;
+
+                }).forEach(studentBorrowedBooks::add);
+
+                books.stream().filter(book -> {
+
+                    LinkedList<String> borrowers = book.getPendingBorrowers();
+                    if (borrowers.isEmpty()) return false;
+
+                    for (String id : borrowers) {
+                        if (id.equals(account.getAccountId())) return true;
+                    }
+
+                    return false;
+                }).forEach(studentPendingBooks::add);
+
+                studentAccounts.add(new Student(account, studentBorrowedBooks.size(), studentBorrowedBooks, studentPendingBooks));
+            }
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new Response<>(true, studentAccounts);
+    }
 
     private Student getStudentAccount(Account account) {
         LinkedList<Book> books = bookModel.getBooks();

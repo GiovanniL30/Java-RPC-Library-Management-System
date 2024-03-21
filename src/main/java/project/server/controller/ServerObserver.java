@@ -1,6 +1,7 @@
 package project.server.controller;
 
 import project.client.controller.ClientController;
+import project.server.views.utility.ServerPanels;
 import project.utilities.referenceClasses.Account;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
@@ -12,6 +13,7 @@ import java.util.LinkedList;
 
 public interface ServerObserver {
 
+    void changeFrame(ServerPanels serverPanels);
     void acceptBook(Book book, Student student);
 
     void retrieveBook(Book book, Student student);

@@ -8,17 +8,16 @@ import project.utilities.viewComponents.SearchBar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 
-public class ViewBooksMenu extends JPanel {
+public class ViewBooksHeader extends JPanel {
     private final LinkedList<ClickableText> clickableTexts = new LinkedList<>();
     private final SearchBar searchBar;
     private Button searchButton = new Button("Search", 100, 50, FontFactory.newPoppinsDefault(13));
     private final ClickableText allBooks = new ClickableText("All Books", 100, 50, FontFactory.newPoppinsBold(18));
     private final ClickableText availableBooks = new ClickableText("Available Books", 100, 50, FontFactory.newPoppinsBold(18));
     private final ClickableText unavailableBooks = new ClickableText("Unavailable Books", 100, 50, FontFactory.newPoppinsBold(18));
-    public ViewBooksMenu() {
+    public ViewBooksHeader() {
         setBackground(ColorFactory.blue());
 
         clickableTexts.add(allBooks);

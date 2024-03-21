@@ -1,8 +1,9 @@
 package project.server.controller;
 
 import project.server.views.LibrarianMainFrame;
-import project.server.views.ServerMainPanel;
 import project.server.views.panels.HomePanel;
+import project.server.views.panels.ManageAccountsPanel;
+import project.server.views.panels.ViewBookPanel;
 import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
 import project.utilities.referenceClasses.Account;
@@ -26,6 +27,7 @@ public class ServerController implements ServerObserver, Serializable {
     private  GlobalRemoteMethods serverMethods;
     private Loading loading;
     private LibrarianMainFrame mainView;
+
 
     @Override
     public void acceptBook(Book book, Student student) {
@@ -223,40 +225,42 @@ public class ServerController implements ServerObserver, Serializable {
 
         return new LinkedList<>();
     }
-    public void changeFrame(ServerPanels serverPanels) {
 
+    @Override
+    public void changeFrame(ServerPanels serverPanels) {
+        mainView.getContentPane().remove(1);
         switch (serverPanels) {
 
             case HOME_PANEL -> {
-                SwingWorker<Void, Void> worker = new SwingWorker<>() {
-                    @Override
-                    protected Void doInBackground() {
-                        mainView.setServerContentPanel(new HomePanel(ServerController.this));
-                        return null;
-                    }
-
-                    @Override
-                    protected void done() {
-                        mainView.getServerGuiHeader().setCurrentClickableText(mainView.getServerGuiHeader().getHome());
-                        loading.setVisible(false);
-
-                    }
-                };
-                worker.execute();
-
-                loading.setVisible(true);
+                mainView.getContentPane().add(new HomePanel(this));
+                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getHome());
             }
-            case VIEW_PANEL -> {
-
+            case VIEW_BOOKS_PANEL -> {
+                mainView.getContentPane().add(new ViewBookPanel(this));
+                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getViewBooks());
             }
-            case MANAGE_PANEL -> {
-
+            case MANAGE_BOOK_PANEL -> {
+                //TODO: fix
+                JLabel label = new JLabel("Mange Books");
+                JPanel panel = new JPanel();
+                panel.add(label);
+                mainView.getContentPane().add(panel);
+                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getManageBooks());
             }
-            case ACCOUNTS_PANEL -> {
+            case MANAGE_ACCOUNTS_PANEL -> {
 
+                try {
+                    LinkedList<Student> students = serverMethods.getStudentAccounts().getPayload();
+                    mainView.getContentPane().add(new ManageAccountsPanel(students, this));
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getAccounts());
             }
         }
 
+        mainView.getContentPane().revalidate();
+        mainView.getContentPane().repaint();
     }
     @Override
     public void updateView(ClientActions clientActions) {

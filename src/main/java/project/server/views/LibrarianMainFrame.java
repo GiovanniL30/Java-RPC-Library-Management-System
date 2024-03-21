@@ -7,6 +7,7 @@ import project.server.views.components.ServerGuiHeader;
 import project.server.views.panels.HomePanel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class LibrarianMainFrame extends JFrame {
@@ -14,15 +15,16 @@ public class LibrarianMainFrame extends JFrame {
     public static int FRAME_WIDTH = 1000;
     public static int FRAME_HEIGHT = 800;
 
-    private ServerGuiHeader serverGuiHeader = new ServerGuiHeader();
+    private ServerGuiHeader serverGuiHeader;
     private ServerController serverController;
-    private ServerMainPanel serverMainPanel;
+    private JPanel mainPanel = new JPanel();
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
+        this.serverGuiHeader = new ServerGuiHeader(this.serverController);
         initializeFrame();
-       this.getContentPane().add(serverGuiHeader);
-       this.getContentPane().add(serverMainPanel = new ServerMainPanel(serverController));
+       this.getContentPane().add(serverGuiHeader, BorderLayout.NORTH);
+      this.getContentPane().add(new HomePanel(this.serverController), BorderLayout.CENTER);
     }
 
 
@@ -41,7 +43,12 @@ public class LibrarianMainFrame extends JFrame {
 
         setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setContentPane(mainPanel);
+        mainPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
+        mainPanel.setBackground(Color.WHITE);
+        getContentPane().setLayout(new BorderLayout());
         setResizable(false);
+        setLocationRelativeTo(null);
 
 
 
@@ -49,11 +56,8 @@ public class LibrarianMainFrame extends JFrame {
     }
 
     public ServerGuiHeader getServerGuiHeader() {
-        return serverMainPanel.getServerGuiHeader();
+        return this.serverGuiHeader;
     }
 
-    public void setServerContentPanel(JPanel panel) {
-        serverMainPanel.setServerContentPanel(panel);
-    }
 
 }
