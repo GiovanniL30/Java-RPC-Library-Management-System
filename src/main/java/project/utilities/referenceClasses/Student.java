@@ -72,6 +72,7 @@ public class Student implements Serializable {
         jsonObject.put("email", account.getLastName());
         jsonObject.put("password", account.getFirstName());
         jsonObject.put("totalBorrowedBook", totalBorrowedBooks);
+        jsonObject.put("userName", account.getUserName());
 
         jsonObject.put("pendingBooks", getObjects("pendingBooks"));
         jsonObject.put("borrowedBooks", getObjects("borrowedBooks"));

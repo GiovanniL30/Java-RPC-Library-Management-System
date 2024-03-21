@@ -267,50 +267,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     public Response<LinkedList<Student>> getStudentAccounts() {
-        LinkedList<Student> studentAccounts = new LinkedList<>();
-        try {
-
-
-            LinkedList<Account> accounts = getAccounts().getPayload();
-            LinkedList<Book> books = getBooks().getPayload();
-
-            for(Account account: accounts) {
-                LinkedList<Book> studentBorrowedBooks = new LinkedList<>();
-                LinkedList<Book> studentPendingBooks = new LinkedList<>();
-
-
-                books.stream().filter(book -> {
-
-                    LinkedList<String> borrowers = book.getCurrentBorrowers();
-                    if (borrowers.isEmpty()) return false;
-
-                    for (String id : borrowers) {
-                        if (id.equals(account.getAccountId())) return true;
-                    }
-
-                    return false;
-
-                }).forEach(studentBorrowedBooks::add);
-
-                books.stream().filter(book -> {
-
-                    LinkedList<String> borrowers = book.getPendingBorrowers();
-                    if (borrowers.isEmpty()) return false;
-
-                    for (String id : borrowers) {
-                        if (id.equals(account.getAccountId())) return true;
-                    }
-
-                    return false;
-                }).forEach(studentPendingBooks::add);
-
-                studentAccounts.add(new Student(account, studentBorrowedBooks.size(), studentBorrowedBooks, studentPendingBooks));
-            }
-
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-
+        LinkedList<Student> studentAccounts = accountModel.getStudentAccounts();
         return new Response<>(true, studentAccounts);
     }
 
