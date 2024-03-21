@@ -3,6 +3,7 @@ package project.server.controller;
 import project.server.views.LibrarianMainFrame;
 import project.server.views.panels.HomePanel;
 import project.server.views.panels.ManageAccountsPanel;
+import project.server.views.panels.ManageBookPanel;
 import project.server.views.panels.ViewBookPanel;
 import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
@@ -27,7 +28,7 @@ public class ServerController implements ServerObserver, Serializable {
     private  GlobalRemoteMethods serverMethods;
     private Loading loading;
     private LibrarianMainFrame mainView;
-
+    private ServerObserver serverObserver;
 
     @Override
     public void acceptBook(Book book, Student student) {
@@ -156,7 +157,7 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void broadcastMessage(String message) {
         try {
-            Response<String> response = serverMethods.broadcastMessage(message);
+;            Response<String> response = serverMethods.broadcastMessage(message);
             if (response.isSuccess()) {
                 System.out.println("Message broadcasted successfully.");
             } else {
@@ -240,12 +241,13 @@ public class ServerController implements ServerObserver, Serializable {
                 mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getViewBooks());
             }
             case MANAGE_BOOK_PANEL -> {
-                //TODO: fix
-                JLabel label = new JLabel("Mange Books");
-                JPanel panel = new JPanel();
-                panel.add(label);
-                mainView.getContentPane().add(panel);
-                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getManageBooks());
+                try {
+                    LinkedList<Student> students = serverMethods.getStudentAccounts().getPayload();
+                    mainView.getContentPane().add(new ManageBookPanel(getBooks(), students, serverObserver, this));
+                }catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getAccounts());
             }
             case MANAGE_ACCOUNTS_PANEL -> {
 
