@@ -246,7 +246,20 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> deleteAccount(Student account) throws RemoteException {
-        return null;
+        try {
+            LinkedList<Student> studentAccounts = accountModel.getStudentAccounts();
+
+            for (Student student : studentAccounts) {
+                if (student.getAccount().getAccountId().equals(account.getAccount().getAccountId())) {
+                    studentAccounts.remove(student);
+                    accountModel.saveStudentAccountData(studentAccounts);
+                    return new Response<>(true, "Account deleted successfully.");
+                }
+            }
+            return new Response<>(false, "Account not found.");
+        } catch (Exception e) {
+            return  new Response<>(false, e.getMessage());
+        }
     }
 
     @Override
