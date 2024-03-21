@@ -59,7 +59,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public synchronized Response<String> borrowBook(Book book, Student student) throws RemoteException {
         System.out.println(student.getAccount().getUserName() + " Requested to borrow the book " + book.getBookTitle() + "\n\n");
 
-        int latestBookCopies = getBooks().getPayload().stream().filter(b -> b.getBookId().equals(book.getBookId())).findFirst().get().getCopies();
+        int latestBookCopies = getUpdatedBook(book.getBookId()).getCopies();
 
         if(latestBookCopies == 0) {
             return new Response<>(false, "Unfortunately, there are no copies of the book left");
@@ -167,7 +167,13 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> cancelPending(Book book, Student student) throws RemoteException {
-        return null;
+        System.out.println("Server cancels" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
+
+        if (bookModel.removePending(book.getBookId(), student)) {
+            clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.CANCEL_BOOK_PENDING);
+            return new Response<>(true, "Book was successfully cancelled");
+        }
+        return new Response<>(false, "Book was not cancelled");
     }
 
     @Override
@@ -176,8 +182,56 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     @Override
+    public Response<LinkedList<Book>> getAvailableBooks() throws RemoteException {
+        System.out.println("Server shows the available number of books");
+        return new Response<>(true, bookModel.getAvailableBooks());
+    }
+
+    @Override
+    public Response<LinkedList<Book>> getUnavailableBooks() throws RemoteException {
+        System.out.println("Server shows the unavailable number of books");
+        return new Response<>(true, bookModel.getUnavailableBooks());
+    }
+
+    @Override
+    public Response<LinkedList<Book>> getCurrentBorrowedBooks() throws RemoteException {
+        System.out.println("Server shows the number of borrowed books with current borrowers");
+        return new Response<>(true, bookModel.getBooksWithCurrentBorrowers());
+    }
+
+    public Response<LinkedList<Book>> getPreviousBorrowedBooks() throws RemoteException {
+        System.out.println("Server shows the number of borrowed books with previous borrowers");
+        return new Response<>(true, bookModel.getBooksWithPreviousBorrowers());
+    }
+
+    @Override
+    public Response<LinkedList<Book>> getPendingBorrowingBooks() throws RemoteException {
+        System.out.println("Server shows the number of pending books that were requested for borrowing");
+        return new Response<>(true, bookModel.getBooksWithPendingBorrowers());
+    }
+
+    @Override
+    public Response<LinkedList<Book>> getPendingReturningBooks() throws RemoteException {
+        System.out.println("Server shows the number of pending books that were requested for returning");
+        return new Response<>(true, bookModel.getBooksWithPendingBookReturners());
+    }
+
+    @Override
+    public Response<LinkedList<Account>> getAccounts() throws RemoteException {
+        return new Response<>(true, accountModel.getAccounts());
+    }
+
+    @Override
     public Response<String> broadcastMessage(String message) throws RemoteException {
-        return null;
+        try {
+            System.out.println("Server broadcasts: " + message);
+            for (ClientRemoteMethods clientRemoteMethods : clientsHashMap.values()) {
+                clientRemoteMethods.receiveMessage(message, null);
+            }
+            return new Response<>(true, "Message broadcasted successfully.");
+        } catch (Exception e) {
+            return new Response<>(false, "Failed to broadcast message: " + e.getMessage());
+        }
     }
 
     @Override
@@ -212,6 +266,53 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         }
     }
 
+    public Response<LinkedList<Student>> getStudentAccounts() {
+        LinkedList<Student> studentAccounts = new LinkedList<>();
+        try {
+
+
+            LinkedList<Account> accounts = getAccounts().getPayload();
+            LinkedList<Book> books = getBooks().getPayload();
+
+            for(Account account: accounts) {
+                LinkedList<Book> studentBorrowedBooks = new LinkedList<>();
+                LinkedList<Book> studentPendingBooks = new LinkedList<>();
+
+
+                books.stream().filter(book -> {
+
+                    LinkedList<String> borrowers = book.getCurrentBorrowers();
+                    if (borrowers.isEmpty()) return false;
+
+                    for (String id : borrowers) {
+                        if (id.equals(account.getAccountId())) return true;
+                    }
+
+                    return false;
+
+                }).forEach(studentBorrowedBooks::add);
+
+                books.stream().filter(book -> {
+
+                    LinkedList<String> borrowers = book.getPendingBorrowers();
+                    if (borrowers.isEmpty()) return false;
+
+                    for (String id : borrowers) {
+                        if (id.equals(account.getAccountId())) return true;
+                    }
+
+                    return false;
+                }).forEach(studentPendingBooks::add);
+
+                studentAccounts.add(new Student(account, studentBorrowedBooks.size(), studentBorrowedBooks, studentPendingBooks));
+            }
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new Response<>(true, studentAccounts);
+    }
 
     private Student getStudentAccount(Account account) {
         LinkedList<Book> books = bookModel.getBooks();
@@ -239,6 +340,16 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         }
 
         return new Student(account, borrowedBooks.size(), pendingBooks, borrowedBooks);
+
+    }
+
+    private synchronized Book getUpdatedBook(String bookId) {
+
+        try {
+            return getBooks().getPayload().stream().filter(book -> book.getBookId().equals(bookId)).findAny().get();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

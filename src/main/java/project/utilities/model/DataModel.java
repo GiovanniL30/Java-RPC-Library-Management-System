@@ -242,7 +242,10 @@ public class DataModel {
                                 if(!isClient){
                                     JSONObject prevBorrower = new JSONObject();
                                     prevBorrower.put("id", object.get("id"));
-                                    prevBorrower.put("dateRetrieved", Calendar.getInstance().getTime().toString());
+
+                                    //will be handling this soon
+
+                                    //prevBorrower.put("dateRetrieved", Calendar.getInstance().getTime().toString());
                                     prevBookBorrowers.add(prevBorrower);
                                     //TODO: add more
                                 }else {
