@@ -1,6 +1,8 @@
 package project.server.views.components.viewBookPanel;
 
+import project.server.views.LibrarianMainFrame;
 import project.server.views.components.ClickableText;
+import project.server.views.components.ServerSearchBar;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;
@@ -12,22 +14,50 @@ import java.util.LinkedList;
 
 public class ViewBooksHeader extends JPanel {
     private final LinkedList<ClickableText> clickableTexts = new LinkedList<>();
-    private final SearchBar searchBar;
-    private Button searchButton = new Button("Search", 100, 50, FontFactory.newPoppinsDefault(13));
-    private final ClickableText allBooks = new ClickableText("All Books", 100, 50, FontFactory.newPoppinsBold(18));
-    private final ClickableText availableBooks = new ClickableText("Available Books", 100, 50, FontFactory.newPoppinsBold(18));
-    private final ClickableText unavailableBooks = new ClickableText("Unavailable Books", 100, 50, FontFactory.newPoppinsBold(18));
+    private final ServerSearchBar searchBar;
+    private final Button searchButton = new Button("Search", 50, 50, FontFactory.newPoppinsDefault(13));
+    private final ClickableText allBooks = new ClickableText("All Books", 50, 50, FontFactory.newPoppinsBold(15));
+    private final ClickableText availableBooks = new ClickableText("Available Books", 50, 50, FontFactory.newPoppinsBold(15));
+    private final ClickableText unavailableBooks = new ClickableText("Unavailable Books", 50, 50, FontFactory.newPoppinsBold(15));
+    private final JPanel textHeaderPanel = new JPanel();
+    private final JPanel searchHeaderPanel = new JPanel();
     public ViewBooksHeader() {
-        setBackground(ColorFactory.blue());
+        setLayout(new GridBagLayout());
+        setPreferredSize(new Dimension(1000, 100));
+
+        setBackground(Color.white);
 
         clickableTexts.add(allBooks);
         clickableTexts.add(availableBooks);
         clickableTexts.add(unavailableBooks);
 
-        searchBar = new SearchBar(new Dimension(400, 100), false);
+        searchBar = new ServerSearchBar(new Dimension(500, 200), false);
 
         searchButton.setBackground(ColorFactory.blue());
         searchButton.setForeground(Color.white);
+
+
+        JPanel searchBarPanel = new JPanel();
+        JPanel allBooksPanel = new JPanel();
+        JPanel availableBooksPanel = new JPanel();
+        JPanel unavailableBooksPanel = new JPanel();
+
+        textHeaderPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        allBooksPanel.add(allBooks);
+        availableBooksPanel.add(availableBooks);
+        unavailableBooksPanel.add(unavailableBooks);
+
+        textHeaderPanel.add(allBooksPanel);
+        textHeaderPanel.add(availableBooksPanel);
+        textHeaderPanel.add(unavailableBooksPanel);
+
+        searchBarPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        searchBarPanel.add(searchBar);
+        searchBarPanel.add(searchButton);
+
+        searchHeaderPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        searchHeaderPanel.add(searchBarPanel);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(0, 20, 0, 20);
@@ -35,17 +65,12 @@ public class ViewBooksHeader extends JPanel {
 
         constraints.gridy = 0;
         constraints.gridx = 0;
+        constraints.fill = 2;
 
-        add(allBooks, constraints);
+        add(textHeaderPanel, constraints);
 
         constraints.gridx = 1;
-        add(availableBooks, constraints);
-
-        constraints.gridx = 2;
-        add(unavailableBooks, constraints);
-
-        constraints.gridx = 3;
-        add(searchBar, constraints);
+        add(searchHeaderPanel, constraints);
     }
 
     public void setCurrentClickableText(ClickableText currentText) {
@@ -73,4 +98,6 @@ public class ViewBooksHeader extends JPanel {
     public ClickableText getUnavailableBooks() {
         return unavailableBooks;
     }
+    public JPanel getTextHeaderPanel() { return textHeaderPanel; }
+    public JPanel getSearchHeaderPanel(){return searchHeaderPanel; }
 }

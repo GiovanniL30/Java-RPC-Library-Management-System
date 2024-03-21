@@ -5,14 +5,20 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import project.utilities.referenceClasses.Account;
+import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Response;
+import project.utilities.referenceClasses.Student;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 
 public class AccountModel extends DataModel {
-    
+
+    private String accountJSONfilePath = "src/main/resources/data/account.json";
     public LinkedList<Account> getAccounts() {
         
         LinkedList<Account> accounts = new LinkedList<>();
@@ -20,7 +26,7 @@ public class AccountModel extends DataModel {
         
         try {
 
-            JSONObject json = (JSONObject) parser.parse(new FileReader("src/main/resources/data/account.json"));
+            JSONObject json = (JSONObject) parser.parse(new FileReader(accountJSONfilePath));
             JSONArray jsonArray = (JSONArray) json.get("accounts");
             
             for(Object o: jsonArray) {
@@ -38,6 +44,103 @@ public class AccountModel extends DataModel {
     }
 
 
+    public void addAccount(Student account) {
+        LinkedList<Student> accounts = getStudentAccounts();
+        accounts.addFirst(account);
+
+        saveStudentAccountData(accounts);
+
+    }
+
+    public void deleteAccount(Student student) {
+        LinkedList<Student> accounts = getStudentAccounts();
+
+        for(int i = 0; i < accounts.size(); i++) {
+
+            if(accounts.get(i).getAccount().getAccountId().equals(student.getAccount().getAccountId())) {
+                accounts.remove(i);
+                saveStudentAccountData(accounts);
+                break;
+            }
+
+        }
+
+
+    }
+
+    public void editAccount(Student student) {
+        LinkedList<Student> accounts = getStudentAccounts();
+
+        for(int i = 0; i < accounts.size(); i++) {
+
+            if(accounts.get(i).getAccount().getAccountId().equals(student.getAccount().getAccountId())) {
+                accounts.remove(i);
+                accounts.add(i, student);
+                saveStudentAccountData(accounts);
+                break;
+            }
+
+        }
+
+
+    }
+
+    public LinkedList<Student> getStudentAccounts() {
+        LinkedList<Student> studentAccounts = new LinkedList<>();
+
+
+        LinkedList<Account> accounts = getAccounts();
+        LinkedList<Book> books = getBooks();
+
+        for(Account account: accounts) {
+            LinkedList<Book> studentBorrowedBooks = new LinkedList<>();
+            LinkedList<Book> studentPendingBooks = new LinkedList<>();
+
+
+            books.stream().filter(book -> {
+
+                LinkedList<String> borrowers = book.getCurrentBorrowers();
+                if (borrowers.isEmpty()) return false;
+
+                for (String id : borrowers) {
+                    if (id.equals(account.getAccountId())) return true;
+                }
+
+                return false;
+
+            }).forEach(studentBorrowedBooks::add);
+
+            books.stream().filter(book -> {
+
+                LinkedList<String> borrowers = book.getPendingBorrowers();
+                if (borrowers.isEmpty()) return false;
+
+                for (String id : borrowers) {
+                    if (id.equals(account.getAccountId())) return true;
+                }
+
+                return false;
+            }).forEach(studentPendingBooks::add);
+
+            studentAccounts.add(new Student(account, studentBorrowedBooks.size(), studentBorrowedBooks, studentPendingBooks));
+        }
+
+        return studentAccounts;
+    }
+
+
+
+    public void saveStudentAccountData(LinkedList<Student> students) {
+        JSONObject jsonObject = readJSON(accountJSONfilePath);
+        JSONArray studentsArray = new JSONArray();
+
+        for (Student account : students) {
+            studentsArray.add(account.toJSON());
+        }
+
+        jsonObject.put("accounts", studentsArray);
+        saveJSON(jsonObject, accountJSONfilePath);
+    }
 
     private static Account getAccount(JSONObject o) {
         String id = (String) o.get("id");
@@ -47,6 +150,46 @@ public class AccountModel extends DataModel {
         String email = (String) o.get("email");
         String password = (String) o.get("password");
         return new Account(id, userName, firstName ,lastName, email,  password);
+    }
+
+    public boolean createAccount (Account account) {
+        try {
+            JSONArray jsonArray;
+
+            try (FileReader reader = new FileReader("src/main/resources/data/account.json")){
+                JSONParser parser = new JSONParser();
+                JSONObject obj = (JSONObject) parser.parse(reader);
+                jsonArray = (JSONArray) obj.get("accounts");
+            }
+
+            for (Object obj : jsonArray) {
+                JSONObject jAccount = (JSONObject) obj;
+                String userName = (String) jAccount.get("userName");
+                if (userName.equals(account.getUserName())) {
+                    return false;
+                }
+            }
+
+            JSONObject newAccount = new JSONObject();
+            newAccount.put("id", account.getAccountId());
+            newAccount.put("userName", account.getUserName());
+            newAccount.put("firstName", account.getFirstName());
+            newAccount.put("lastName", account.getLastName());
+            newAccount.put("email", account.getEmail());
+            newAccount.put("password", account.getPassword());
+            jsonArray.add(newAccount);
+
+            JSONObject updatedAccounts = new JSONObject();
+            updatedAccounts.put("accounts", jsonArray);
+
+            try (FileWriter writer = new FileWriter("src/main/resources/data/account.json")) {
+                writer.write(updatedAccounts.toJSONString());
+            }
+            return true;
+
+        } catch (IOException | ParseException e) {
+            throw  new RuntimeException(e);
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package project.server.views.panels;
 
-import project.client.controller.ClientController;
 import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
 import project.server.views.components.manageBookPanel.ManageBooksHeader;
@@ -103,7 +102,6 @@ public class ManageBookPanel extends JPanel {
             constraints.gridy = 1;
             add(label, constraints);
 
-            //button.addActionListener(e -> serverController.openBook(book));
         }
 
     }
