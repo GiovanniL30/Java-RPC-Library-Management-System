@@ -251,7 +251,14 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> createAccount(Account account) throws RemoteException {
-        return null;
+        try {
+            if (accountModel.createAccount(account)) {
+                return  new Response<>(true, "Account successfully created.");
+            }
+            return new Response<>(false, "Account now created.");
+        } catch (Exception e) {
+            return  new Response<>(false, e.getMessage());
+        }
     }
 
     @Override

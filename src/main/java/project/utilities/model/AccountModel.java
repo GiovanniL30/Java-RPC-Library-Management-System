@@ -11,6 +11,7 @@ import project.utilities.referenceClasses.Student;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
@@ -151,5 +152,44 @@ public class AccountModel extends DataModel {
         return new Account(id, userName, firstName ,lastName, email,  password);
     }
 
+    public boolean createAccount (Account account) {
+        try {
+            JSONArray jsonArray;
+
+            try (FileReader reader = new FileReader("src/main/resources/data/account.json")){
+                JSONParser parser = new JSONParser();
+                JSONObject obj = (JSONObject) parser.parse(reader);
+                jsonArray = (JSONArray) obj.get("accounts");
+            }
+
+            for (Object obj : jsonArray) {
+                JSONObject jAccount = (JSONObject) obj;
+                String userName = (String) jAccount.get("userName");
+                if (userName.equals(account.getUserName())) {
+                    return false;
+                }
+            }
+
+            JSONObject newAccount = new JSONObject();
+            newAccount.put("id", account.getAccountId());
+            newAccount.put("userName", account.getUserName());
+            newAccount.put("firstName", account.getFirstName());
+            newAccount.put("lastName", account.getLastName());
+            newAccount.put("email", account.getEmail());
+            newAccount.put("password", account.getPassword());
+            jsonArray.add(newAccount);
+
+            JSONObject updatedAccounts = new JSONObject();
+            updatedAccounts.put("accounts", jsonArray);
+
+            try (FileWriter writer = new FileWriter("src/main/resources/data/account.json")) {
+                writer.write(updatedAccounts.toJSONString());
+            }
+            return true;
+
+        } catch (IOException | ParseException e) {
+            throw  new RuntimeException(e);
+        }
+    }
 
 }

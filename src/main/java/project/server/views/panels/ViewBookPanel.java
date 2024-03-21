@@ -5,16 +5,20 @@ import project.server.views.components.viewBookPanel.BookList;
 import project.server.views.components.viewBookPanel.ViewBooksHeader;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ViewBookPanel extends JPanel {
 
     private ServerController serverController;
-    private ViewBooksHeader header;
+    private ViewBooksHeader header = new ViewBooksHeader();
     private BookList bookList;
 
     public ViewBookPanel(ServerController serverController) {
         this.serverController = serverController;
-        add(new JLabel("View Book"));
+        header.setLayout(new FlowLayout(FlowLayout.LEFT));
+        header.add(header.getTextHeaderPanel());
+        header.add(header.getSearchHeaderPanel());
+        add(header);
     }
 
 }
