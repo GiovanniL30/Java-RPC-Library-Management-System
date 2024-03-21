@@ -1,6 +1,5 @@
 package project.client.controller;
 
-import project.client.RMI.ClientServant;
 import project.client.utility.ClientPanels;
 import project.client.views.ClientMainView;
 import project.client.views.Login;
@@ -30,13 +29,13 @@ public class ClientController implements ClientObserver {
     private Student loggedInAccount;
     private BookViewer bookViewer;
     private ChatView chatView;
-    private ClientServant clientServant;
+    private ClientUpdates clientUpdates;
 
     public ClientController() {
 
         try {
             serverMethods = (GlobalRemoteMethods) LocateRegistry.getRegistry(1099).lookup("server");
-            clientServant = new ClientServant(this);
+            clientUpdates = new ClientUpdates(this);
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +62,7 @@ public class ClientController implements ClientObserver {
         new SwingWorker<Response<Student>, Void>() {
             @Override
             protected Response<Student> doInBackground() throws Exception {
-                return serverMethods.logIn(credential, clientServant);
+                return serverMethods.logIn(credential, clientUpdates);
             }
 
             @Override
