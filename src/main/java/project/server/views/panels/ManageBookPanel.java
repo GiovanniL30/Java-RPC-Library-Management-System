@@ -2,8 +2,8 @@ package project.server.views.panels;
 
 import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
-import project.server.views.components.manageBookPanel.ManageBooksHeader;
-import project.server.views.components.manageBookPanel.ManageBooksSearch;
+import project.server.views.components.manageBookPanel.*;
+import project.server.views.utility.ServerPanels;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ColorFactory;
@@ -22,91 +22,68 @@ public class ManageBookPanel extends JPanel {
     private final JPanel panel;
     private final ServerController serverController;
 
-    public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver, ServerController serverController){
+    private final ManageBooksHeader manageBooksHeader;
+
+    public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver, ServerController serverController) {
         this.books = books;
         this.students = students;
         this.serverObserver = serverObserver;
         this.serverController = serverController;
 
+        // Initialize ManageBooksHeader
+        manageBooksHeader = new ManageBooksHeader(serverController, this); // Pass reference to this ManageBookPanel
+
+        // Initialize ManageBooksSearch and Search Button
         ManageBooksSearch search = new ManageBooksSearch(new Dimension(350, 50));
-        ManageBooksHeader manageBooksHeader = new ManageBooksHeader(serverController);
-        GridLayout gridLayout = new GridLayout(0, 2);
-        gridLayout.setVgap(50);
-        gridLayout.setHgap(10);
-
         Button searchButton = new Button("Search", 100, 50, FontFactory.newPoppinsDefault(13));
-
-        JPanel header = new JPanel();
-        header.setLayout(new FlowLayout(FlowLayout.LEFT));
-        header.setBackground(Color.WHITE);
-
-        header.add(manageBooksHeader, BorderLayout.WEST);
-        header.add(search, BorderLayout.EAST);
-        header.add(searchButton);
-
         searchButton.setBackground(ColorFactory.blue());
         searchButton.setForeground(Color.WHITE);
 
-        add(header);
+        // Header Panel
+        JPanel header = new JPanel();
+        header.setLayout(new FlowLayout(FlowLayout.LEFT));
+        header.setBackground(Color.WHITE);
+        header.add(manageBooksHeader);
+        header.add(search);
+        header.add(searchButton);
 
+        // Main Panel with ScrollPane
         panel = new JPanel();
-        panel.setLayout(gridLayout);
+        panel.setLayout(new GridLayout(0, 2)); // Set GridLayout here
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(920, 400));
-        add(scrollPane);
 
-        populateBookList(books, false);
+        // Add components to ManageBookPanel
+        setLayout(new BorderLayout());
+        add(header, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
 
+        // By default, show BorrowedPanel
+        switchToPanel(ServerPanels.BORROWED_PANEL);
     }
 
-    public void populateBookList(LinkedList<Book> books, boolean isUpdate){
-        new SwingWorker<>(){
-            @Override
-            protected Object doInBackground(){
-
-                if (isUpdate) {
-                    panel.removeAll();
-                }
-
-                if (books.isEmpty()) {
-                    panel.revalidate();
-                    panel.repaint();
-                }
-
-                for (Book book : books) {
-                    panel.add(new BookCardComponent(book, serverController));
-                    panel.revalidate();
-                    panel.repaint();
-                }
-
-                return null;
-            }
-
-
-        }.execute();
-    }
-
-    private static class BookCardComponent extends JPanel {
-
-        private BookCardComponent(Book book, ServerController serverController) {
-
-            setSize(new Dimension(100, 200));
-
-            IconButton button = new IconButton(book.getImagePath(), 250, 300);
-            JLabel label = new JLabel(book.getBookTitle());
-            label.setFont(FontFactory.newPoppinsBold(16));
-
-            setLayout(new GridBagLayout());
-
-            GridBagConstraints constraints = new GridBagConstraints();
-            constraints.gridy = 0;
-            constraints.gridx = 0;
-            add(button, constraints);
-            constraints.gridy = 1;
-            add(label, constraints);
-
+    // Method to switch between panels based on ServerPanels enum
+    public void switchToPanel(ServerPanels panel) {
+        switch (panel) {
+            case BORROWED_PANEL:
+                replacePanel(new BorrowedPanel());
+                break;
+            case PENDING_BORROW_PANEL:
+                replacePanel(new PendingBorrowPanel());
+                break;
+            case PENDING_RETURN_PANEL:
+                replacePanel(new PendingReturnPanel());
+                break;
+            default:
+                // Handle default case (optional)
         }
-
     }
 
+    // Method to replace the current panel with a new panel
+    private void replacePanel(JPanel newPanel) {
+        panel.removeAll();
+        panel.add(newPanel);
+        revalidate();
+        repaint();
+    }
 }
