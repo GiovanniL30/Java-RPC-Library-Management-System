@@ -9,9 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ManageBooksSearch extends JPanel {
-    private final FieldInput input;
     private final Button cancelSearch;
-
+    private final JTextField inputField;
     public ManageBooksSearch(Dimension dimension) {
         setPreferredSize(dimension);
         setLayout(new GridBagLayout());
@@ -20,26 +19,26 @@ public class ManageBooksSearch extends JPanel {
         GridBagConstraints layout = new GridBagConstraints();
         layout.anchor = GridBagConstraints.WEST;
         layout.gridx = 0;
-        layout.gridy = 1;
-        layout.weightx = 2.0;
-        layout.insets = new Insets(0, 10, 0, 0);
-        input = new FieldInput("", new Dimension((int) (dimension.getWidth()), (int) (dimension.getHeight())), 30, 0, false);
-        input.setBackground(Color.white);
-        add(input, layout);
+        layout.gridy = 0;
+        layout.weightx = 1.0;
+        layout.fill = GridBagConstraints.HORIZONTAL;
+        layout.insets = new Insets(0, 10, 0, 10);
+        inputField = new JTextField();
+        add(inputField, layout);
 
         cancelSearch = new Button("X", 50, 50, FontFactory.newPoppinsDefault(13));
         layout.gridx = 2;
         layout.weightx = 0;
         add(cancelSearch, layout);
     }
-    public String getSearch() {
-        return input.getInput();
-    }
-
-    public Button getCancelButton() {
-        return cancelSearch;
-    }
-    public FieldInput getInput() {
-        return input;
-    }
+//    public String getSearch() {
+//        return inputField;
+//    }
+//
+//    public Button getCancelButton() {
+//        return cancelSearch;
+//    }
+//    public FieldInput getInput() {
+//        return inputField;
+//    }
 }
