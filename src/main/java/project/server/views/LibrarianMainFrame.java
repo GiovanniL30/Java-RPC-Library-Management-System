@@ -4,7 +4,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import project.server.GlobalRemoteServant;
 import project.server.controller.ServerController;
 import project.server.views.components.ServerGuiHeader;
+import project.server.views.components.viewBookPanel.ViewBooksHeader;
 import project.server.views.panels.HomePanel;
+import project.server.views.panels.ViewBookPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,12 +18,15 @@ public class LibrarianMainFrame extends JFrame {
     public static int FRAME_HEIGHT = 800;
 
     private ServerGuiHeader serverGuiHeader;
+    private ViewBooksHeader viewBooksHeader;
     private ServerController serverController;
     private JPanel mainPanel = new JPanel();
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
         this.serverGuiHeader = new ServerGuiHeader(this.serverController);
+        this.viewBooksHeader = new ViewBooksHeader(this.serverController);
+
         initializeFrame();
        this.getContentPane().add(serverGuiHeader, BorderLayout.NORTH);
       this.getContentPane().add(new HomePanel(this.serverController), BorderLayout.CENTER);
@@ -58,6 +63,8 @@ public class LibrarianMainFrame extends JFrame {
     public ServerGuiHeader getServerGuiHeader() {
         return this.serverGuiHeader;
     }
-
+    public ViewBooksHeader getViewBooksHeader() {
+        return this.viewBooksHeader;
+    }
 
 }
