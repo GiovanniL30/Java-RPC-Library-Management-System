@@ -21,4 +21,6 @@ public class ColorFactory implements Serializable {
 
     public static Color purple() { return new Color(120, 37, 198); }
 
+    public static Color white() { return new Color(255, 255, 255); }
+
 }
