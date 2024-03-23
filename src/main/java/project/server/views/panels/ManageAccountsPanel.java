@@ -3,6 +3,7 @@ package project.server.views.panels;
 import project.server.controller.ServerController;
 import project.server.views.components.ClickableText;
 import project.utilities.referenceClasses.Student;
+import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Picture;
 
@@ -67,19 +68,19 @@ public class ManageAccountsPanel extends JPanel{
 
             Button banButton = new Button("Ban");
             banButton.setForeground(Color.white);
-            banButton.setBackground(Color.getColor("7825C6FF"));
+            banButton.setBackground(ColorFactory.purple());
 
             Button unbanButton = new Button("Unban");
             unbanButton.setForeground(Color.white);
-            unbanButton.setBackground(Color.getColor("57955CFF"));
+            unbanButton.setBackground(ColorFactory.green());
 
             Button deleteAccount = new Button("Delete");
             deleteAccount.setForeground(Color.white);
-            deleteAccount.setBackground(Color.getColor("DA5C5CFF"));
+            deleteAccount.setBackground(ColorFactory.red());
 
             Button editAccount = new Button("Edit Pass");
-            editAccount.setForeground(Color.WHITE);
-            editAccount.setBackground(Color.getColor("3163CDFF"));
+            editAccount.setForeground(Color.white);
+            editAccount.setBackground(ColorFactory.blue());
 
             // Creating labels for account information
             JLabel userName = new JLabel("Username: " + account.getAccount().getUserName());
