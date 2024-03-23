@@ -7,10 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class BookList extends JPanel {
+public class ViewBooksList extends JPanel {
     private final ServerController serverController;
 
-    public BookList(LinkedList<Book> books, ServerController serverController) {
+    public ViewBooksList(LinkedList<Book> books, ServerController serverController) {
 
         this.serverController = serverController;
 
@@ -20,7 +20,7 @@ public class BookList extends JPanel {
         holder.setLayout(gridLayout);
 
         for (Book book : books) {
-            holder.add(new ViewBookCard(book));
+            holder.add(new ViewBooksCard(book));
         }
 
         JScrollPane scrollPane = new JScrollPane(holder);

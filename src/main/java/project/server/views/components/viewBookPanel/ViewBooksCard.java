@@ -12,12 +12,12 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class ViewBookCard extends JPanel implements BookCard {
+public class ViewBooksCard extends JPanel implements BookCard {
     private ServerController serverController;;
     private Button editBookButton = new Button("Edit", 100, 50, FontFactory.newPoppinsDefault(13));
     private Button deleteBookButton = new Button("Delete", 100, 50, FontFactory.newPoppinsDefault(13));
     private Button prevOwnersButton = new Button("Previous Owners", 130, 50, FontFactory.newPoppinsDefault(13));
-    public ViewBookCard(Book book) {
+    public ViewBooksCard(Book book) {
         setSize(new Dimension(300, 200));
         setLayout(new GridBagLayout());
         setBorder(new EmptyBorder(0, 10, 0, 20));
