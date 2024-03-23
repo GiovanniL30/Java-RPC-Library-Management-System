@@ -14,17 +14,19 @@ public class ViewBooksList extends JPanel {
 
         this.serverController = serverController;
 
+        setBackground(Color.white);
         JPanel holder = new JPanel();
         GridLayout gridLayout = new GridLayout(0, 1);
         gridLayout.setVgap(20);
         holder.setLayout(gridLayout);
+        holder.setBackground(Color.white);
 
         for (Book book : books) {
             holder.add(new ViewBooksCard(book));
         }
 
         JScrollPane scrollPane = new JScrollPane(holder);
-        scrollPane.setPreferredSize(new Dimension(900, 400));
+        scrollPane.setPreferredSize(new Dimension(900, 550));
 
         add(scrollPane);
 

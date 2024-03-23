@@ -21,8 +21,11 @@ public class ViewBooksCard extends JPanel implements BookCard {
         setSize(new Dimension(300, 200));
         setLayout(new GridBagLayout());
         setBorder(new EmptyBorder(0, 10, 0, 20));
+        setBackground(Color.white);
 
         Picture bookPicture = new Picture(book.getImagePath(), 130, 200);
+        bookPicture.setBackground(Color.white);
+
         JLabel bookTitle = new JLabel(book.getBookTitle());
         bookTitle.setFont(FontFactory.newPoppinsBold(18));
         JLabel bookCopies = new JLabel("Copies: " + book.getCopies());
@@ -45,17 +48,25 @@ public class ViewBooksCard extends JPanel implements BookCard {
         JPanel prevButtonPanel = new JPanel();
 
         bookInfoPanel.setLayout(new BoxLayout(bookInfoPanel, BoxLayout.Y_AXIS));
+        bookInfoPanel.setBackground(Color.white);
 
         bookTitlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookTitlePanel.setBackground(Color.white);
+
         bookCopiesPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookCopiesPanel.setBackground(Color.white);
+
         bookTitlePanel.add(bookTitle);
         bookCopiesPanel.add(bookCopies);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        buttonsPanel.setBackground(Color.white);
+
         buttonsPanel.add(editBookButton);
         buttonsPanel.add(deleteBookButton);
 
         prevButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        prevButtonPanel.setBackground(Color.white);
         prevButtonPanel.add(prevOwnersButton);
 
         bookInfoPanel.add(bookTitlePanel);
@@ -64,6 +75,7 @@ public class ViewBooksCard extends JPanel implements BookCard {
         bookInfoPanel.add(prevButtonPanel);
 
         bookPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookPanel.setBackground(Color.white);
         bookPanel.add(bookPicture);
         bookPanel.add(bookInfoPanel);
 
