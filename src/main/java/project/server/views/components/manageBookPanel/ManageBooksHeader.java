@@ -30,9 +30,9 @@ public class ManageBooksHeader extends JPanel {
         JPanel clickablePanel = new JPanel();
         clickablePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        pendingBorrow = new ClickableText("Pending Borrow", 100, 50, FontFactory.newPoppinsBold(18));
-        pendingReturn = new ClickableText("Pending Return", 100, 50, FontFactory.newPoppinsBold(18));
-        borrowed = new ClickableText("Borrowed", 100, 50, FontFactory.newPoppinsBold(18));
+        pendingBorrow = new ClickableText("Pending Borrow", 80, 50, FontFactory.newPoppinsBold(14));
+        pendingReturn = new ClickableText("Pending Return", 80, 50, FontFactory.newPoppinsBold(14));
+        borrowed = new ClickableText("Borrowed", 80, 50, FontFactory.newPoppinsBold(14));
 
         clickablePanel.add(pendingBorrow);
         clickablePanel.add(pendingReturn);

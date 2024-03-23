@@ -2,6 +2,7 @@ package project.server.views.panels;
 
 import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
+import project.server.views.components.manageBookPanel.ManageBooksSearch;
 import project.server.views.components.manageBookPanel.*;
 import project.server.views.utility.ServerPanels;
 import project.utilities.referenceClasses.Book;
@@ -9,7 +10,6 @@ import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;
-import project.utilities.viewComponents.IconButton;
 
 import javax.swing.*;
 import java.awt.*;
