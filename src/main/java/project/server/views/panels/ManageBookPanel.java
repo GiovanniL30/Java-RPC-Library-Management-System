@@ -66,10 +66,10 @@ public class ManageBookPanel extends JPanel {
     public void switchToPanel(ServerPanels panel) {
         switch (panel) {
             case BORROWED_PANEL:
-                replacePanel(new BorrowedPanel());
+                replacePanel(new BorrowedPanel(serverObserver));
                 break;
             case PENDING_BORROW_PANEL:
-                replacePanel(new PendingBorrowPanel());
+                replacePanel(new PendingBorrowPanel(serverObserver));
                 break;
             case PENDING_RETURN_PANEL:
                 replacePanel(new PendingReturnPanel());
