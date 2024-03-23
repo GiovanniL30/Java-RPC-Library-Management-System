@@ -2,6 +2,7 @@ package project.server.views.panels;
 
 import project.server.controller.ServerController;
 import project.server.views.components.ClickableText;
+import project.server.views.components.accountPanel.AccountSearch;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
@@ -21,9 +22,11 @@ public class ManageAccountsPanel extends JPanel{
     public ManageAccountsPanel(LinkedList<Student> accounts, ServerController serverController){
         this.serverController = serverController;
         GridLayout gridLayout = new GridLayout(0,1 );
-        gridLayout.setHgap(10);
         gridLayout.setVgap(10);
+
+        AccountSearch searchBar = new AccountSearch(new Dimension(100, 50));
         accountsPanel.setLayout(gridLayout);
+        accountsPanel.add(searchBar);
         populatePanel(accounts);
 
         JScrollPane scrollPane = new JScrollPane(accountsPanel);
@@ -87,6 +90,10 @@ public class ManageAccountsPanel extends JPanel{
             JLabel name = new JLabel("Name: " + account.getAccount().getFirstName() + " " + account.getAccount().getLastName());
             JLabel userPassword = new JLabel("Password: " + account.getAccount().getPassword());
 
+            name.setFont(FontFactory.newPoppinsDefault(18));
+            userName.setFont(FontFactory.newPoppinsDefault(13));
+            userPassword.setFont(FontFactory.newPoppinsDefault(13));
+
             // Add buttons to buttons panel
             buttonsPanel.add(unbanButton);
             buttonsPanel.add(banButton);
@@ -105,7 +112,7 @@ public class ManageAccountsPanel extends JPanel{
             rightSide.add(buttonsPanel);
 
             // Creating picture label for account image
-            Picture picture = new Picture("res/icons/profileAccount.jpg", 170, 170);
+            Picture picture = new Picture("src/main/resources/images/icons/profileAccount.jpg", 170, 170);
             // Setting color and button states based on account status
             if (account.getAccount().isBanned()) {
                 picture.setBackground(Color.red);
