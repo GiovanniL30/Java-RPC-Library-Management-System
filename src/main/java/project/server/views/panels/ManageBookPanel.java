@@ -35,7 +35,7 @@ public class ManageBookPanel extends JPanel {
 
         // Initialize ManageBooksSearch and Search Button
         ManageBooksSearch search = new ManageBooksSearch(new Dimension(350, 50));
-        Button searchButton = new Button("Search", 100, 50, FontFactory.newPoppinsDefault(13));
+        Button searchButton = new Button("Search", 80, 50, FontFactory.newPoppinsDefault(13));
         searchButton.setBackground(ColorFactory.blue());
         searchButton.setForeground(Color.WHITE);
 
@@ -53,10 +53,10 @@ public class ManageBookPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(920, 400));
 
-        // Add components to ManageBookPanel
+        // Set layout for ManageBookPanel to BorderLayout
         setLayout(new BorderLayout());
         add(header, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER); // Add panel to center
 
         // By default, show BorrowedPanel
         switchToPanel(ServerPanels.BORROWED_PANEL);
@@ -74,8 +74,6 @@ public class ManageBookPanel extends JPanel {
             case PENDING_RETURN_PANEL:
                 replacePanel(new PendingReturnPanel());
                 break;
-            default:
-                // Handle default case (optional)
         }
     }
 
