@@ -100,8 +100,9 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
 
     @Override
-    public Response<LinkedList<Book>> getBooks() throws RemoteException {
-        System.out.println("Client Request to get all the books");
+    public Response<LinkedList<Book>> getBooks(boolean isClient) throws RemoteException {
+        if (isClient) System.out.println("Client Request to get all the books");
+        else System.out.println("Admin Request to get all the books");
         return new Response<>(true, bookModel.getBooks());
     }
 
@@ -323,7 +324,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     private synchronized Book getUpdatedBook(String bookId) {
 
         try {
-            return getBooks().getPayload().stream().filter(book -> book.getBookId().equals(bookId)).findAny().get();
+            return getBooks(true).getPayload().stream().filter(book -> book.getBookId().equals(bookId)).findAny().get();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

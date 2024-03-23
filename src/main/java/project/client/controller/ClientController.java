@@ -270,7 +270,7 @@ public class ClientController implements ClientObserver {
     public void openBook(Book book) {
 
         try {
-            Book viewBook = serverMethods.getBooks().getPayload().stream().filter( b -> b.getBookId().equals(book.getBookId())).findFirst().get();
+            Book viewBook = serverMethods.getBooks(true).getPayload().stream().filter( b -> b.getBookId().equals(book.getBookId())).findFirst().get();
             bookViewer = new BookViewer(mainView, viewBook, loggedInAccount, this);
             bookViewer.setVisible(true);
         } catch (RemoteException e) {
@@ -295,7 +295,7 @@ public class ClientController implements ClientObserver {
 
     public LinkedList<Book> getBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.getBooks();
+            Response<LinkedList<Book>> response = serverMethods.getBooks(true);
 
             if (response.isSuccess()) {
                 return response.getPayload();

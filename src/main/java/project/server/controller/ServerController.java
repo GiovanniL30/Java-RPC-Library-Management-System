@@ -214,7 +214,7 @@ public class ServerController implements ServerObserver, Serializable {
     }
     public LinkedList<Book> getBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.getBooks();
+            Response<LinkedList<Book>> response = serverMethods.getBooks(false);
 
             if (response.isSuccess()) {
                 return response.getPayload();
