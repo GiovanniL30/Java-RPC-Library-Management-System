@@ -22,8 +22,10 @@ public class ManageBooksSearch extends JPanel {
         layout.gridy = 0;
         layout.weightx = 1.0;
         layout.fill = GridBagConstraints.HORIZONTAL;
-        layout.insets = new Insets(0, 10, 0, 10);
+        layout.insets = new Insets(0, 5, 0, 5);
         inputField = new JTextField();
+        inputField.setPreferredSize(new Dimension(200, 40));
+        layout.gridwidth = 2;
         add(inputField, layout);
 
         cancelSearch = new Button("X", 50, 50, FontFactory.newPoppinsDefault(13));
@@ -35,9 +37,9 @@ public class ManageBooksSearch extends JPanel {
 //        return inputField;
 //    }
 //
-//    public Button getCancelButton() {
-//        return cancelSearch;
-//    }
+    public Button getCancelButton() {
+        return cancelSearch;
+    }
 //    public FieldInput getInput() {
 //        return inputField;
 //    }
