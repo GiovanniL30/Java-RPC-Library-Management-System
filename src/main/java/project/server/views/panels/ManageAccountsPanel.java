@@ -20,7 +20,7 @@ public class ManageAccountsPanel extends JPanel{
 
     public ManageAccountsPanel(LinkedList<Student> accounts, ServerController serverController){
         this.serverController = serverController;
-        GridLayout gridLayout = new GridLayout(0,2 );
+        GridLayout gridLayout = new GridLayout(0,1 );
         gridLayout.setHgap(10);
         gridLayout.setVgap(10);
         accountsPanel.setLayout(gridLayout);
@@ -40,7 +40,7 @@ public class ManageAccountsPanel extends JPanel{
     private void populatePanel(LinkedList<Student> accounts){
         for (Student account : accounts){
             AccountCard accountCard = new AccountCard(account);
-            // accountsPanel.add(accountCard);
+            accountsPanel.add(accountCard);
         }
     }
 
