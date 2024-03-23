@@ -65,13 +65,13 @@ public class ServerGuiHeader extends JPanel {
         add(clickablePanel, constraints);
 
 
-        setCurrentButton(home);
+        setCurrentClickableText(home);
         home.addActionListener( e -> serverController.changeFrame(ServerPanels.HOME_PANEL));
         viewBooks.addActionListener( e -> serverController.changeFrame(ServerPanels.VIEW_BOOKS_PANEL));
         manageBooks.addActionListener(e -> serverController.changeFrame(ServerPanels.MANAGE_BOOK_PANEL));
         accounts.addActionListener( e -> serverController.changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL));
     }
-    public void setCurrentButton(ClickableText currentText) {
+    public void setCurrentClickableText(ClickableText currentText) {
 
         currentText.setEnabled(false);
 
