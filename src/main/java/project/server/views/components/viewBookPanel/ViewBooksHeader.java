@@ -1,7 +1,9 @@
 package project.server.views.components.viewBookPanel;
 
+import project.server.controller.ServerController;
 import project.server.views.components.ClickableText;
 import project.server.views.components.ServerSearchBar;
+import project.server.views.utility.ServerPanels;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;
@@ -18,7 +20,7 @@ public class ViewBooksHeader extends JPanel {
     private final ClickableText availableBooks = new ClickableText("Available Books", 40, 70, FontFactory.newPoppinsBold(17));
     private final ClickableText unavailableBooks = new ClickableText("Unavailable Books", 40, 70, FontFactory.newPoppinsBold(17));
     JPanel searchBarPanel = new JPanel();
-    public ViewBooksHeader() {
+    public ViewBooksHeader(ServerController serverController) {
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(1000, 65));
         setBackground(Color.white);
@@ -56,6 +58,10 @@ public class ViewBooksHeader extends JPanel {
         add(unavailableBooksPanel);
         add(searchBarPanel);
 
+        setCurrentClickableText(allBooks);
+        allBooks.addActionListener( e -> serverController.changeFrame(ServerPanels.All_BOOKS_PANEL));
+        availableBooks.addActionListener( e -> serverController.changeFrame(ServerPanels.AVAILABLE_BOOKS_PANEL));
+        unavailableBooks.addActionListener(e -> serverController.changeFrame(ServerPanels.UNAVAIILABLE_BOOKS_PANEL));
     }
 
     public void setCurrentClickableText(ClickableText currentText) {
@@ -83,5 +89,4 @@ public class ViewBooksHeader extends JPanel {
     public ClickableText getUnavailableBooks() {
         return unavailableBooks;
     }
-    public JPanel getSearchBarPanel(){return searchBarPanel; }
 }
