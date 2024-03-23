@@ -1,6 +1,9 @@
 package project.server.controller;
 
 import project.server.views.LibrarianMainFrame;
+import project.server.views.components.viewBookPanel.AllBooksPanel;
+import project.server.views.components.viewBookPanel.AvailableBooksPanel;
+import project.server.views.components.viewBookPanel.UnavailableBooksPanel;
 import project.server.views.panels.HomePanel;
 import project.server.views.panels.ManageAccountsPanel;
 import project.server.views.panels.ManageBookPanel;
@@ -18,6 +21,7 @@ import javax.swing.*;
 
 
 import java.io.Serializable;
+import java.lang.invoke.CallSite;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -234,11 +238,11 @@ public class ServerController implements ServerObserver, Serializable {
 
             case HOME_PANEL -> {
                 mainView.getContentPane().add(new HomePanel(this));
-                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getHome());
+                mainView.getServerGuiHeader().setCurrentClickableText(mainView.getServerGuiHeader().getHome());
             }
             case VIEW_BOOKS_PANEL -> {
                 mainView.getContentPane().add(new ViewBookPanel(this));
-                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getViewBooks());
+                mainView.getServerGuiHeader().setCurrentClickableText(mainView.getServerGuiHeader().getViewBooks());
             }
             case MANAGE_BOOK_PANEL -> {
                 try {
@@ -247,7 +251,7 @@ public class ServerController implements ServerObserver, Serializable {
                 }catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getManageBooks());
+                mainView.getServerGuiHeader().setCurrentClickableText(mainView.getServerGuiHeader().getManageBooks());
             }
             case MANAGE_ACCOUNTS_PANEL -> {
 
@@ -257,10 +261,22 @@ public class ServerController implements ServerObserver, Serializable {
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getAccounts());
+                mainView.getServerGuiHeader().setCurrentClickableText(mainView.getServerGuiHeader().getAccounts());
             }
             case BORROWED_PANEL -> {
 
+            }
+            case All_BOOKS_PANEL -> {
+                mainView.getContentPane().add(new AllBooksPanel(this));
+                mainView.getViewBooksHeader().setCurrentClickableText(mainView.getViewBooksHeader().getAllBooks());
+            }
+            case AVAILABLE_BOOKS_PANEL -> {
+                mainView.getContentPane().add(new AvailableBooksPanel(this));
+                mainView.getViewBooksHeader().setCurrentClickableText(mainView.getViewBooksHeader().getAvailableBooks());
+            }
+            case UNAVAIILABLE_BOOKS_PANEL -> {
+                mainView.getContentPane().add(new UnavailableBooksPanel(this));
+                mainView.getViewBooksHeader().setCurrentClickableText(mainView.getViewBooksHeader().getUnavailableBooks());
             }
         }
 
