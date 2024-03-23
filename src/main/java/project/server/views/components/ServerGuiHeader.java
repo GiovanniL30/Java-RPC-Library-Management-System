@@ -19,7 +19,6 @@ public class ServerGuiHeader extends JPanel {
     private ClickableText manageBooks = new ClickableText("Manage Books", 100, 50, FontFactory.newPoppinsBold(18));
     private ClickableText accounts = new ClickableText("Accounts", 100, 50, FontFactory.newPoppinsBold(18));
     private LinkedList<ClickableText> clickableTexts = new LinkedList<>();
-    private LinkedList<ClickableText> buttons = new LinkedList<>();
 
     //Panel Holders
     private JPanel clickablePanel;
@@ -30,10 +29,7 @@ public class ServerGuiHeader extends JPanel {
         clickableTexts.add(viewBooks);
         clickableTexts.add(manageBooks);
         clickableTexts.add(accounts);
-        buttons.add(home);
-        buttons.add(viewBooks);
-        buttons.add(manageBooks);
-        buttons.add(accounts);
+
         setBackground(Color.white);
 
         GridBagConstraints constraints = new GridBagConstraints();
@@ -65,7 +61,6 @@ public class ServerGuiHeader extends JPanel {
         add(clickablePanel, constraints);
 
 
-        setCurrentClickableText(home);
         home.addActionListener( e -> serverController.changeFrame(ServerPanels.HOME_PANEL));
         viewBooks.addActionListener( e -> serverController.changeFrame(ServerPanels.VIEW_BOOKS_PANEL));
         manageBooks.addActionListener(e -> serverController.changeFrame(ServerPanels.MANAGE_BOOK_PANEL));

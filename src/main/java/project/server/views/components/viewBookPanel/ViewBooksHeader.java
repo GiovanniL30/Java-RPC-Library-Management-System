@@ -58,7 +58,6 @@ public class ViewBooksHeader extends JPanel {
         add(unavailableBooksPanel);
         add(searchBarPanel);
 
-        setCurrentClickableText(allBooks);
         allBooks.addActionListener( e -> serverController.changeFrame(ServerPanels.All_BOOKS_PANEL));
         availableBooks.addActionListener( e -> serverController.changeFrame(ServerPanels.AVAILABLE_BOOKS_PANEL));
         unavailableBooks.addActionListener(e -> serverController.changeFrame(ServerPanels.UNAVAIILABLE_BOOKS_PANEL));

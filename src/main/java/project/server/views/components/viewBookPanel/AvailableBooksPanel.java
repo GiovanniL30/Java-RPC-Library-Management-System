@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class AvailableBooksPanel extends JPanel {
     private final ServerController serverController;
-    private ViewBooksList bookList ;
+    private ViewBooksList bookList;
     public AvailableBooksPanel(ServerController serverController) {
         this.serverController = serverController;
 

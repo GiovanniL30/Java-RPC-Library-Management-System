@@ -1,7 +1,6 @@
 package project.server.views;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import project.server.GlobalRemoteServant;
 import project.server.controller.ServerController;
 import project.server.views.components.ServerGuiHeader;
 import project.server.views.components.viewBookPanel.ViewBooksHeader;
@@ -21,11 +20,13 @@ public class LibrarianMainFrame extends JFrame {
     private ViewBooksHeader viewBooksHeader;
     private ServerController serverController;
     private JPanel mainPanel = new JPanel();
+    private ViewBookPanel viewBookPanel;
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
         this.serverGuiHeader = new ServerGuiHeader(this.serverController);
         this.viewBooksHeader = new ViewBooksHeader(this.serverController);
+        this.viewBookPanel = new ViewBookPanel(this.serverController);
 
         initializeFrame();
        this.getContentPane().add(serverGuiHeader, BorderLayout.NORTH);
@@ -67,4 +68,7 @@ public class LibrarianMainFrame extends JFrame {
         return this.viewBooksHeader;
     }
 
+    public ViewBookPanel getViewBookPanel() {
+        return viewBookPanel;
+    }
 }
