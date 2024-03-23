@@ -61,7 +61,7 @@ public class BroadcastMessage extends JDialog {
         sendButton.setForeground(ColorFactory.white());
         sendButton.setBackground(ColorFactory.black());
         sendButton.addActionListener(e -> {
-
+            sendBroadcastMessage();
         });
         constraints.gridx = 2;
         constraints.gridy = 1;
@@ -70,5 +70,31 @@ public class BroadcastMessage extends JDialog {
         add(panel);
     }
 
+    private void sendBroadcastMessage() {
+        String message = messageTextArea.getText();
+        String selectedClientId = (String) clientDropdown.getSelectedItem();
+        try {
+            Response<String> response = server.broadcastMessage(message);
+            if (response.isSuccess()) {
+                JOptionPane.showMessageDialog(this, response.getPayload(), "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, response.getPayload(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(this, "Failed to communicate with server: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+//    // for testing lng para makitaitsuieraaa
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            try {
+//                GlobalRemoteServant server = new GlobalRemoteServant(null);
+//                BroadcastMessage broadcastMessage = new BroadcastMessage(server);
+//                broadcastMessage.setVisible(true);
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//    }
 }
