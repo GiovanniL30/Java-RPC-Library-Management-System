@@ -12,7 +12,7 @@ import java.awt.*;
 import static project.utilities.utilityClasses.UtilityMethods.haveNullOrEmpty;
 import static project.utilities.utilityClasses.UtilityMethods.generateRandomID;
 
-public class Signup extends JFrame {
+public class Signup extends JDialog {
     private final FieldInput password;
     private final FieldInput firstName;
     private final FieldInput lastName;
@@ -72,6 +72,9 @@ public class Signup extends JFrame {
     }
 
     private void addComponent(JComponent component, int y, int x) {
+        layout.gridy = y;
+        layout.gridx = x;
+        add(component, layout);
     }
 
     public void clearAll() {
