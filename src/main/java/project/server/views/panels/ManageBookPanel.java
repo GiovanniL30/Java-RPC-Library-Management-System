@@ -2,7 +2,7 @@ package project.server.views.panels;
 
 import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
-import project.server.views.components.manageBookPanel.ManageBooksSearch;
+import project.server.views.components.ServerSearchBar;
 import project.server.views.components.manageBookPanel.*;
 import project.server.views.utility.ServerPanels;
 import project.utilities.referenceClasses.Book;
@@ -34,7 +34,7 @@ public class ManageBookPanel extends JPanel {
         manageBooksHeader = new ManageBooksHeader(serverController, this); // Pass reference to this ManageBookPanel
 
         // Initialize ManageBooksSearch and Search Button
-        ManageBooksSearch search = new ManageBooksSearch(new Dimension(350, 50));
+        ServerSearchBar search = new ServerSearchBar(new Dimension(350, 50));
         Button searchButton = new Button("Search", 80, 50, FontFactory.newPoppinsDefault(13));
         searchButton.setBackground(ColorFactory.blue());
         searchButton.setForeground(Color.WHITE);
