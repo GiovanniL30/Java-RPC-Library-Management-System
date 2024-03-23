@@ -7,9 +7,8 @@ import java.awt.*;
 
 public class BorrowedPanel extends JPanel {
     public BorrowedPanel() {
-        JPanel holder = new JPanel();
-        holder.setBackground(Color.BLACK);
-        holder.setLayout(new BorderLayout());
+        setBackground(Color.BLACK);
+        setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Borrowed Books");
         titleLabel.setForeground(Color.WHITE);
@@ -22,11 +21,13 @@ public class BorrowedPanel extends JPanel {
         contentArea.setForeground(Color.WHITE);
         contentArea.setFont(new Font("Arial", Font.PLAIN, 16));
         contentArea.setText("List of borrowed books goes here...");
-
+        contentArea.setPreferredSize(new Dimension(1000, 400));
+        // Create a holder panel to center the content
+        JPanel holder = new JPanel(new BorderLayout());
+        holder.setBackground(Color.BLACK);
         holder.add(titleLabel, BorderLayout.NORTH);
         holder.add(contentArea, BorderLayout.CENTER);
 
-        setLayout(new BorderLayout());
-        add(holder);
+        add(holder, BorderLayout.CENTER);
     }
 }
