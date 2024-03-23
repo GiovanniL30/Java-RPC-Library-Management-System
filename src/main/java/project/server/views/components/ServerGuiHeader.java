@@ -7,7 +7,6 @@ import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.LinkedList;
 

@@ -21,7 +21,6 @@ import javax.swing.*;
 
 
 import java.io.Serializable;
-import java.lang.invoke.CallSite;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -161,7 +160,7 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void broadcastMessage(String message) {
         try {
-;            Response<String> response = serverMethods.broadcastMessage(message);
+            Response<String> response = serverMethods.broadcastMessage(message);
             if (response.isSuccess()) {
                 System.out.println("Message broadcasted successfully.");
             } else {
