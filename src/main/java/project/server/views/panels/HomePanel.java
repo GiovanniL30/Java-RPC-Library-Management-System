@@ -23,7 +23,7 @@ public class HomePanel extends JPanel {
 
         BookSummary bookSummary = new BookSummary(serverController);
 
-        Picture banner = new Picture("src/main/resources/images/logo/temporary_banner.jpg", LibrarianMainFrame.FRAME_WIDTH, 300);
+        Picture banner = new Picture("src/main/resources/images/logo/vanni_banner.png", LibrarianMainFrame.FRAME_WIDTH, 300);
         banner.setBackground(Color.WHITE);
 
         holder.add(banner, BorderLayout.NORTH);
