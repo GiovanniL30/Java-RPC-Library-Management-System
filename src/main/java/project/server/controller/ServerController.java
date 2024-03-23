@@ -247,7 +247,7 @@ public class ServerController implements ServerObserver, Serializable {
                 }catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getAccounts());
+                mainView.getServerGuiHeader().setCurrentButton(mainView.getServerGuiHeader().getManageBooks());
             }
             case MANAGE_ACCOUNTS_PANEL -> {
 
