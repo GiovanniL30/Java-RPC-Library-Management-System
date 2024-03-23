@@ -1,7 +1,7 @@
 package project.server.views.panels;
 
 import project.server.controller.ServerController;
-import project.server.views.components.viewBookPanel.BookList;
+import project.server.views.components.viewBookPanel.ViewBooksList;
 import project.server.views.components.viewBookPanel.ViewBooksHeader;
 
 import javax.swing.*;
@@ -11,14 +11,18 @@ public class ViewBookPanel extends JPanel {
 
     private ServerController serverController;
     private ViewBooksHeader header = new ViewBooksHeader();
-    private BookList bookList;
+    private ViewBooksList bookList;
 
     public ViewBookPanel(ServerController serverController) {
         this.serverController = serverController;
-        header.setLayout(new FlowLayout(FlowLayout.LEFT));
-        header.add(header.getTextHeaderPanel());
-        header.add(header.getSearchHeaderPanel());
+        setBackground(Color.white);
+
+        header.setLayout(new FlowLayout(FlowLayout.CENTER));
         add(header);
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+
+
     }
 
 }
