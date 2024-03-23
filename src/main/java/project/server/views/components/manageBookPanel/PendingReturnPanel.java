@@ -5,9 +5,8 @@ import java.awt.*;
 
 public class PendingReturnPanel extends JPanel {
     public PendingReturnPanel() {
-        JPanel holder = new JPanel();
-        holder.setBackground(Color.BLUE);
-        holder.setLayout(new BorderLayout());
+        setBackground(Color.BLUE);
+        setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Pending Return Requests");
         titleLabel.setForeground(Color.WHITE);
@@ -19,12 +18,11 @@ public class PendingReturnPanel extends JPanel {
         contentArea.setBackground(Color.BLUE);
         contentArea.setForeground(Color.WHITE);
         contentArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        contentArea.setPreferredSize(new Dimension(1000, 400));
         contentArea.setText("List of pending return requests goes here...");
 
-        holder.add(titleLabel, BorderLayout.NORTH);
-        holder.add(contentArea, BorderLayout.CENTER);
-
-        setLayout(new BorderLayout());
-        add(holder);
+        // Add the components directly to the panel
+        add(titleLabel, BorderLayout.NORTH);
+        add(contentArea, BorderLayout.CENTER);
     }
 }

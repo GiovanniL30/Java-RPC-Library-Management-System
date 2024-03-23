@@ -5,9 +5,8 @@ import java.awt.*;
 
 public class PendingBorrowPanel extends JPanel {
     public PendingBorrowPanel() {
-        JPanel holder = new JPanel();
-        holder.setBackground(Color.WHITE);
-        holder.setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
+        setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Pending Borrow Requests");
         titleLabel.setForeground(Color.BLACK);
@@ -19,13 +18,12 @@ public class PendingBorrowPanel extends JPanel {
         contentArea.setBackground(Color.WHITE);
         contentArea.setForeground(Color.BLACK);
         contentArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        contentArea.setPreferredSize(new Dimension(1000, 400));
         contentArea.setText("List of pending borrow requests goes here...");
 
-        holder.add(titleLabel, BorderLayout.NORTH);
-        holder.add(contentArea, BorderLayout.CENTER);
-
-        setLayout(new BorderLayout());
-        add(holder);
+        // Add the components directly to the panel
+        add(titleLabel, BorderLayout.NORTH);
+        add(contentArea, BorderLayout.CENTER);
     }
 }
 
