@@ -101,4 +101,7 @@ public class Account implements Serializable {
         return jsonObject;
     }
 
+    public boolean isBanned() {
+        return true;
+    }
 }

@@ -286,4 +286,5 @@ public class ServerController implements ServerObserver, Serializable {
     public LibrarianMainFrame getServerMainView() {
         return mainView;
     }
+
 }
