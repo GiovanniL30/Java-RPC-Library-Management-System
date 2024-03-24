@@ -254,7 +254,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> banAccount(Student account) throws RemoteException {
         account.getAccount().setIsBanned(true);
         accountModel.editAccount(account);
-        clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.BAN_ACCOUNT);
+
+        if(clientsHashMap.containsKey(account.getAccount().getAccountId())) {
+            clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.BAN_ACCOUNT);
+        }
+
         return new Response<>(true, "Account Banned Successfully");
     }
 
@@ -262,13 +266,20 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> unbanAccount(Student account) throws RemoteException {
         account.getAccount().setIsBanned(false);
         accountModel.editAccount(account);
+
+        if(clientsHashMap.containsKey(account.getAccount().getAccountId())) {
+            clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.UNBAN_ACCOUNT);
+        }
         return new Response<>(true, "Account UnBanned Successfully");
     }
 
     @Override
     public Response<String> deleteAccount(Student account) throws RemoteException {
         accountModel.deleteAccount(account);
-        clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.DELETE_ACCOUNT);
+
+        if(clientsHashMap.containsKey(account.getAccount().getAccountId())) {
+            clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.DELETE_ACCOUNT);
+        }
         return new Response<>(true, "Account Deleted Successfully");
     }
 
@@ -290,7 +301,10 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> changeUserPassword(Student account, String newPassword) throws RemoteException {
         account.getAccount().setPassword(newPassword);
         accountModel.editAccount(account);
-        clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.CHANGE_PASSWORD);
+
+        if(clientsHashMap.containsKey(account.getAccount().getAccountId())) {
+            clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.CHANGE_PASSWORD);
+        }
         return new Response<>(true, "Account Password Successfully Changed");
     }
 

@@ -105,8 +105,6 @@ public class Student implements Serializable {
         }
 
         for (Book book : strings) {
-            System.out.println(type);
-            System.out.println(book.getBookId());
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", book.getBookId());
             jsonArray.add(jsonObject);

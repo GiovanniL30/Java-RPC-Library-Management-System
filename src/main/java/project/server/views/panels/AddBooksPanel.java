@@ -29,7 +29,6 @@ public class AddBooksPanel extends JPanel {
     // components
     private final Picture picture;
     private final JPanel imageArea = new JPanel();
-    private final JPanel contentArea = new JPanel();
     private final FieldInput bookTitle;
     private final FieldInput author;
     private final FieldInput shortDescription;
@@ -41,18 +40,15 @@ public class AddBooksPanel extends JPanel {
 
     public AddBooksPanel(ServerObserver serverObserver) {
         this.serverObserver = serverObserver;
+        setBackground(Color.white);
 
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new GridLayout(1, 2, 50, 0));
 
         // Initialize components
         bookTitle = new FieldInput("Book Title", new Dimension(400, 50), 200, 1, false);
-        bookTitle.setBackground(new Color(238, 238, 238));
         author = new FieldInput("Author", new Dimension(400, 50), 200, 1, false);
-        author.setBackground(new Color(238, 238, 238));
         shortDescription = new FieldInput("Short Description", new Dimension(400, 50), 200, 1, false);
-        shortDescription.setBackground(new Color(238, 238, 238));
         copies = new FieldInput("Copies", new Dimension(400, 50), 200, 1, false);
-        copies.setBackground(new Color(238, 238, 238));
         dropDown = new DropDown(new Dimension(400, 48), true, "Comedy", "Horror", "Fantasy", "Fiction", "Novel", "Sci-Fi",
                 "Young", "Adult", "Historical", "Thriller", "Fantasy", "Science", "Romance", "Mystery");
         addBook = new Button("Add Book", 400, 50, FontFactory.newPoppinsDefault(20));
@@ -60,7 +56,10 @@ public class AddBooksPanel extends JPanel {
         addBook.setBackground(ColorFactory.blue());
 
         // Configure layout and settings
-        contentArea.setPreferredSize(new Dimension(400, 600));
+
+        JPanel contentArea = new JPanel();
+        contentArea.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
+        contentArea.setBackground(Color.white);
         contentArea.add(bookTitle);
         contentArea.add(author);
         contentArea.add(shortDescription);
@@ -71,6 +70,8 @@ public class AddBooksPanel extends JPanel {
         // Image Area settings
         Button button = new Button("Upload Image", 400, 50, FontFactory.newPoppinsDefault(13));
         picture = new Picture("", 400, 550);
+        picture.setBackground(Color.white);
+        imageArea.setBackground(Color.WHITE);
         imageArea.setPreferredSize(new Dimension(400, 800));
         imageArea.add(picture);
         imageArea.add(button);
@@ -85,12 +86,10 @@ public class AddBooksPanel extends JPanel {
         });
 
 
-        JPanel spacing = new JPanel();
-        spacing.setPreferredSize(new Dimension(100, 800));
+
 
         // Add components to panel
         add(imageArea);
-        add(spacing);
         add(contentArea);
         createNewBook();
     }
