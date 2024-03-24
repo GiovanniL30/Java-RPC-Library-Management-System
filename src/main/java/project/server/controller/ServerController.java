@@ -9,6 +9,7 @@ import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
@@ -325,7 +326,32 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void updateView(ClientActions clientActions) {
-        System.out.println("I will now be updating my view action = " + clientActions.toString());
+       switch (clientActions) {
+           case BORROW_BOOK, CANCEL_PENDING -> {
+               System.out.println(clientActions);
+               if(mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.PENDING_BORROW_PANEL.getDisplayName())){
+                   changeFrame(ServerPanels.PENDING_BORROW_PANEL);
+               }
+           }
+       }
+    }
+
+    @Override
+    public void acceptBook(Student student, Book book) {
+        try {
+          Response<String> acceptBookResponse = serverMethods.acceptBook(book, student);
+
+          if(acceptBookResponse.isSuccess()) {
+              changeFrame(ServerPanels.PENDING_BORROW_PANEL);
+              JOptionPane.showMessageDialog(getServerMainView(), acceptBookResponse.getPayload());
+              serverMethods.sendNotificationToClient(ServerActions.ACCEPT_BOOK_PENDING, student);
+          }else {
+              JOptionPane.showMessageDialog(getServerMainView(), acceptBookResponse.getPayload() );
+          }
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setServerMethods() {

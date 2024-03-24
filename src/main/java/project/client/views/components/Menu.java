@@ -16,6 +16,7 @@ public class Menu extends JPanel {
     private final Button pendingBooks;
     private final Button borrowedBooks;
     private final Button account;
+    private Button currentButton;
 
     public Menu() {
         setBackground(ColorFactory.blue());
@@ -50,6 +51,7 @@ public class Menu extends JPanel {
 
     public void setCurrentButton(Button currentButton) {
 
+        this.currentButton = currentButton;
         currentButton.setEnabled(false);
 
         for(Button button: buttons) {
@@ -71,6 +73,10 @@ public class Menu extends JPanel {
 
     public Button getBorrowedBooks() {
         return borrowedBooks;
+    }
+
+    public Button getCurrentButton() {
+        return currentButton;
     }
 
     public Button getAccount() {

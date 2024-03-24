@@ -67,21 +67,18 @@ public class ManageBookCard extends JPanel{
         add(bookTitle);
         add(buttonPanel);
 
-//        // Action listeners
-//        acceptBook.addActionListener(e -> {
-//            serverObserver.acceptBook(student.getAccount().getAccountId(), book.getBookId(), book.getBookTitle());
-//            serverObserver.changeFrame(ServerPanels.MANAGE_BOOKS);
-//        });
-//
-//        cancelBook.addActionListener(e -> {
-//            serverObserver.cancelPending(student.getAccount().getAccountId(), book.getBookId(), book.getBookTitle());
-//            serverObserver.changeFrame(ServerPanels.MANAGE_BOOKS);
-//        });
-//
-//        retrieveBook.addActionListener(e -> {
-//            serverObserver.retrieveBook(student.getAccount().getAccountId(), book.getBookId(), book.getBookTitle());
-//            serverObserver.changeFrame(ServerPanels.MANAGE_BOOKS);
-//        }); // end of action listeners
+        // Action listeners
+        acceptBook.addActionListener(e -> {
+            serverObserver.acceptBook(book, student);
+        });
+
+        cancelBook.addActionListener(e -> {
+
+        });
+
+        retrieveBook.addActionListener(e -> {
+
+        }); // end of action listeners
     } // end of Card constructor
 }
 

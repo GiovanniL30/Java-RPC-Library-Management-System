@@ -56,6 +56,7 @@ public interface ServerObserver {
     void changeUserPassword(Account account, String newPassword);
 
     void updateView(ClientActions clientActions);
+    void acceptBook(Student student, Book book);
 
 
 }

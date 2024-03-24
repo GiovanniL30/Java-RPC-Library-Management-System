@@ -67,6 +67,7 @@ public interface GlobalRemoteMethods extends Remote {
 
     Response<String> changeUserPassword(Account account, String newPassword) throws RemoteException;
     void sendNotificationToClient(ServerActions serverActions) throws RemoteException;
+    void sendNotificationToClient(ServerActions serverActions, Student student) throws RemoteException;
 
     Response<LinkedList<Book>> getPendingBorrowingBooks() throws RemoteException;
 
@@ -81,6 +82,7 @@ public interface GlobalRemoteMethods extends Remote {
     Response<LinkedList<Book>> getPendingReturningBooks() throws RemoteException;
     Response<LinkedList<Account>> getAccounts() throws RemoteException;
     Response<LinkedList<Student>> getStudentAccounts() throws RemoteException;
+
 
 
 }

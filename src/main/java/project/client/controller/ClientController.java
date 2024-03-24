@@ -6,7 +6,9 @@ import project.client.views.Login;
 import project.client.views.MainPanel;
 import project.client.views.components.*;
 import project.utilities.RMI.GlobalRemoteMethods;
+import project.server.controller.ServerUpdateReceiver;
 import project.utilities.referenceClasses.*;
+import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
@@ -117,6 +119,9 @@ public class ClientController implements ClientObserver {
             if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().add(book);
                 JOptionPane.showMessageDialog(mainView,  book.getBookTitle() + " is added for pending");
+
+                serverMethods.sendNotificationToServer(ClientActions.BORROW_BOOK);
+
             } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
@@ -135,6 +140,9 @@ public class ClientController implements ClientObserver {
             if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().remove(book);
                 changeFrame(ClientPanels.PENDING_PANEL);
+
+                serverMethods.sendNotificationToServer(ClientActions.CANCEL_PENDING);
+
             } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
@@ -189,6 +197,13 @@ public class ClientController implements ClientObserver {
             }
             case ACCEPT_BOOK_PENDING -> {
 
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Pending Books")) {
+                    changeFrame(ClientPanels.PENDING_PANEL);
+                }else if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Borrowed Books")) {
+                    changeFrame(ClientPanels.BORROWED_PANEL);
+                }
+
+                JOptionPane.showMessageDialog(mainView, "The Admin accepted your book pending");
             }
             case CANCEL_BOOK_PENDING -> {
 
@@ -232,12 +247,10 @@ public class ClientController implements ClientObserver {
             case PENDING_PANEL -> {
                 mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), this, true));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
-
             }
             case BORROWED_PANEL -> {
                 mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), this, false));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
-
             }
         }
 

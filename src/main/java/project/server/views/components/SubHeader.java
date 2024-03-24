@@ -14,6 +14,7 @@ public class SubHeader extends JPanel {
     private final ClickableText button1;
     private final ClickableText button2;
     private final ClickableText button3;
+    private ClickableText currentButton;
 
     public SubHeader(ClickableText button1, ClickableText button2, ClickableText button3, ServerObserver serverObserver) {
         this.button1 = button1;
@@ -79,6 +80,7 @@ public class SubHeader extends JPanel {
 
     public void setCurrentClickableText(ClickableText currentText) {
 
+        currentButton = currentText;
         currentText.setEnabled(false);
 
         for (ClickableText clickableText : clickableTexts) {
@@ -102,4 +104,7 @@ public class SubHeader extends JPanel {
         return button3;
     }
 
+    public ClickableText getCurrentButton() {
+        return currentButton;
+    }
 }
