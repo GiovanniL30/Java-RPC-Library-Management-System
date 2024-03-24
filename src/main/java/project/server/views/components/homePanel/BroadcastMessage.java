@@ -20,7 +20,7 @@ public class BroadcastMessage extends JDialog {
     public BroadcastMessage(Frame frame, ServerObserver serverObserver) {
         super(frame, "Broadcast Message", true);
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-        setSize(new Dimension(500, 100));
+        setSize(new Dimension(500, 130));
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -30,7 +30,7 @@ public class BroadcastMessage extends JDialog {
         clientDropdown = new JComboBox<>();
         clientDropdown.setForeground(ColorFactory.white());
         clientDropdown.setBackground(ColorFactory.blue());
-        clientDropdown.setPreferredSize(new Dimension(200, 50));
+        clientDropdown.setPreferredSize(new Dimension(200, 30));
 
         LinkedList<String> clients = new LinkedList<>();
         clients.add("All");
@@ -45,28 +45,24 @@ public class BroadcastMessage extends JDialog {
 
 
         JPanel fieldPanel = new JPanel();
-        fieldPanel.setPreferredSize(new Dimension(420, 100));
+        fieldPanel.setPreferredSize(new Dimension(420, 50));
         fieldPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         messageTextArea = new JTextField();
-        messageTextArea.setSize(new Dimension(400, 100));
+        messageTextArea.setPreferredSize(new Dimension(400, 30));
         fieldPanel.add(messageTextArea);
 
-
-
-        Button sendButton = new Button("Send", 200, 50, FontFactory.newPoppinsDefault(14));
+        Button sendButton = new Button("Send", 200, 30, FontFactory.newPoppinsDefault(14));
         sendButton.setForeground(ColorFactory.white());
         sendButton.setBackground(ColorFactory.blue());
 
         JPanel lowerPart = new JPanel();
+        lowerPart.setPreferredSize(new Dimension(100, 50));
         lowerPart.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         lowerPart.add(clientDropdown);
         lowerPart.add(sendButton);
-
 
         add(fieldPanel);
         add(lowerPart);
 
     }
-
-
 }
