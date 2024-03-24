@@ -91,7 +91,16 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void createNewBook(Book book) {
-
+        try {
+            Response<String> response = serverMethods.createNewBook(book);
+            if (response.isSuccess()) {
+                JOptionPane.showMessageDialog(null, "New book cretaed.");
+            } else {
+                JOptionPane.showMessageDialog(null, response.getPayload());
+            }
+        } catch (RemoteException e) {
+            throw  new RuntimeException(e);
+        }
     }
 
     @Override
