@@ -15,6 +15,7 @@ public class ServerGuiHeader extends JPanel {
     private Picture logo = new Picture("src/main/resources/images/logo/logo_vanni.png", 100, 100);
     private ClickableText home = new ClickableText("Home", 100, 50, FontFactory.newPoppinsBold(18));
     private ClickableText viewBooks  = new ClickableText("View Books", 100, 50, FontFactory.newPoppinsBold(18));
+    private ClickableText addBooks = new ClickableText("Add Book", 100, 50, FontFactory.newPoppinsBold(18));
     private ClickableText manageBooks = new ClickableText("Manage Books", 100, 50, FontFactory.newPoppinsBold(18));
     private ClickableText accounts = new ClickableText("Accounts", 100, 50, FontFactory.newPoppinsBold(18));
     private LinkedList<ClickableText> clickableTexts = new LinkedList<>();
@@ -26,6 +27,7 @@ public class ServerGuiHeader extends JPanel {
 
         clickableTexts.add(home);
         clickableTexts.add(viewBooks);
+        clickableTexts.add(addBooks);
         clickableTexts.add(manageBooks);
         clickableTexts.add(accounts);
 
@@ -45,6 +47,7 @@ public class ServerGuiHeader extends JPanel {
 
         clickablePanel.add(home);
         clickablePanel.add(viewBooks);
+        clickablePanel.add(addBooks);
         clickablePanel.add(manageBooks);
         clickablePanel.add(accounts);
 
@@ -62,8 +65,10 @@ public class ServerGuiHeader extends JPanel {
 
         home.addActionListener( e -> serverController.changeFrame(ServerPanels.HOME_PANEL));
         viewBooks.addActionListener( e -> serverController.changeFrame(ServerPanels.VIEW_BOOKS_PANEL));
+        addBooks.addActionListener(e -> serverController.changeFrame(ServerPanels.ADD_BOOKS_PANEL));
         manageBooks.addActionListener(e -> serverController.changeFrame(ServerPanels.MANAGE_BOOK_PANEL));
         accounts.addActionListener( e -> serverController.changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL));
+
     }
     public void setCurrentClickableText(ClickableText currentText) {
 
@@ -92,6 +97,10 @@ public class ServerGuiHeader extends JPanel {
 
     public ClickableText getViewBooks() {
         return viewBooks;
+    }
+
+    public ClickableText getAddBooks() {
+        return addBooks;
     }
 
 }
