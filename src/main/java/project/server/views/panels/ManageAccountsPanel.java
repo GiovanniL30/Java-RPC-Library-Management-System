@@ -134,17 +134,7 @@ public class ManageAccountsPanel extends JPanel{
             banButton.addActionListener(e -> serverController.banAccount(account.getAccount()));
             unbanButton.addActionListener(e -> serverController.unbanAccount(account.getAccount()));
             deleteAccount.addActionListener(e -> serverController.deleteAccount(account));
-            editAccount.addActionListener(e -> {
-                String newPass = JOptionPane.showInputDialog(null, "Enter the new password: ");
-                if (newPass == null || newPass.isEmpty()) return;
-
-                if (newPass.length() < 8) {
-                    JOptionPane.showMessageDialog(null, "Password Length Invalid [8 and above]");
-                    return;
-                }
-
-                serverController.changeUserPassword(account.getAccount(), newPass);
-            });
+            editAccount.addActionListener(e -> serverController.editPassword(account.getAccount()));
             //clickableText.addActionListener(e -> signup.setVisible(true));
         }
     }
