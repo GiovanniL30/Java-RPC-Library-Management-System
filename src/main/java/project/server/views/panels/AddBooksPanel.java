@@ -72,9 +72,6 @@ public class AddBooksPanel extends JPanel {
         Button button = new Button("Upload Image", 400, 50, FontFactory.newPoppinsDefault(13));
         picture = new Picture("", 400, 550);
         imageArea.setPreferredSize(new Dimension(400, 800));
-
-        BoxLayout boxLayout = new BoxLayout(imageArea, BoxLayout.Y_AXIS);
-        imageArea.setLayout(boxLayout);
         imageArea.add(picture);
         imageArea.add(button);
 
