@@ -22,7 +22,7 @@ public class AccountModel extends DataModel {
 
     public static void main(String[] args) {
         AccountModel accountModel = new AccountModel();
-        accountModel.addAccount(new Student(new Account("2232254", "Eugene123", "Eugene", "Patano", "2232254@slu.edu.ph", "12345678"),
+        accountModel.addAccount(new Student(new Account("2232254", "Eugene123", "Eugene", "Patano", "2232254@slu.edu.ph", "12345678", false),
 
                 0, new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
     }
@@ -34,7 +34,8 @@ public class AccountModel extends DataModel {
         String lastName = (String) o.get("lastName");
         String email = (String) o.get("email");
         String password = (String) o.get("password");
-        return new Account(id, userName, firstName, lastName, email, password);
+        boolean isBanned = (boolean) o.get("isBanned");
+        return new Account(id, userName, firstName, lastName, email, password, isBanned);
     }
 
     public LinkedList<Account> getAccounts() {
