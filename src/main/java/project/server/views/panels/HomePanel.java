@@ -12,15 +12,14 @@ import java.awt.*;
 public class HomePanel extends JPanel {
     private final ServerObserver serverController;
 
-
     public HomePanel(ServerObserver serverObserver) {
         serverController = serverObserver;
         setBackground(Color.WHITE);
+        setLayout(new BorderLayout());
 
         JPanel holder = new JPanel();
         holder.setBackground(Color.WHITE);
         holder.setLayout(new BorderLayout());
-
 
         BookSummary bookSummary = new BookSummary(serverController);
 
@@ -32,12 +31,13 @@ public class HomePanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(holder);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH- 100,575));
+        scrollPane.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH - 100, 575));
         scrollPane.setBackground(Color.WHITE);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton broadcastButton = new JButton("Broadcast");
+        add(scrollPane, BorderLayout.CENTER);
 
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,50,5));
+        JButton broadcastButton = new JButton("Broadcast");
         broadcastButton.setPreferredSize(new Dimension(200, 35));
         broadcastButton.setForeground(Color.BLACK);
         broadcastButton.setBackground(Color.WHITE);
@@ -45,12 +45,11 @@ public class HomePanel extends JPanel {
         buttonPanel.add(broadcastButton);
 
         broadcastButton.addActionListener(e -> {
-                BroadcastMessage broadcastMessage = new BroadcastMessage((Frame) SwingUtilities.getWindowAncestor(HomePanel.this),
-                        serverController);
-                broadcastMessage.setVisible(true);
+            BroadcastMessage broadcastMessage = new BroadcastMessage((Frame) SwingUtilities.getWindowAncestor(HomePanel.this),
+                    serverController);
+            broadcastMessage.setVisible(true);
         });
 
-       add(scrollPane);
-       add(buttonPanel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 }
