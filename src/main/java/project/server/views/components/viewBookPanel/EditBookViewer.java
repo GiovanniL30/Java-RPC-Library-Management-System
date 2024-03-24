@@ -32,87 +32,69 @@ public class EditBookViewer extends JDialog {
 
         setPreferredSize(new Dimension(900, 600));
         setResizable(false);
-        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        picture = new Picture(book.getImagePath(), 150, 200);
+        JPanel picturePanel = new JPanel(new GridBagLayout());
+        JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 
-        bookTitle = new FieldInput("Title:", new Dimension(300, 50), 20, 1, false);
+//        picturePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        picture = new Picture(book.getImagePath(), 150, 300);
+
+        bookTitle = new FieldInput("Title:", new Dimension(150, 50), 20, 1, false);
         bookTitle.getTextField().setText(book.getBookTitle());
 
-        bookAuthor = new FieldInput("Author:",new Dimension(300, 50), 20, 1, false);
+        bookAuthor = new FieldInput("Author:",new Dimension(150, 50), 20, 1, false);
         bookAuthor.getTextField().setText(book.getAuthor());
 
-        bookGenre = new DropDown(new Dimension(300, 48), true, "Comedy", "Horror", "Fantasy", "Fiction", "Novel", "Sci-Fi",
+        bookGenre = new DropDown(new Dimension(150, 48), true, "Comedy", "Horror", "Fantasy", "Fiction", "Novel", "Sci-Fi",
                 "Young", "Adult", "Historical", "Thriller", "Fantasy", "Science", "Romance", "Mystery");
 
-        bookCopies = new FieldInput("Copies:", new Dimension(300, 50), 20, 1, false);
+        bookCopies = new FieldInput("Copies:", new Dimension(150, 50), 20, 1, false);
 
         shortDescription = new JTextArea(book.getShortDescription());
         shortDescription.setLineWrap(true);
         shortDescription.setWrapStyleWord(true);
         shortDescription.setEditable(true);
-        JScrollPane textScrollPane = new JScrollPane(shortDescription);
-        textScrollPane.setPreferredSize(new Dimension(300, 120));
+        JScrollPane descPane = new JScrollPane(shortDescription);
+        descPane.setPreferredSize(new Dimension(150, 120));
 
-        JPanel buttonPanel = getjPanel(book, serverObserver);
-
-        constraints.gridx = 2;
-        constraints.gridy = 0;
-        constraints.insets = new Insets(5, 5, 5, 70);
-        panel.add(picture, constraints);
-
-        constraints.insets = new Insets(5, 5, 5, 30);
-        constraints.gridx = 2;
-        constraints.gridy = 1;
-        constraints.anchor = GridBagConstraints.WEST;
-        panel.add(bookTitle, constraints);
-
-
-        constraints.gridy = 2;
-        panel.add(bookAuthor, constraints);
-
-        constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.gridy = 3;
-        constraints.gridx = 0;
-        panel.add(bookGenre, constraints);
-
-        constraints.gridx = 2;
-        constraints.gridy = 3;
-        panel.add(bookCopies, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 4;
-        constraints.gridwidth = 3;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(textScrollPane, constraints);
-
-        constraints.gridy = 5;
-        constraints.weightx = 3.0;
-        panel.add(buttonPanel, constraints);
-
-        add(panel);
-        pack();
-
-        setLocationRelativeTo(null);
-
-    }
-
-    private static JPanel getjPanel(Book book, ServerObserver serverObserver) {
         JPanel buttonPanel = new JPanel();
-
-        Button saveChanges =  new Button("Save Changes", 200, 80, FontFactory.newPoppinsDefault(14));
+        Button saveChanges =  new Button("Save Changes", 140, 50, FontFactory.newPoppinsDefault(14));
         saveChanges.setForeground(Color.WHITE);
         saveChanges.setBackground(ColorFactory.green());
 
-//        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-
+        Button cancel =  new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(14));
+        cancel.setForeground(Color.black);
+        cancel.setBackground(Color.white);
 
         buttonPanel.add(saveChanges);
-        saveChanges.addActionListener(e -> serverObserver.editBook(book));
-        return buttonPanel;
+        buttonPanel.add(cancel);
+
+        picturePanel.add(picture);
+
+        detailsPanel.add(bookTitle);
+        detailsPanel.add(bookAuthor);
+        detailsPanel.add(bookGenre);
+        detailsPanel.add(bookCopies);
+        detailsPanel.add(descPane);
+        detailsPanel.add(buttonPanel);
+
+        picturePanel.add(detailsPanel);
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 2.0;
+
+        add(picturePanel);
+
+//        pack();
+//
+//        setLocationRelativeTo(null);
+
     }
+
     private void saveChangeAction(ActionEvent e, ServerObserver serverObserver) {
         // Retrieves input values from input fields
         String author = bookAuthor.getInput();
