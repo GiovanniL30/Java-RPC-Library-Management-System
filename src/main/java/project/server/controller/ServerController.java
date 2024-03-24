@@ -77,7 +77,16 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void cancelPending(Book book, Student student) {
-
+        try {
+            Response<String> response = serverMethods.cancelPending(book, student);
+            if (response.isSuccess()) {
+                JOptionPane.showMessageDialog(null, "Pending book request canceled.");
+            } else {
+                JOptionPane.showMessageDialog(null, response.getPayload());
+            }
+        }catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
