@@ -22,7 +22,7 @@ public class ManageBookPanel extends JPanel {
     private final JPanel panel;
     private final ServerController serverController;
 
-    private final ManageBooksHeader manageBooksHeader;
+
 
     public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver, ServerController serverController) {
         this.books = books;
@@ -31,7 +31,7 @@ public class ManageBookPanel extends JPanel {
         this.serverController = serverController;
 
         // Initialize ManageBooksHeader
-        manageBooksHeader = new ManageBooksHeader(serverController, this); // Pass reference to this ManageBookPanel
+
 
         // Initialize ManageBooksSearch and Search Button
         ServerSearchBar search = new ServerSearchBar(new Dimension(350, 50));
@@ -43,7 +43,7 @@ public class ManageBookPanel extends JPanel {
         JPanel header = new JPanel();
         header.setLayout(new FlowLayout(FlowLayout.LEFT));
         header.setBackground(Color.WHITE);
-        header.add(manageBooksHeader);
+
         header.add(search);
         header.add(searchButton);
 

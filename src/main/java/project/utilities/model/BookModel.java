@@ -67,8 +67,6 @@ public class BookModel extends DataModel {
     }
 
 
-
-
     public LinkedList<Book> getBooksWithCurrentBorrowers() {
         LinkedList<Book> currentBorrowedBooks = new LinkedList<>();
         LinkedList<Book> books = getBooks();

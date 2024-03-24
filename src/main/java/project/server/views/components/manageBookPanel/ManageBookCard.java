@@ -78,6 +78,6 @@ public class ManageBookCard extends JPanel{
 //            serverObserver.retrieveBook(student.getAccount().getAccountId(), book.getBookId(), book.getBookTitle());
 //            serverObserver.changeFrame(ServerPanels.MANAGE_BOOKS);
 //        }); // end of action listeners
-    } // end of BookCard constructor
+    } // end of Card constructor
 }
 

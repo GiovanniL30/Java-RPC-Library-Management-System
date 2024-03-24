@@ -3,8 +3,9 @@ package project.server.views;
 import com.formdev.flatlaf.FlatLightLaf;
 import project.server.controller.ServerController;
 import project.server.views.components.ServerGuiHeader;
-import project.server.views.components.viewBookPanel.ViewBooksHeader;
 import project.server.views.panels.HomePanel;
+import project.server.views.panels.ManageAccountsPanel;
+import project.server.views.panels.ManageBookPanel;
 import project.server.views.panels.ViewBookPanel;
 
 import javax.swing.*;
@@ -16,21 +17,25 @@ public class LibrarianMainFrame extends JFrame {
     public static int FRAME_WIDTH = 1000;
     public static int FRAME_HEIGHT = 800;
 
-    private ServerGuiHeader serverGuiHeader;
-    private ViewBooksHeader viewBooksHeader;
-    private ServerController serverController;
-    private JPanel mainPanel = new JPanel();
+    private final ServerGuiHeader serverGuiHeader;
+
+    private final ServerController serverController;
+    private final JPanel mainPanel = new JPanel();
     private ViewBookPanel viewBookPanel;
+    private ManageAccountsPanel manageAccountsPanel;
+    private ManageBookPanel manageBookPanel;
+    private HomePanel homePanel;
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
         this.serverGuiHeader = new ServerGuiHeader(this.serverController);
-        this.viewBooksHeader = new ViewBooksHeader(this.serverController);
-        this.viewBookPanel = new ViewBookPanel(this.serverController);
+
+
 
         initializeFrame();
-       this.getContentPane().add(serverGuiHeader, BorderLayout.NORTH);
-      this.getContentPane().add(new HomePanel(this.serverController), BorderLayout.CENTER);
+        this.getContentPane().add(serverGuiHeader, BorderLayout.NORTH);
+        homePanel = new HomePanel(this.serverController);
+        setCurrentPanel(homePanel);
     }
 
 
@@ -57,18 +62,45 @@ public class LibrarianMainFrame extends JFrame {
         setLocationRelativeTo(null);
 
 
-
         setVisible(true);
     }
 
     public ServerGuiHeader getServerGuiHeader() {
         return this.serverGuiHeader;
     }
-    public ViewBooksHeader getViewBooksHeader() {
-        return this.viewBooksHeader;
-    }
 
     public ViewBookPanel getViewBookPanel() {
         return viewBookPanel;
+    }
+
+    public ManageAccountsPanel getManageAccountsPanel() {
+        return manageAccountsPanel;
+    }
+
+    public ManageBookPanel getManageBookPanel() {
+        return manageBookPanel;
+    }
+
+    public HomePanel getHomePanel() {
+        return homePanel;
+    }
+
+    public void setCurrentPanel(JPanel panel) {
+
+        this.getContentPane().add(panel, BorderLayout.CENTER);
+
+        if (panel instanceof HomePanel) {
+            homePanel = (HomePanel) panel;
+            serverGuiHeader.setCurrentClickableText(serverGuiHeader.getHome());
+        } else if (panel instanceof ManageBookPanel) {
+            manageBookPanel = (ManageBookPanel) panel;
+            serverGuiHeader.setCurrentClickableText(serverGuiHeader.getManageBooks());
+        } else if (panel instanceof ManageAccountsPanel) {
+            manageAccountsPanel = (ManageAccountsPanel) panel;
+            serverGuiHeader.setCurrentClickableText(serverGuiHeader.getAccounts());
+        } else if (panel instanceof ViewBookPanel) {
+            viewBookPanel = (ViewBookPanel) panel;
+            serverGuiHeader.setCurrentClickableText(serverGuiHeader.getViewBooks());
+        }
     }
 }

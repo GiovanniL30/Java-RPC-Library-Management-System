@@ -1,5 +1,6 @@
 package project.server.views.components.homePanel;
 
+import project.server.controller.ServerObserver;
 import project.utilities.referenceClasses.Response;
 import project.server.GlobalRemoteServant;
 import project.utilities.utilityClasses.ColorFactory;
@@ -10,12 +11,11 @@ import java.rmi.RemoteException;
 
 public class BroadcastMessage extends JDialog {
 
-    private GlobalRemoteServant server;
+
     private JComboBox<String> clientDropdown;
     private JTextArea messageTextArea;
 
-    public BroadcastMessage(GlobalRemoteServant server) {
-        this.server = server;
+    public BroadcastMessage(ServerObserver serverObserver) {
 
         setTitle("Broadcast Message");
         setSize(500, 120);
@@ -39,10 +39,13 @@ public class BroadcastMessage extends JDialog {
         clientDropdown = new JComboBox<>();
         clientDropdown.setForeground(ColorFactory.white());
         clientDropdown.setBackground(ColorFactory.black());
+
         String[] clientIds = {"All", "Student1", "Student2", "Student3", "Student4"};
+
         for (String clientId : clientIds) {
             clientDropdown.addItem(clientId);
         }
+
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.weightx = 0.5;
@@ -73,28 +76,7 @@ public class BroadcastMessage extends JDialog {
     private void sendBroadcastMessage() {
         String message = messageTextArea.getText();
         String selectedClientId = (String) clientDropdown.getSelectedItem();
-        try {
-            Response<String> response = server.broadcastMessage(message);
-            if (response.isSuccess()) {
-                JOptionPane.showMessageDialog(this, response.getPayload(), "Success", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, response.getPayload(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (RemoteException ex) {
-            JOptionPane.showMessageDialog(this, "Failed to communicate with server: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+
     }
 
-//    // for testing lng para makitaitsuieraaa
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            try {
-//                GlobalRemoteServant server = new GlobalRemoteServant(null);
-//                BroadcastMessage broadcastMessage = new BroadcastMessage(server);
-//                broadcastMessage.setVisible(true);
-//            } catch (RemoteException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//    }
 }

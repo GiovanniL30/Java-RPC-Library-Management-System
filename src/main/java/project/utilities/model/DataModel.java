@@ -113,7 +113,7 @@ public class DataModel {
     }
 
 
-    public LinkedList<Book> getBooks() {
+    public synchronized  LinkedList<Book> getBooks() {
         String filePath = "src/main/resources/data/book.json";
         LinkedList<Book> books = new LinkedList<>();
 

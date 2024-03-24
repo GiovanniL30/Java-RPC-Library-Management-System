@@ -1,60 +1,48 @@
 package project.server.views.panels;
 
-import project.server.controller.ServerController;
-import project.server.views.components.viewBookPanel.AllBooksPanel;
-import project.server.views.components.viewBookPanel.ViewBooksHeader;
-import project.utilities.viewComponents.Loading;
+import project.server.controller.ServerObserver;
+import project.server.views.components.ClickableText;
+import project.server.views.components.SubHeader;
+import project.server.views.components.viewBookPanel.ViewBooksList;
+import project.server.views.utility.ServerPanels;
+import project.utilities.referenceClasses.Book;
+import project.utilities.utilityClasses.FontFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 public class ViewBookPanel extends JPanel {
 
-    private ServerController serverController;
-    private ViewBooksHeader header;
-    private Loading loading = new Loading(null);
-    private final JPanel contentHolder = new JPanel();
+    private final ServerObserver serverObserver;
+    private final SubHeader subHeader;
 
-    public ViewBookPanel(ServerController serverController) {
-        this.serverController = serverController;
-        this.header = new ViewBooksHeader(this.serverController);
-        AllBooksPanel allBooksPanel = new AllBooksPanel(this.serverController);
+    private  ViewBooksList viewBooksList;
 
+
+    public ViewBookPanel(ServerObserver serverObserver) {
+        this.serverObserver = serverObserver;
+        setLayout(new BorderLayout(0, 20));
+
+        subHeader = new SubHeader(new ClickableText(ServerPanels.All_BOOKS_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)), new ClickableText(ServerPanels.AVAILABLE_BOOKS_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)), new ClickableText(ServerPanels.UNAVAILABLE_BOOKS_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)), serverObserver);
+        viewBooksList = new ViewBooksList(serverObserver.getBooks(), this.serverObserver);
         setBackground(Color.white);
-        header.setLayout(new FlowLayout(FlowLayout.CENTER));
-        header.setCurrentClickableText(header.getAllBooks());
-        contentHolder.setBackground(Color.white);
 
-        JPanel panel = new JPanel();
-        panel.add(allBooksPanel);
-        panel.setBackground(Color.white);
-        setContentPanel(panel);
 
-        add(header);
-        add(contentHolder);
-
+        add(subHeader, BorderLayout.NORTH);
+        add(viewBooksList, BorderLayout.CENTER);
     }
-    public void setContentPanel(JPanel panel) {
 
-        new SwingWorker<>() {
-            @Override
-            protected Object doInBackground() {
-                contentHolder.removeAll();
-                contentHolder.add(panel);
-                contentHolder.revalidate();
-                contentHolder.repaint();
-                return null;
-            }
+    public SubHeader getSubHeader() {
+        return subHeader;
+    }
 
-            @Override
-            protected void done() {
-                loading.setVisible(false);
-            }
-        }.execute();
-
-        loading.setVisible(true);
-
-
+    public synchronized void setView(LinkedList<Book> books) {
+        remove(1);
+        viewBooksList = new ViewBooksList(books, this.serverObserver);
+        add(viewBooksList);
+        revalidate();
+        repaint();
     }
 
 }

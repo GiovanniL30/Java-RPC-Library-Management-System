@@ -39,6 +39,7 @@ public interface ServerObserver {
     LinkedList<Book> getPreviousBorrowedBooks();
 
     LinkedList<Book> getPendingReturningBooks();
+    LinkedList<Book> getBooks();
 
     // Methods for handling account-related actions
     void broadcastMessage(String message);

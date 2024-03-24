@@ -1,12 +1,15 @@
 package project.server.views.components.homePanel;
 
 import project.server.controller.ServerObserver;
+import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.FontFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.jar.JarEntry;
+import java.util.stream.Collectors;
 
 public class BookSummary extends JPanel {
     private final JPanel summaryPanel;
@@ -19,31 +22,25 @@ public class BookSummary extends JPanel {
         summaryPanel = new JPanel();
         summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
 
+        LinkedList<Book> books = serverController.getBooks();
+
+        int numberOfAvailableBooks = (int) books.stream().filter(book ->  book.getCopies() > 0).count();
+        int numberOfUnAvailableBooks = (int) books.stream().filter(book ->  book.getCopies() <= 0).count();
+        int numberOfPendingBooks = (int) books.stream().filter(book -> !book.getPendingBookReturners().isEmpty()).count();
+        int numberOfPendingReturningBooks = (int) books.stream().filter(book -> !book.getPendingBookReturners().isEmpty()).count();
+        int numberOfBorrowedBooks = (int) books.stream().filter(book -> !book.getCurrentBorrowers().isEmpty()).count();
+        int numberOfPreviousBooks = (int) books.stream().filter(book -> !book.getPreviousBorrowers().isEmpty()).count();
+
         JLabel header = new JLabel("Summary Report");
-        JLabel availableBooks = new JLabel("Number of Available Books: " + serverController.getAvailableBooks().size());
-        JLabel unavailableBooks = new JLabel("Number of Unavailable Books: " + serverController.getUnavailableBooks().size());
-        JLabel pendingBorrowingBooks = new JLabel("Number of Pending Books for Borrowing: " + serverController.getPendingBorrowingBooks().size());
-        JLabel pendingReturningBooks = new JLabel("Number of Pending Books for Returning: " + serverController.getPendingReturningBooks().size());
-        JLabel currentBorrowedBooks = new JLabel("Number of Current Borrowed Books: " + serverController.getCurrentBorrowedBooks().size());
-        JLabel previousBorrowedBooks = new JLabel("Number of Previous Borrowed Books: " + serverController.getPreviousBorrowedBooks().size());
+        JLabel availableBooks = new JLabel("Number of Available Books: " + numberOfAvailableBooks);
+        JLabel unavailableBooks = new JLabel("Number of Unavailable Books: " + numberOfUnAvailableBooks);
+        JLabel pendingBorrowingBooks = new JLabel("Number of Pending Books for Borrowing: " + numberOfPendingBooks);
+        JLabel pendingReturningBooks = new JLabel("Number of Pending Books for Returning: " + numberOfPendingReturningBooks);
+        JLabel currentBorrowedBooks = new JLabel("Number of Current Borrowed Books: " + numberOfBorrowedBooks);
+        JLabel previousBorrowedBooks = new JLabel("Number of Previous Borrowed Books: " + numberOfPreviousBooks);
         summaryPanel.add(Box.createVerticalStrut(10));
         summaryPanel.setPreferredSize(new Dimension(1000,400));
 
-//        JTextArea summaryTitle = new JTextArea("\tSummary Report");
-//                JTextArea summary = new JTextArea("\n" +
-//                        "Number of Available Books: "
-//                        + serverController.getAvailableBooks().size()
-//                        + "\n\nNumber of Unavailable Books: "
-//                        + serverController.getUnavailableBooks().size()
-//                        + "\n\nNumber of Pending Books for Borrowing: "
-//                        + serverController.getPendingBorrowingBooks().size()
-//                        + "\n\nNumber of Pending Books for Returning: "
-//                        + serverController.getPendingReturningBooks().size()
-//                        + "\n\nNumber of Current Borrowed Books: "
-//                        + serverController.getCurrentBorrowedBooks().size()
-//                        + "\n\nNumber of Previous Borrowed Books: "
-//                        + serverController.getPreviousBorrowedBooks().size()
-//                );
 
         header.setFont(FontFactory.newPoppinsBold(30));
         availableBooks.setFont(FontFactory.newPoppinsDefault(25));

@@ -3,7 +3,6 @@ package project.server.views.components.manageBookPanel;
 import project.server.controller.ServerObserver;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
-import project.server.views.components.BookCard;
 import project.utilities.utilityClasses.FontFactory;
 
 import javax.swing.*;
