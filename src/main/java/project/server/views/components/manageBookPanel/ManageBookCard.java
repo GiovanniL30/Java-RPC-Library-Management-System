@@ -44,6 +44,9 @@ public class ManageBookCard extends JPanel{
         cancelBook.setBackground(ColorFactory.red());
 
         retrieveBook = new Button("Retrieve Book", 200, 50, FontFactory.newPoppinsDefault(13));
+        retrieveBook.addActionListener(e -> {
+           serverObserver.retrieveBook(book, student);
+        });
         retrieveBook.setForeground(Color.white);
         retrieveBook.setBackground(ColorFactory.blue());
 
