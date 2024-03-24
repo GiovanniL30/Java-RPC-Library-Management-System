@@ -140,7 +140,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         System.out.println("Server accepts" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
 
         if (bookModel.addBorrowed(book.getBookId(), student)) {
-            clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.ACCEPT_BOOK_PENDING);
+
+            if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
+                clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.ACCEPT_BOOK_PENDING);
+            }
+
             return new Response<>(true, "Book was successfully added for pending");
         }
         return new Response<>(false, "Book was not added for pending");
@@ -151,7 +155,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         System.out.println("Server retrieves" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
         if (bookModel.removeBorrowed(book.getBookId(), student, false)) {
 
-            clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.RETRIEVES_BOOK);
+            if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
+                clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.RETRIEVES_BOOK);
+            }
+
+
             return new Response<>(true, "Book was successfully retrieved");
         }
         return new Response<>(false, "Book was not retrieved");
@@ -182,7 +190,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         System.out.println("Server cancels" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
 
         if (bookModel.removePending(book.getBookId(), student)) {
-            clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.CANCEL_BOOK_PENDING);
+
+            if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
+                clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.CANCEL_BOOK_PENDING);
+            }
+
             return new Response<>(true, "Book was successfully cancelled");
         }
         return new Response<>(false, "Book was not cancelled");
