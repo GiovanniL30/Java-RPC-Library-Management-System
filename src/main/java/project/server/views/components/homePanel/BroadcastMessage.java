@@ -1,82 +1,72 @@
 package project.server.views.components.homePanel;
 
 import project.server.controller.ServerObserver;
-import project.utilities.referenceClasses.Response;
-import project.server.GlobalRemoteServant;
+import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ColorFactory;
+import project.utilities.utilityClasses.FontFactory;
+import project.utilities.viewComponents.Button;
 
 import javax.swing.*;
 import java.awt.*;
-import java.rmi.RemoteException;
+import java.util.LinkedList;
 
 public class BroadcastMessage extends JDialog {
 
-
     private JComboBox<String> clientDropdown;
-    private JTextArea messageTextArea;
+    private JTextField messageTextArea;
+    LinkedList<Student> students;
 
-    public BroadcastMessage(ServerObserver serverObserver) {
-
-        setTitle("Broadcast Message");
-        setSize(500, 120);
+    //TODO:
+    public BroadcastMessage(Frame frame, ServerObserver serverObserver) {
+        super(frame, "Broadcast Message", true);
+        setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        setSize(new Dimension(500, 100));
         setResizable(false);
         setLocationRelativeTo(null);
 
-        broadcastComponents();
+        students = serverObserver.getStudents();
 
-    }
-
-    private void broadcastComponents() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(10, 10, 10, 10);
-
-        JLabel label = new JLabel("BROADCAST MESSAGE");
-        constraints.gridx = 1;
-        constraints.gridy = -1;
-        panel.add(label, constraints);
 
         clientDropdown = new JComboBox<>();
         clientDropdown.setForeground(ColorFactory.white());
-        clientDropdown.setBackground(ColorFactory.black());
+        clientDropdown.setBackground(ColorFactory.blue());
+        clientDropdown.setPreferredSize(new Dimension(200, 50));
 
-        String[] clientIds = {"All", "Student1", "Student2", "Student3", "Student4"};
+        LinkedList<String> clients = new LinkedList<>();
+        clients.add("All");
 
-        for (String clientId : clientIds) {
+        for (Student student : students) {
+            clients.addLast(student.getAccount().getUserName());
+        }
+
+        for (String clientId : clients) {
             clientDropdown.addItem(clientId);
         }
 
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.weightx = 0.5;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(clientDropdown, constraints);
 
-        messageTextArea = new JTextArea(10, 40);
-        constraints.gridx = 1;
-        constraints.gridy = 1;
-        constraints.weightx = 1.2;
-        constraints.weighty = 0.5;
-        constraints.fill = GridBagConstraints.BOTH;
-        panel.add(messageTextArea, constraints);
+        JPanel fieldPanel = new JPanel();
+        fieldPanel.setPreferredSize(new Dimension(420, 100));
+        fieldPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        messageTextArea = new JTextField();
+        messageTextArea.setSize(new Dimension(400, 100));
+        fieldPanel.add(messageTextArea);
 
-        JButton sendButton = new JButton("Send");
+
+
+        Button sendButton = new Button("Send", 200, 50, FontFactory.newPoppinsDefault(14));
         sendButton.setForeground(ColorFactory.white());
-        sendButton.setBackground(ColorFactory.black());
-        sendButton.addActionListener(e -> {
-            sendBroadcastMessage();
-        });
-        constraints.gridx = 2;
-        constraints.gridy = 1;
-        panel.add(sendButton, constraints);
+        sendButton.setBackground(ColorFactory.blue());
 
-        add(panel);
-    }
+        JPanel lowerPart = new JPanel();
+        lowerPart.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        lowerPart.add(clientDropdown);
+        lowerPart.add(sendButton);
 
-    private void sendBroadcastMessage() {
-        String message = messageTextArea.getText();
-        String selectedClientId = (String) clientDropdown.getSelectedItem();
+
+        add(fieldPanel);
+        add(lowerPart);
 
     }
+
 
 }

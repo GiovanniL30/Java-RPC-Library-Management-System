@@ -94,17 +94,5 @@ public class Signup extends JDialog {
         email.getTextField().setText("");
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setVisible(true);
 
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
-
-        Signup signup = new Signup(frame, new Dimension(1000, 500), new ServerController());
-        signup.setVisible(true);
-    }
 }
