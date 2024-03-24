@@ -22,22 +22,39 @@ public class ManageBookPanel extends JPanel {
     private final LinkedList<Student> students;
     private final ServerObserver serverObserver;
     private SubHeader subHeader;
-    private final ServerController serverController;
 
-    public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver, ServerController serverController) {
+    private ManageBookList manageBookList;
+
+    public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver) {
         this.books = books;
         this.students = students;
         this.serverObserver = serverObserver;
-        this.serverController = serverController;
+
+        setBackground(Color.WHITE);
+        setLayout(new BorderLayout(0, 20));
 
         subHeader = new SubHeader(new ClickableText(ServerPanels.PENDING_BORROW_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)),
                 new ClickableText(ServerPanels.PENDING_RETURN_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)),
                 new ClickableText(ServerPanels.BORROWED_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)),
                 serverObserver);
 
+        manageBookList = new ManageBookList( students, serverObserver, ServerPanels.PENDING_BORROW_PANEL);
+
+        add(subHeader, BorderLayout.NORTH);
+        add(manageBookList, BorderLayout.CENTER);
+
     }
 
+    public void setManageBookList( LinkedList<Student> students, ServerPanels serverPanels) {
+        manageBookList = new ManageBookList(students, serverObserver, serverPanels);
+        remove(1);
+        add(manageBookList);
+        revalidate();
+        repaint();
 
+    }
 
-
+    public SubHeader getSubHeader() {
+        return subHeader;
+    }
 }

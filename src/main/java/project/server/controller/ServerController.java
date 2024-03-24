@@ -26,7 +26,7 @@ public class ServerController implements ServerObserver, Serializable {
     private GlobalRemoteMethods serverMethods;
     private Loading loading;
     private LibrarianMainFrame mainView;
-    private ServerObserver serverObserver;
+
 
     @Override
     public void acceptBook(Book book, Student student) {
@@ -228,6 +228,22 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
+    public LinkedList<Student> getStudents() {
+        try {
+            Response<LinkedList<Student>> studentResponse = serverMethods.getStudentAccounts();
+
+            if(studentResponse.isSuccess()) {
+                return studentResponse.getPayload();
+            }
+
+        } catch (RemoteException e) {
+            return new LinkedList<>();
+        }
+
+        return new LinkedList<>();
+    }
+
+    @Override
     public void changeFrame(ServerPanels serverPanels) {
 
 
@@ -249,25 +265,24 @@ public class ServerController implements ServerObserver, Serializable {
                     }
                     case MANAGE_BOOK_PANEL -> {
                         mainView.getContentPane().remove(1);
-                        try {
-                            LinkedList<Student> students = serverMethods.getStudentAccounts().getPayload();
-                            mainView.setCurrentPanel(new ManageBookPanel(getBooks(), students, serverObserver, ServerController.this));
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        mainView.setCurrentPanel(new ManageBookPanel(getBooks(), getStudents(), ServerController.this));
 
                     }
                     case MANAGE_ACCOUNTS_PANEL -> {
                         mainView.getContentPane().remove(1);
-                        try {
-                            LinkedList<Student> students = serverMethods.getStudentAccounts().getPayload();
-                            mainView.setCurrentPanel(new ManageAccountsPanel(students, ServerController.this));
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        mainView.setCurrentPanel(new ManageAccountsPanel(getStudents(), ServerController.this));
+                    }
+                    case PENDING_BORROW_PANEL -> {
+                        mainView.getManageBookPanel().setManageBookList(getStudents(), ServerPanels.PENDING_BORROW_PANEL);
+                        mainView.getManageBookPanel().getSubHeader().setCurrentClickableText(mainView.getManageBookPanel().getSubHeader().getButton1());
+                    }
+                    case PENDING_RETURN_PANEL -> {
+                        mainView.getManageBookPanel().setManageBookList(getStudents(), ServerPanels.PENDING_RETURN_PANEL);
+                        mainView.getManageBookPanel().getSubHeader().setCurrentClickableText(mainView.getManageBookPanel().getSubHeader().getButton2());
                     }
                     case BORROWED_PANEL -> {
-
+                        mainView.getManageBookPanel().setManageBookList(getStudents(), ServerPanels.BORROWED_PANEL);
+                        mainView.getManageBookPanel().getSubHeader().setCurrentClickableText(mainView.getManageBookPanel().getSubHeader().getButton3());
                     }
                     case All_BOOKS_PANEL -> {
                         mainView.getViewBookPanel().setView(getBooks());

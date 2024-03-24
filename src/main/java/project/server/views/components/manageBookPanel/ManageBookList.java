@@ -15,7 +15,7 @@ public class ManageBookList extends JPanel {
     private final ServerObserver serverObserver;
     private final JPanel holder = new JPanel();
 
-    public ManageBookList(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver) {
+    public ManageBookList(LinkedList<Student> students, ServerObserver serverObserver,ServerPanels serverPanels) {
 
         this.serverObserver = serverObserver;
 
@@ -26,7 +26,7 @@ public class ManageBookList extends JPanel {
         holder.setLayout(gridLayout);
         holder.setBackground(Color.white);
 
-        updateView(students, ServerPanels.PENDING_BORROW_PANEL);
+        updateView(students, serverPanels);
 
         JScrollPane scrollPane = new JScrollPane(holder);
         scrollPane.setPreferredSize(new Dimension(920, 550));
@@ -46,6 +46,7 @@ public class ManageBookList extends JPanel {
                 }
 
                 for (Student student : students) {
+                    //System.out.println(student.getPendingBooks());
 
                     switch (serverPanels) {
                         case PENDING_BORROW_PANEL -> {

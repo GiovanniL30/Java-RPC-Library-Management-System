@@ -51,20 +51,26 @@ public class SubHeader extends JPanel {
 
             if (button1.getText().equals(ServerPanels.All_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.All_BOOKS_PANEL);
+            } else if (button1.getText().equals(ServerPanels.PENDING_BORROW_PANEL.getDisplayName())) {
+                serverObserver.changeFrame(ServerPanels.PENDING_BORROW_PANEL);
             }
 
         });
         this.button2.addActionListener(e -> {
-
-
-
+            
             if (button2.getText().equals(ServerPanels.AVAILABLE_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.AVAILABLE_BOOKS_PANEL);
+            } else if (button2.getText().equals(ServerPanels.PENDING_RETURN_PANEL.getDisplayName())) {
+                serverObserver.changeFrame(ServerPanels.PENDING_RETURN_PANEL);
             }
+
         });
         this.button3.addActionListener(e -> {
+
             if (button3.getText().equals(ServerPanels.UNAVAILABLE_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.UNAVAILABLE_BOOKS_PANEL);
+            }else if(button3.getText().equals(ServerPanels.BORROWED_PANEL.getDisplayName())) {
+                serverObserver.changeFrame(ServerPanels.BORROWED_PANEL);
             }
 
 

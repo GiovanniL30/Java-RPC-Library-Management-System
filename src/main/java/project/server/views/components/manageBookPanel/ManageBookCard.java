@@ -23,25 +23,29 @@ public class ManageBookCard extends JPanel{
         this.serverObserver = serverObserver;
         setLayout(null);
         setPreferredSize(new Dimension(430, 170));
+        setBackground(Color.white);
 
         // Create components for the card
         bookPicture = new Picture(book.getImagePath(), 100, 160);
         borrowerName = new JLabel("Student Name: " + student.getAccount().getFirstName() + " " + student.getAccount().getLastName());
+        borrowerName.setFont(FontFactory.newPoppinsBold(14));
         bookTitle = new JLabel(book.getBookTitle());
+        bookTitle.setFont(FontFactory.newPoppinsBold(14));
 
-        acceptBook = new Button("Accept", 100, 50, FontFactory.newPoppinsDefault(16));
+        acceptBook = new Button("Accept", 100, 50, FontFactory.newPoppinsDefault(13));
         acceptBook.setForeground(Color.white);
         acceptBook.setBackground(ColorFactory.green());
 
-        cancelBook = new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(16));
+        cancelBook = new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(13));
         cancelBook.setForeground(Color.white);
         cancelBook.setBackground(ColorFactory.red());
 
-        retrieveBook = new Button("Retrieve Book", 200, 50, FontFactory.newPoppinsDefault(16));
+        retrieveBook = new Button("Retrieve Book", 200, 50, FontFactory.newPoppinsDefault(13));
         retrieveBook.setForeground(Color.white);
         retrieveBook.setBackground(ColorFactory.blue());
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttonPanel.setBackground(Color.white);
 
         // Add appropriate buttons based on borrow status
         if (isBorrowed) {
@@ -52,10 +56,10 @@ public class ManageBookCard extends JPanel{
         }
 
         // Set bounds for components
-        bookPicture.setBounds(10, 10, 95, 160);
-        borrowerName.setBounds(110, 10, 200, 30);
-        bookTitle.setBounds(110, 40, 200, 30);
-        buttonPanel.setBounds(110, 110, 210, 60);
+        bookPicture.setBounds(10, 10, 100, 160);
+        borrowerName.setBounds(120, 10, 220, 30);
+        bookTitle.setBounds(120, 40, 220, 30);
+        buttonPanel.setBounds(120, 110, 210, 60);
 
         // Add components to the card
         add(bookPicture);
