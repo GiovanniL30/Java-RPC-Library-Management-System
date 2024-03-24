@@ -114,7 +114,7 @@ public class ManageAccountsPanel extends JPanel{
             // Creating picture label for account image
             Picture picture = new Picture("src/main/resources/images/icons/profileAccount.jpg", 170, 170);
             // Setting color and button states based on account status
-            if (account.getAccount().isBanned()) {
+            if (account.getAccount().getIsBanned()) {
                 picture.setBackground(Color.red);
                 banButton.setEnabled(false);
                 banButton.setBackground(Color.white);
