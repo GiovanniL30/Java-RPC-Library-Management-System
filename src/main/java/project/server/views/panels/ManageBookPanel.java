@@ -42,7 +42,6 @@ public class ManageBookPanel extends JPanel {
 
         add(subHeader, BorderLayout.NORTH);
         add(manageBookList, BorderLayout.CENTER);
-
     }
 
     public void setManageBookList( LinkedList<Student> students, ServerPanels serverPanels) {

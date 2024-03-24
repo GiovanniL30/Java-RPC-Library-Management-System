@@ -37,7 +37,7 @@ public class AddBooksPanel extends JPanel {
     private final DropDown dropDown;
     private final Button addBook;
     private final ServerObserver serverObserver;
-    private String filePath = "res/images/imageNotAvailable.png";
+    private String filePath = "src/main/resources/images/bookImages/imageNotAvailable.png";
 
     public AddBooksPanel(ServerObserver serverObserver) {
         this.serverObserver = serverObserver;
@@ -113,14 +113,14 @@ public class AddBooksPanel extends JPanel {
             File selectedFile = fileChooser.getSelectedFile();
             return saveImage(selectedFile);
         }
-        return "";
+        return "src/main/resources/images/bookImages/imageNotAvailable.png";
     } // end of uploadImage
 
     private String saveImage(File imageFile) {
         Path targetPath = null;
         try {
             Path sourcePath = imageFile.toPath();
-            targetPath = Paths.get("resources/images/bookImages", imageFile.getName());
+            targetPath = Paths.get("src/main/resources/images/bookImages/", imageFile.getName());
             Files.copy(sourcePath, targetPath);
             JOptionPane.showMessageDialog(this, "Image saved successfully!");
         } catch (IOException e) {
@@ -174,7 +174,7 @@ public class AddBooksPanel extends JPanel {
             }
 
             // Create a new book
-            Book book = new Book(enteredAuthor, dropDown.dropDownChoice(), enteredBookTitle, enteredDescription, generateRandomID(), filePath, copies, new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
+            Book book = new Book(generateRandomID(),enteredBookTitle, enteredAuthor, dropDown.dropDownChoice(), enteredDescription, filePath, copies, new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
             // Call the server observer to add the book
             serverObserver.createNewBook(book);
 
@@ -182,8 +182,9 @@ public class AddBooksPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Book added");
             clearAll(); // Clear the text fields
             // reset file path to default image
-            filePath = "resources/images/bookImages/imageNotAvailable.png";
+            filePath = "src/main/resources/images/bookImages/imageNotAvailable.png";
             picture.updatePicture(filePath);
+
         });
     } // end of createNewBook method
 
