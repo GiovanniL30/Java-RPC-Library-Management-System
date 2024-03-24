@@ -58,7 +58,8 @@ public class ManageBookList extends JPanel {
 
 
                         }
-                        case BORROWED_PANEL ->  {
+
+                        case BORROWED_PANEL, PENDING_RETURN_PANEL ->  {
 
                             for(Book book : student.getBorrowedBooks()) {
                                 holder.add(new ManageBookCard(book, student, true, serverObserver));

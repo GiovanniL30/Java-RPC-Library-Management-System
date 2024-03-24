@@ -257,6 +257,7 @@ public class DataModel {
                 if(isRemove) {
 
                     JSONArray prevBookBorrowers = null;
+                    JSONArray accountPendingReturnBooks = null;
 
                     if(isBookTarget) {
 
@@ -264,6 +265,12 @@ public class DataModel {
                             prevBookBorrowers = (JSONArray) jsonObject.get("prevBookBorrowers");
                         }else {
                             prevBookBorrowers = (JSONArray) jsonObject.get("pendingBookReturners");
+                        }
+
+                    }else {
+
+                        if(isClient) {
+                            accountPendingReturnBooks = (JSONArray) jsonObject.get("pendingReturnBooks");
                         }
 
                     }
@@ -290,6 +297,12 @@ public class DataModel {
                                     prevBookBorrowers.add(prevBorrower);
                                 }
 
+                            }
+
+                            if(accountPendingReturnBooks != null) {
+                                JSONObject bookIDObject = new JSONObject();
+                                bookIDObject.put("id", bookId);
+                                accountPendingReturnBooks.add(bookIDObject);
                             }
 
                             borrowers.remove(object);
