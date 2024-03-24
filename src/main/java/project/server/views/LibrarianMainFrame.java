@@ -82,6 +82,7 @@ public class LibrarianMainFrame extends JFrame {
     public HomePanel getHomePanel() {
         return homePanel;
     }
+    public AddBooksPanel getAddBooksPanel(){return addBooksPanel; }
 
     public void setCurrentPanel(JPanel panel) {
 
