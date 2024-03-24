@@ -18,9 +18,9 @@ import java.util.Optional;
 public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRemoteMethods {
 
     private final HashMap<String, ClientUpdateReceiver> clientsHashMap = new HashMap<>();
-    private ServerUpdateReceiver serverUpdateReceiver;
     private final BookModel bookModel = new BookModel();
     private final AccountModel accountModel = new AccountModel();
+    private final ServerUpdateReceiver serverUpdateReceiver;
 
     public GlobalRemoteServant(ServerUpdateReceiver serverUpdateReceiver) throws RemoteException {
         this.serverUpdateReceiver = serverUpdateReceiver;
@@ -29,10 +29,8 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     ///////////  Client Remote Methods--------
 
     /**
-     *
-     *  Client Remote Methods
-     *
-     * */
+     * Client Remote Methods
+     */
     @Override
     public Response<Student> logIn(Authentication credential, ClientUpdateReceiver clientUpdateReceiver) throws RemoteException {
         System.out.println("Client Request to log in");
@@ -44,14 +42,14 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         if (account.isPresent()) {
 
             if (clientsHashMap.containsKey(account.get().getAccountId())) {
-                return new Response<>(false, new Student(null, 1, null, null));
+                return new Response<>(false, new Student(null, 1, null, null, null));
             }
 
             clientsHashMap.put(account.get().getAccountId(), clientUpdateReceiver);
             System.out.println(account.get().getUserName() + " logged in successfully\n\n");
             return new Response<>(true, getStudentAccount(account.get()));
         } else {
-            return new Response<>(false, new Student(null, 0, null, null));
+            return new Response<>(false, new Student(null, 0, null, null, null));
         }
     }
 
@@ -61,7 +59,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
         int latestBookCopies = getUpdatedBook(book.getBookId()).getCopies();
 
-        if(latestBookCopies == 0) {
+        if (latestBookCopies == 0) {
             return new Response<>(false, "Unfortunately, there are no copies of the book left");
         }
 
@@ -98,7 +96,6 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
 
-
     @Override
     public Response<LinkedList<Book>> getBooks(boolean isClient) throws RemoteException {
         if (isClient) System.out.println("Client Request to get all the books");
@@ -115,7 +112,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public void sendMessage(String message, Student sender) throws RemoteException {
-        for(ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
+        for (ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
             clientUpdateReceiver.receiveMessage(message, sender);
         }
     }
@@ -130,10 +127,8 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
 
     /**
-     *
-     *  Server Remote Methods
-     *
-     * */
+     * Server Remote Methods
+     */
     @Override
     public Response<String> acceptBook(Book book, Student student) throws RemoteException {
         System.out.println("Server accepts" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
@@ -259,20 +254,14 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
             }
             return new Response<>(false, "Account not found.");
         } catch (Exception e) {
-            return  new Response<>(false, e.getMessage());
+            return new Response<>(false, e.getMessage());
         }
     }
 
     @Override
     public Response<String> createAccount(Account account) throws RemoteException {
-        try {
-            if (accountModel.createAccount(account)) {
-                return  new Response<>(true, "Account successfully created.");
-            }
-            return new Response<>(false, "Account now created.");
-        } catch (Exception e) {
-            return  new Response<>(false, e.getMessage());
-        }
+        accountModel.addAccount(new Student(account, 0, new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
+        return new Response<>(true, "Account successfully created.");
     }
 
     @Override
@@ -282,7 +271,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public void sendNotificationToClient(ServerActions serverActions) throws RemoteException {
-        for(ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
+        for (ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
             clientUpdateReceiver.receiveUpdate(serverActions);
         }
     }
@@ -296,6 +285,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         LinkedList<Book> books = bookModel.getBooks();
         LinkedList<Book> borrowedBooks = new LinkedList<>();
         LinkedList<Book> pendingBooks = new LinkedList<>();
+        LinkedList<Book> pendingBookReturn = new LinkedList<>();
 
         for (Book book : books) {
 
@@ -315,9 +305,17 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
             }
 
+            for (String pending : book.getPendingBookReturners()) {
+
+                if (pending.equals(account.getAccountId())) {
+                    pendingBookReturn.add(book);
+                }
+
+            }
+
         }
 
-        return new Student(account, borrowedBooks.size(), pendingBooks, borrowedBooks);
+        return new Student(account, borrowedBooks.size(), pendingBooks, borrowedBooks, pendingBookReturn);
 
     }
 

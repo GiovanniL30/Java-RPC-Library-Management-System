@@ -13,12 +13,14 @@ public class Student implements Serializable {
     private int totalBorrowedBooks;
     private LinkedList<Book> pendingBooks;
     private LinkedList<Book> borrowedBooks;
+    private LinkedList<Book> pendingReturnBook;
 
-    public Student(Account account, int totalBorrowedBooks, LinkedList<Book> pendingBooks, LinkedList<Book> borrowedBooks) {
+    public Student(Account account, int totalBorrowedBooks, LinkedList<Book> pendingBooks, LinkedList<Book> borrowedBooks, LinkedList<Book> pendingReturnBook) {
         this.account = account;
         this.totalBorrowedBooks = totalBorrowedBooks;
         this.pendingBooks = pendingBooks;
         this.borrowedBooks = borrowedBooks;
+        this.pendingReturnBook  = pendingReturnBook;
     }
 
     public Account getAccount() {
@@ -53,6 +55,10 @@ public class Student implements Serializable {
         this.borrowedBooks = borrowedBooks;
     }
 
+    public LinkedList<Book> getPendingReturnBook() {
+        return pendingReturnBook;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -69,13 +75,19 @@ public class Student implements Serializable {
         jsonObject.put("id", account.getAccountId());
         jsonObject.put("lastName", account.getLastName());
         jsonObject.put("firstName", account.getFirstName());
-        jsonObject.put("email", account.getLastName());
-        jsonObject.put("password", account.getFirstName());
+        jsonObject.put("email", account.getEmail());
+        jsonObject.put("password", account.getPassword());
         jsonObject.put("totalBorrowedBook", totalBorrowedBooks);
         jsonObject.put("userName", account.getUserName());
 
-        jsonObject.put("pendingBooks", getObjects("pendingBooks"));
-        jsonObject.put("borrowedBooks", getObjects("borrowedBooks"));
+        JSONArray pendingBooksArray = getObjects("pendingBooks");
+        JSONArray pendingReturnBooksArray = getObjects("pendingReturnBooks");
+        JSONArray borrowedBooksArray = getObjects("borrowedBooks");
+
+
+        jsonObject.put("pendingReturnBooks", pendingReturnBooksArray );
+        jsonObject.put("borrowedBooks", borrowedBooksArray);
+        jsonObject.put("pendingBooks", pendingBooksArray) ;
 
 
         return jsonObject;
@@ -83,17 +95,20 @@ public class Student implements Serializable {
 
     private JSONArray getObjects(String type) {
         JSONArray jsonArray = new JSONArray();
-
-        LinkedList<Book> strings;
+        LinkedList<Book> strings = new LinkedList<>();
 
         switch (type) {
             case "pendingBooks" -> strings = getPendingBooks();
             case "borrowedBooks" -> strings = getBorrowedBooks();
-            default -> strings = new LinkedList<>();
+            case "pendingReturnBooks" -> strings = getPendingReturnBook();
         }
 
-        for (Book book : borrowedBooks) {
-            jsonArray.add(new JSONObject().put("id", book.getBookId()));
+        for (Book book : strings) {
+            System.out.println(type);
+            System.out.println(book.getBookId());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", book.getBookId());
+            jsonArray.add(jsonObject);
         }
 
         return jsonArray;

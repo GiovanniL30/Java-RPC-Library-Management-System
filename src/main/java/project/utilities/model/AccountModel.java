@@ -18,31 +18,46 @@ import java.util.LinkedList;
 
 public class AccountModel extends DataModel {
 
-    private String accountJSONfilePath = "src/main/resources/data/account.json";
+    private final String accountJSONfilePath = "src/main/resources/data/account.json";
+
+    public static void main(String[] args) {
+        AccountModel accountModel = new AccountModel();
+        accountModel.addAccount(new Student(new Account("2232254", "Eugene123", "Eugene", "Patano", "2232254@slu.edu.ph", "12345678"),
+
+                0, new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
+    }
+
+    private static Account getAccount(JSONObject o) {
+        String id = (String) o.get("id");
+        String userName = (String) o.get("userName");
+        String firstName = (String) o.get("firstName");
+        String lastName = (String) o.get("lastName");
+        String email = (String) o.get("email");
+        String password = (String) o.get("password");
+        return new Account(id, userName, firstName, lastName, email, password);
+    }
+
     public LinkedList<Account> getAccounts() {
-        
+
         LinkedList<Account> accounts = new LinkedList<>();
         JSONParser parser = new JSONParser();
-        
+
         try {
 
             JSONObject json = (JSONObject) parser.parse(new FileReader(accountJSONfilePath));
             JSONArray jsonArray = (JSONArray) json.get("accounts");
-            
-            for(Object o: jsonArray) {
 
+            for (Object o : jsonArray) {
                 Account account = getAccount((JSONObject) o);
                 accounts.add(account);
-                
             }
-              
+
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
 
         return accounts;
     }
-
 
     public void addAccount(Student account) {
         LinkedList<Student> accounts = getStudentAccounts();
@@ -55,9 +70,9 @@ public class AccountModel extends DataModel {
     public void deleteAccount(Student student) {
         LinkedList<Student> accounts = getStudentAccounts();
 
-        for(int i = 0; i < accounts.size(); i++) {
+        for (int i = 0; i < accounts.size(); i++) {
 
-            if(accounts.get(i).getAccount().getAccountId().equals(student.getAccount().getAccountId())) {
+            if (accounts.get(i).getAccount().getAccountId().equals(student.getAccount().getAccountId())) {
                 accounts.remove(i);
                 saveStudentAccountData(accounts);
                 break;
@@ -71,9 +86,9 @@ public class AccountModel extends DataModel {
     public void editAccount(Student student) {
         LinkedList<Student> accounts = getStudentAccounts();
 
-        for(int i = 0; i < accounts.size(); i++) {
+        for (int i = 0; i < accounts.size(); i++) {
 
-            if(accounts.get(i).getAccount().getAccountId().equals(student.getAccount().getAccountId())) {
+            if (accounts.get(i).getAccount().getAccountId().equals(student.getAccount().getAccountId())) {
                 accounts.remove(i);
                 accounts.add(i, student);
                 saveStudentAccountData(accounts);
@@ -88,13 +103,13 @@ public class AccountModel extends DataModel {
     public LinkedList<Student> getStudentAccounts() {
         LinkedList<Student> studentAccounts = new LinkedList<>();
 
-
         LinkedList<Account> accounts = getAccounts();
         LinkedList<Book> books = getBooks();
 
-        for(Account account: accounts) {
+        for (Account account : accounts) {
             LinkedList<Book> studentBorrowedBooks = new LinkedList<>();
             LinkedList<Book> studentPendingBooks = new LinkedList<>();
+            LinkedList<Book> studentPendingBookReturns = new LinkedList<>();
 
 
             books.stream().filter(book -> {
@@ -112,23 +127,33 @@ public class AccountModel extends DataModel {
 
             books.stream().filter(book -> {
 
-                LinkedList<String> borrowers = book.getPendingBorrowers();
-                if (borrowers.isEmpty()) return false;
+                LinkedList<String> pendingBorrowers = book.getPendingBorrowers();
+                if (pendingBorrowers.isEmpty()) return false;
 
-                for (String id : borrowers) {
+                for (String id : pendingBorrowers) {
                     if (id.equals(account.getAccountId())) return true;
                 }
 
                 return false;
             }).forEach(studentPendingBooks::add);
 
-            studentAccounts.add(new Student(account, studentBorrowedBooks.size(), studentBorrowedBooks, studentPendingBooks));
+            books.stream().filter(book -> {
+
+                LinkedList<String> pendingReturns = book.getPendingBookReturners();
+                if (pendingReturns.isEmpty()) return false;
+
+                for (String id : pendingReturns) {
+                    if (id.equals(account.getAccountId())) return true;
+                }
+
+                return false;
+            }).forEach(studentPendingBookReturns::add);
+
+            studentAccounts.add(new Student(account, studentBorrowedBooks.size(), studentPendingBooks, studentBorrowedBooks, studentPendingBookReturns));
         }
 
         return studentAccounts;
     }
-
-
 
     public void saveStudentAccountData(LinkedList<Student> students) {
         JSONObject jsonObject = readJSON(accountJSONfilePath);
@@ -142,54 +167,5 @@ public class AccountModel extends DataModel {
         saveJSON(jsonObject, accountJSONfilePath);
     }
 
-    private static Account getAccount(JSONObject o) {
-        String id = (String) o.get("id");
-        String userName =  (String) o.get("userName");
-        String firstName = (String) o.get("firstName");
-        String lastName = (String) o.get("lastName");
-        String email = (String) o.get("email");
-        String password = (String) o.get("password");
-        return new Account(id, userName, firstName ,lastName, email,  password);
-    }
-
-    public boolean createAccount (Account account) {
-        try {
-            JSONArray jsonArray;
-
-            try (FileReader reader = new FileReader("src/main/resources/data/account.json")){
-                JSONParser parser = new JSONParser();
-                JSONObject obj = (JSONObject) parser.parse(reader);
-                jsonArray = (JSONArray) obj.get("accounts");
-            }
-
-            for (Object obj : jsonArray) {
-                JSONObject jAccount = (JSONObject) obj;
-                String userName = (String) jAccount.get("userName");
-                if (userName.equals(account.getUserName())) {
-                    return false;
-                }
-            }
-
-            JSONObject newAccount = new JSONObject();
-            newAccount.put("id", account.getAccountId());
-            newAccount.put("userName", account.getUserName());
-            newAccount.put("firstName", account.getFirstName());
-            newAccount.put("lastName", account.getLastName());
-            newAccount.put("email", account.getEmail());
-            newAccount.put("password", account.getPassword());
-            jsonArray.add(newAccount);
-
-            JSONObject updatedAccounts = new JSONObject();
-            updatedAccounts.put("accounts", jsonArray);
-
-            try (FileWriter writer = new FileWriter("src/main/resources/data/account.json")) {
-                writer.write(updatedAccounts.toJSONString());
-            }
-            return true;
-
-        } catch (IOException | ParseException e) {
-            throw  new RuntimeException(e);
-        }
-    }
 
 }

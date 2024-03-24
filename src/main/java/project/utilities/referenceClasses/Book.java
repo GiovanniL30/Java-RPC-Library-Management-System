@@ -179,7 +179,9 @@ public class Book implements Serializable {
         }
 
         for(String string : strings) {
-            jsonArray.add(new JSONObject().put("id", string));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", string);
+            jsonArray.add(jsonObject);
         }
 
         return jsonArray;
