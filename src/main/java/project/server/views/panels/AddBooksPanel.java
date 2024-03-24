@@ -1,6 +1,7 @@
 package project.server.views.panels;
 
 import project.server.controller.ServerController;
+import project.server.controller.ServerObserver;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;
 import project.utilities.viewComponents.*;
@@ -35,11 +36,11 @@ public class AddBooksPanel extends JPanel {
     private final FieldInput copies;
     private final DropDown dropDown;
     private final Button addBook;
-    private final ServerController serverController;
+    private final ServerObserver serverObserver;
     private String filePath = "res/images/imageNotAvailable.png";
 
-    public AddBooksPanel(ServerController serverController) {
-        this.serverController = serverController;
+    public AddBooksPanel(ServerObserver serverObserver) {
+        this.serverObserver = serverObserver;
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -69,23 +70,13 @@ public class AddBooksPanel extends JPanel {
 
         // Image Area settings
         Button button = new Button("Upload Image", 400, 50, FontFactory.newPoppinsDefault(13));
-        picture = new Picture("", 400, 800);
+        picture = new Picture("", 400, 550);
         imageArea.setPreferredSize(new Dimension(400, 800));
 
-        GridBagLayout gridBagLayout = new GridBagLayout();
-        imageArea.setLayout(gridBagLayout);
-
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weighty = 1.0;
-        constraints.fill = GridBagConstraints.BOTH;
-        imageArea.add(picture, constraints);
-
-        constraints.gridy = 1;
-        constraints.weighty = 0.0;
-        constraints.insets = new Insets(10, 0, 0, 0);
-        imageArea.add(button, constraints);
+        BoxLayout boxLayout = new BoxLayout(imageArea, BoxLayout.Y_AXIS);
+        imageArea.setLayout(boxLayout);
+        imageArea.add(picture);
+        imageArea.add(button);
 
         // Action listeners for upload image
         button.addActionListener(e -> {
@@ -98,7 +89,7 @@ public class AddBooksPanel extends JPanel {
 
 
         JPanel spacing = new JPanel();
-        spacing.setPreferredSize(new Dimension(40, 800));
+        spacing.setPreferredSize(new Dimension(100, 800));
 
         // Add components to panel
         add(imageArea);
@@ -188,7 +179,7 @@ public class AddBooksPanel extends JPanel {
             // Create a new book
             Book book = new Book(enteredAuthor, dropDown.dropDownChoice(), enteredBookTitle, enteredDescription, generateRandomID(), filePath, copies, new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
             // Call the server observer to add the book
-            serverController.createNewBook(book);
+            serverObserver.createNewBook(book);
 
             // Show confirmation message
             JOptionPane.showMessageDialog(this, "Book added");
