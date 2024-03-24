@@ -99,7 +99,6 @@ public class Account implements Serializable {
         jsonObject.put("borrowedBooks", new JSONArray());
         jsonObject.put("isBanned", isBanned);
 
-
         return jsonObject;
     }
 

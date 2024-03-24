@@ -46,7 +46,6 @@ public class ManageBookList extends JPanel {
                 }
 
                 for (Student student : students) {
-                    //System.out.println(student.getPendingBooks());
 
                     switch (serverPanels) {
                         case PENDING_BORROW_PANEL -> {

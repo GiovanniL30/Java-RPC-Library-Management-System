@@ -42,7 +42,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         if (account.isPresent()) {
 
             if (clientsHashMap.containsKey(account.get().getAccountId())) {
-                return new Response<>(false, new Student(null, 1, null, null, null));
+                return new Response<>(false, new Student(new Account("Your account is already logged in on another machine", "", "", "", "", "", true), 1, null, null, null));
+            }
+
+            if(account.get().getIsBanned()) {
+                return new Response<>(false, new Student(new Account("Your Account is banned", "", "", "", "", "", true), 1, null, null, null));
             }
 
             clientsHashMap.put(account.get().getAccountId(), clientUpdateReceiver);
@@ -167,6 +171,9 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     @Override
     public Response<String> deleteBook(Book book) throws RemoteException {
         bookModel.deleteBook(book);
+        for(ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
+            clientUpdateReceiver.receiveUpdate(ServerActions.DELETE_BOOK);
+        }
         return new Response<>(true, book.getBookTitle() + " was successfully deleted");
     }
 
@@ -183,7 +190,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> createNewBook(Book book) throws RemoteException {
-        return null;
+        bookModel.addBook(book);
+        for(ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
+            clientUpdateReceiver.receiveUpdate(ServerActions.ADDED_NEW_BOOK);
+        }
+        return new Response<>(true, book.getBookTitle() + " was successfully added");
     }
 
     @Override
@@ -240,31 +251,33 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     @Override
-    public Response<String> banAccount(Account account) throws RemoteException {
-        return null;
+    public Response<String> banAccount(Student account) throws RemoteException {
+        account.getAccount().setIsBanned(true);
+        accountModel.editAccount(account);
+        clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.BAN_ACCOUNT);
+        return new Response<>(true, "Account Banned Successfully");
     }
 
     @Override
-    public Response<String> unbanAccount(Account account) throws RemoteException {
-        return null;
+    public Response<String> unbanAccount(Student account) throws RemoteException {
+        account.getAccount().setIsBanned(false);
+        accountModel.editAccount(account);
+        return new Response<>(true, "Account UnBanned Successfully");
     }
 
     @Override
     public Response<String> deleteAccount(Student account) throws RemoteException {
-        try {
-            LinkedList<Student> studentAccounts = accountModel.getStudentAccounts();
+        accountModel.deleteAccount(account);
+        clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.DELETE_ACCOUNT);
+        return new Response<>(true, "Account Deleted Successfully");
+    }
 
-            for (Student student : studentAccounts) {
-                if (student.getAccount().getAccountId().equals(account.getAccount().getAccountId())) {
-                    studentAccounts.remove(student);
-                    accountModel.saveStudentAccountData(studentAccounts);
-                    return new Response<>(true, "Account deleted successfully.");
-                }
-            }
-            return new Response<>(false, "Account not found.");
-        } catch (Exception e) {
-            return new Response<>(false, e.getMessage());
-        }
+    @Override
+    public Response<String> editAccount(Student account) throws RemoteException {
+
+        //??usage
+        accountModel.editAccount(account);
+        return new Response<>(true, "Account Edited Successfully");
     }
 
     @Override
@@ -274,8 +287,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     @Override
-    public Response<String> changeUserPassword(Account account, String newPassword) throws RemoteException {
-        return null;
+    public Response<String> changeUserPassword(Student account, String newPassword) throws RemoteException {
+        account.getAccount().setPassword(newPassword);
+        accountModel.editAccount(account);
+        clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.CHANGE_PASSWORD);
+        return new Response<>(true, "Account Password Successfully Changed");
     }
 
     @Override

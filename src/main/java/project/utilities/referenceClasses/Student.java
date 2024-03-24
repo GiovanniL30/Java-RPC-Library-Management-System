@@ -79,6 +79,7 @@ public class Student implements Serializable {
         jsonObject.put("password", account.getPassword());
         jsonObject.put("totalBorrowedBook", totalBorrowedBooks);
         jsonObject.put("userName", account.getUserName());
+        jsonObject.put("isBanned", account.getIsBanned());
 
         JSONArray pendingBooksArray = getObjects("pendingBooks");
         JSONArray pendingReturnBooksArray = getObjects("pendingReturnBooks");

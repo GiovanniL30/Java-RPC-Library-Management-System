@@ -32,10 +32,10 @@ public class ServerController implements ServerObserver, Serializable {
         try {
             Response<String> response = serverMethods.acceptBook(book, student);
             if (response.isSuccess()) {
-                student.getPendingBooks().remove(book);
-            } else {
-                JOptionPane.showMessageDialog(null, response.getPayload());
+               changeFrame(ServerPanels.PENDING_BORROW_PANEL);
             }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
 
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -48,10 +48,9 @@ public class ServerController implements ServerObserver, Serializable {
         try {
             Response<String> response = serverMethods.retrieveBook(book,student);
             if (response.isSuccess()) {
-                JOptionPane.showMessageDialog(null, "Book retrieved successfully.");
-            } else {
-                JOptionPane.showMessageDialog(null, response.getPayload());
+                changeFrame(ServerPanels.BORROWED_PANEL);
             }
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -78,6 +77,17 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void cancelPending(Book book, Student student) {
 
+        try {
+            Response<String> response = serverMethods.cancelPending(book, student);
+            if (response.isSuccess()) {
+                changeFrame(ServerPanels.PENDING_BORROW_PANEL);
+            }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -169,12 +179,14 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void broadcastMessage(String message) {
+
+        //TODO: specific broadcast to a user
         try {
             Response<String> response = serverMethods.broadcastMessage(message);
             if (response.isSuccess()) {
                 System.out.println("Message broadcasted successfully.");
             } else {
-                JOptionPane.showMessageDialog(null, response.getPayload());
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -182,13 +194,36 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
-    public void banAccount(Account account) {
+    public void banAccount(Student account) {
 
+        try {
+            Response<String> response = serverMethods.banAccount(account);
+
+            if (response.isSuccess()) {
+                changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
+            }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void unbanAccount(Account account) {
+    public void unbanAccount(Student account) {
 
+        try {
+            Response<String> response = serverMethods.unbanAccount(account);
+
+
+            if (response.isSuccess()) {
+                changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
+            }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -197,14 +232,16 @@ public class ServerController implements ServerObserver, Serializable {
             Response<String> response = serverMethods.deleteAccount(account);
 
             if (response.isSuccess()) {
-                System.out.println("Account deleted successfully.");
-            } else {
-                JOptionPane.showMessageDialog(null, response.getPayload());
+                changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
             }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
+
+
 
     @Override
     public void createAccount(Account account) {
@@ -212,28 +249,38 @@ public class ServerController implements ServerObserver, Serializable {
             Response<String> response = serverMethods.createAccount(account);
 
             if (response.isSuccess()) {
-                System.out.println("Account created successfully.");
-            } else {
-                JOptionPane.showMessageDialog(null, response.getPayload());
+                changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
             }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void editPassword(Account account){
-        String newPass = JOptionPane.showInputDialog(null, "Enter the new password: ");
+    @Override
+    public void changeUserPassword(Student account) {
+
+        String newPass = JOptionPane.showInputDialog(mainView, "Enter the new password: ");
         if (newPass == null || newPass.isEmpty()) return;
 
         if (newPass.length() < 8) {
-            JOptionPane.showMessageDialog(null, "Password Length Invalid [8 and above]");
+            JOptionPane.showMessageDialog(mainView, "Password Length Invalid [8 and above]");
             return;
         }
 
-        changeUserPassword(account, newPass);
-    }
-    @Override
-    public void changeUserPassword(Account account, String newPassword) {
+        try {
+           Response<String> response =  serverMethods.changeUserPassword(account, newPass);
+
+           if(response.isSuccess()) {
+                changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
+           }
+
+           JOptionPane.showMessageDialog(mainView, response.getPayload());
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -287,12 +334,10 @@ public class ServerController implements ServerObserver, Serializable {
                     case VIEW_BOOKS_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new ViewBookPanel(ServerController.this));
-
                     }
                     case MANAGE_BOOK_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new ManageBookPanel(getBooks(), getStudents(), ServerController.this));
-
                     }
                     case MANAGE_ACCOUNTS_PANEL -> {
                         mainView.getContentPane().remove(1);
@@ -351,6 +396,10 @@ public class ServerController implements ServerObserver, Serializable {
                System.out.println(clientActions);
                if(mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.PENDING_BORROW_PANEL.getDisplayName())){
                    changeFrame(ServerPanels.PENDING_BORROW_PANEL);
+               }
+           }case RETURN_BOOK -> {
+               if(mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.BORROWED_PANEL.getDisplayName())){
+                   changeFrame(ServerPanels.BORROWED_PANEL);
                }
            }
        }

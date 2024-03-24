@@ -1,22 +1,21 @@
-package project.server.views.components.viewBookPanel;
+package project.server.views.components.accountPanel;
 
-import project.client.views.components.HomePanel;
-import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
+import project.server.views.components.manageBookPanel.ManageBookCard;
+import project.server.views.utility.ServerPanels;
 import project.utilities.referenceClasses.Book;
-import project.utilities.viewComponents.Loading;
+import project.utilities.referenceClasses.Student;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class ViewBooksList extends JPanel {
+public class MangeAccountList extends JPanel {
+
     private final ServerObserver serverObserver;
-    private JPanel holder = new JPanel();
+    private final JPanel holder = new JPanel();
 
-
-
-    public ViewBooksList(LinkedList<Book> books, ServerObserver serverObserver) {
+    public MangeAccountList(LinkedList<Student> students, ServerObserver serverObserver) {
 
         this.serverObserver = serverObserver;
 
@@ -27,7 +26,7 @@ public class ViewBooksList extends JPanel {
         holder.setLayout(gridLayout);
         holder.setBackground(Color.white);
 
-        updateView(books);
+        updateView(students);
 
         JScrollPane scrollPane = new JScrollPane(holder);
         scrollPane.setPreferredSize(new Dimension(920, 550));
@@ -35,23 +34,22 @@ public class ViewBooksList extends JPanel {
         add(scrollPane);
     }
 
-    public void updateView(LinkedList<Book> books){
+    public void updateView(LinkedList<Student> students) {
+
         new SwingWorker<>() {
             @Override
             protected Object doInBackground() {
 
-
-                if(books.isEmpty()) {
+                if (students.isEmpty()) {
                     holder.revalidate();
                     holder.repaint();
                 }
 
-                for (Book book : books) {
-                    holder.add(new ViewBooksCard(book, serverObserver));
+                for(Student student: students) {
+                    holder.add(new AccountCard(student, serverObserver));
                     holder.revalidate();
                     holder.repaint();
                 }
-
 
 
                 return null;
@@ -62,6 +60,5 @@ public class ViewBooksList extends JPanel {
 
 
     }
-
 
 }

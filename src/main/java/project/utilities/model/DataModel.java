@@ -169,8 +169,6 @@ public class DataModel {
     public boolean removeBorrowed(String bookId, Student studentId, boolean isClient){
       return borrow(bookId, studentId,"src/main/resources/data/book.json", true, true, isClient) &&
        borrow(bookId, studentId,"src/main/resources/data/account.json", false, true, isClient);
-
-
     }
 
 

@@ -57,15 +57,16 @@ public interface GlobalRemoteMethods extends Remote {
 
     Response<String> broadcastMessage(String message) throws RemoteException;
 
-    Response<String> banAccount(Account account) throws RemoteException;
+    Response<String> banAccount(Student account) throws RemoteException;
 
-    Response<String> unbanAccount(Account account) throws RemoteException;
+    Response<String> unbanAccount(Student account) throws RemoteException;
 
     Response<String> deleteAccount(Student account) throws RemoteException;
+    Response<String> editAccount(Student account) throws RemoteException;
 
     Response<String> createAccount(Account account) throws RemoteException;
 
-    Response<String> changeUserPassword(Account account, String newPassword) throws RemoteException;
+    Response<String> changeUserPassword(Student account, String newPassword) throws RemoteException;
     void sendNotificationToClient(ServerActions serverActions) throws RemoteException;
     void sendNotificationToClient(ServerActions serverActions, Student student) throws RemoteException;
 

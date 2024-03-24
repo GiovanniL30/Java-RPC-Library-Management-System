@@ -89,7 +89,7 @@ public class ClientController implements ClientObserver {
                             if (response.getPayload().getTotalBorrowedBooks() == 0) {
                                 JOptionPane.showMessageDialog(mainView, "Invalid Username or Password");
                             } else {
-                                JOptionPane.showMessageDialog(mainView, "Your account is already logged in on another machine");
+                                JOptionPane.showMessageDialog(mainView, response.getPayload().getAccount().getAccountId());
                             }
 
                         }
@@ -158,6 +158,15 @@ public class ClientController implements ClientObserver {
         try {
             Response<String> response = serverMethods.returnBook(book, loggedInAccount);
 
+            if (response.isSuccess()) {
+                loggedInAccount.getBorrowedBooks().remove(book);
+                changeFrame(ClientPanels.BORROWED_PANEL);
+
+                serverMethods.sendNotificationToServer(ClientActions.RETURN_BOOK);
+            } else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
+
         } catch (RemoteException e) {
 
         }
@@ -169,33 +178,53 @@ public class ClientController implements ClientObserver {
 
         switch (serverActions) {
             case EDIT_BOOK -> {
+                JOptionPane.showMessageDialog(mainView, "Admin edited a book");
 
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+                    changeFrame(ClientPanels.HOME_PANEL);
+                }
             }
             case BAN_ACCOUNT -> {
-
+                JOptionPane.showMessageDialog(mainView, "Admin banned your account, you will be logged out");
+                logout();
             }
             case DELETE_BOOK -> {
+                JOptionPane.showMessageDialog(mainView, "Admin deleted a book");
 
-            }
-            case UNBAN_ACCOUNT -> {
-
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+                    changeFrame(ClientPanels.HOME_PANEL);
+                }
             }
             case ADDED_NEW_BOOK -> {
+                JOptionPane.showMessageDialog(mainView, "Admin added a new book");
 
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+                    changeFrame(ClientPanels.HOME_PANEL);
+                }
             }
             case DELETE_ACCOUNT -> {
-
+                JOptionPane.showMessageDialog(mainView, "Admin deleted your account, you will be logged out");
+                logout();
             }
             case RETRIEVES_BOOK -> {
+                loggedInAccount = updateMyAccount();
 
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Borrowed Books")) {
+                    changeFrame(ClientPanels.BORROWED_PANEL);
+                }
+
+                JOptionPane.showMessageDialog(mainView, "The Admin retrieves your book");
             }
             case CHANGE_PASSWORD -> {
-
+                JOptionPane.showMessageDialog(mainView, "Admin changed your account password, you will be logged out. Please login again");
+                logout();
             }
             case BROADCAST_MESSAGE -> {
 
             }
             case ACCEPT_BOOK_PENDING -> {
+
+                loggedInAccount = updateMyAccount();
 
                 if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Pending Books")) {
                     changeFrame(ClientPanels.PENDING_PANEL);
@@ -207,14 +236,34 @@ public class ClientController implements ClientObserver {
             }
             case CANCEL_BOOK_PENDING -> {
 
+                loggedInAccount = updateMyAccount();
+
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Pending Books")) {
+                    changeFrame(ClientPanels.PENDING_PANEL);
+                }
+
+                JOptionPane.showMessageDialog(mainView, "The Admin canceled your book pending");
             }
 
-            default -> {
-            }
         }
 
     }
 
+    private Student updateMyAccount() {
+
+        try {
+            Response<LinkedList<Student>> studentResponse = serverMethods.getStudentAccounts();
+
+            if(studentResponse.isSuccess()) {
+                return studentResponse.getPayload().stream().filter(student -> student.getAccount().getAccountId().equals(loggedInAccount.getAccount().getAccountId())).findFirst().get();
+            }
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+        return loggedInAccount;
+    }
 
     @Override
     public void changeFrame(ClientPanels clientPanels) {
