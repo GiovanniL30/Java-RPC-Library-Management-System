@@ -119,6 +119,8 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public void sendNotificationToServer(ClientActions clientActions) throws RemoteException {
+        System.out.println(serverUpdateReceiver);
+        System.out.println(clientActions);
         serverUpdateReceiver.receiveUpdate(clientActions);
     }
 
@@ -276,10 +278,17 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         }
     }
 
+    @Override
+    public void sendNotificationToClient(ServerActions serverActions, Student student) throws RemoteException {
+        clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(serverActions);
+    }
+
     public Response<LinkedList<Student>> getStudentAccounts() {
         LinkedList<Student> studentAccounts = accountModel.getStudentAccounts();
         return new Response<>(true, studentAccounts);
     }
+
+
 
     private Student getStudentAccount(Account account) {
         LinkedList<Book> books = bookModel.getBooks();
@@ -328,5 +337,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         }
 
     }
+
+
 
 }

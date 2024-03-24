@@ -16,6 +16,6 @@ public class ServerUpdates extends UnicastRemoteObject implements ServerUpdateRe
 
     @Override
     public void receiveUpdate(ClientActions clientActions) throws RemoteException {
-
+        serverController.updateView(clientActions);
     }
 }

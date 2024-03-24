@@ -1,10 +1,7 @@
 package project.client.views;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import project.client.controller.ClientController;
-import project.client.views.components.ChatView;
 import project.client.views.components.Header;
 import project.client.views.components.Menu;
 import project.utilities.viewComponents.Loading;
@@ -20,6 +17,8 @@ public class ClientMainView extends JFrame {
     private ClientController clientController;
 
     private MainPanel mainPanel;
+    private JPanel currentPanel;
+
 
 
     public ClientMainView(ClientController clientController) {
@@ -63,6 +62,7 @@ public class ClientMainView extends JFrame {
     }
 
     public void setContentPanel(JPanel panel) {
+        this.currentPanel = panel;
         mainPanel.setContentPanel(panel);
     }
 
@@ -75,5 +75,9 @@ public class ClientMainView extends JFrame {
 
     public void setMainPanel(MainPanel mainPanel) {
         this.mainPanel = mainPanel;
+    }
+
+    public JPanel getCurrentPanel() {
+        return currentPanel;
     }
 }
