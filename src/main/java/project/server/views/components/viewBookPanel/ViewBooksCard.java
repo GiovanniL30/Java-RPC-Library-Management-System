@@ -119,6 +119,9 @@ public class ViewBooksCard extends JPanel {
         prevOwnersButton.addActionListener(e -> {
 
         });
+        currentOwnersButton.addActionListener(e -> {
+
+        });
     }
 
 }
