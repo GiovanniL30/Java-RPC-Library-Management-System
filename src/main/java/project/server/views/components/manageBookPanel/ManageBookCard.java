@@ -37,16 +37,10 @@ public class ManageBookCard extends JPanel{
         acceptBook.setBackground(ColorFactory.green());
 
         cancelBook = new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(13));
-        cancelBook.addActionListener(e -> {
-            serverObserver.cancelPending(book, student);
-        });
         cancelBook.setForeground(Color.white);
         cancelBook.setBackground(ColorFactory.red());
 
         retrieveBook = new Button("Retrieve Book", 200, 50, FontFactory.newPoppinsDefault(13));
-        retrieveBook.addActionListener(e -> {
-           serverObserver.retrieveBook(book, student);
-        });
         retrieveBook.setForeground(Color.white);
         retrieveBook.setBackground(ColorFactory.blue());
 
@@ -79,11 +73,11 @@ public class ManageBookCard extends JPanel{
         });
 
         cancelBook.addActionListener(e -> {
-
+            serverObserver.cancelPending(book, student);
         });
 
         retrieveBook.addActionListener(e -> {
-
+            serverObserver.retrieveBook(book, student);
         }); // end of action listeners
     } // end of Card constructor
 }
