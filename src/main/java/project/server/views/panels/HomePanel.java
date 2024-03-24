@@ -20,23 +20,19 @@ public class HomePanel extends JPanel {
         JPanel holder = new JPanel();
         holder.setBackground(Color.WHITE);
         holder.setLayout(new BorderLayout());
+        holder.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH - 100, 575));
 
         BookSummary bookSummary = new BookSummary(serverController);
-
-        Picture banner = new Picture("src/main/resources/images/logo/vanni_banner.png", LibrarianMainFrame.FRAME_WIDTH, 300);
+        Picture banner = new Picture("src/main/resources/images/logo/vanni_banner.png", LibrarianMainFrame.FRAME_WIDTH - 200, 250);
         banner.setBackground(Color.WHITE);
 
         holder.add(banner, BorderLayout.NORTH);
         holder.add(bookSummary, BorderLayout.CENTER);
 
-        JScrollPane scrollPane = new JScrollPane(holder);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH - 100, 575));
-        scrollPane.setBackground(Color.WHITE);
-
-        add(scrollPane, BorderLayout.CENTER);
+        add(holder, BorderLayout.NORTH);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,50,5));
+        buttonPanel.setBackground(Color.WHITE);
         JButton broadcastButton = new JButton("Broadcast");
         broadcastButton.setPreferredSize(new Dimension(200, 35));
         broadcastButton.setForeground(Color.BLACK);

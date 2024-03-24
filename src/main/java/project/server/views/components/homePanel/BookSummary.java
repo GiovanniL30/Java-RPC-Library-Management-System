@@ -18,8 +18,10 @@ public class BookSummary extends JPanel {
     public BookSummary(ServerObserver serverObserver) {
         serverController = serverObserver;
         setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
 
         summaryPanel = new JPanel();
+        summaryPanel.setBackground(Color.WHITE);
         summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
 
         LinkedList<Book> books = serverController.getBooks();
