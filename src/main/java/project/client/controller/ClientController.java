@@ -261,7 +261,7 @@ public class ClientController implements ClientObserver {
 
         try {
             serverMethods.logout(loggedInAccount);
-            loggedInAccount = new Student(new Account("", "", "", "", "", ""), 0, null, null, null);
+            loggedInAccount = new Student(new Account("", "", "", "", "", "", false), 0, null, null, null);
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
             login.addClickEvent(this);
