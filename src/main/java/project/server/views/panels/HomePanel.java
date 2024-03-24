@@ -1,8 +1,10 @@
 package project.server.views.panels;
 
+import project.server.GlobalRemoteServant;
 import project.server.controller.ServerObserver;
 import project.server.views.LibrarianMainFrame;
 import project.server.views.components.homePanel.BookSummary;
+import project.server.views.components.homePanel.BroadcastMessage;
 import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
@@ -34,6 +36,18 @@ public class HomePanel extends JPanel {
         scrollPane.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH- 100,700));
         scrollPane.setBackground(Color.WHITE);
 
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        JButton broadcastButton = new JButton("Broadcast");
+        buttonPanel.add(broadcastButton);
+
+        broadcastButton.setPreferredSize(new Dimension(200, 40));
+        broadcastButton.setForeground(Color.BLACK);
+        broadcastButton.setBackground(Color.WHITE);
+
+        holder.add(buttonPanel, BorderLayout.SOUTH);
+
         add(scrollPane);
+        holder.add(buttonPanel).setBackground(Color.WHITE);
     }
 }
