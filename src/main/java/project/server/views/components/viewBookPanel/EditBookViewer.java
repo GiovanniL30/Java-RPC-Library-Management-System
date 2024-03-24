@@ -72,26 +72,43 @@ public class EditBookViewer extends JDialog {
         buttonPanel.add(saveChanges);
         buttonPanel.add(cancel);
 
-        picturePanel.add(picture);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        detailsPanel.add(bookTitle, constraints);
 
-        detailsPanel.add(bookTitle);
-        detailsPanel.add(bookAuthor);
-        detailsPanel.add(bookGenre);
-        detailsPanel.add(bookCopies);
-        detailsPanel.add(descPane);
-        detailsPanel.add(buttonPanel);
+        constraints.gridy = 1;
+        detailsPanel.add(bookAuthor, constraints);
 
-        picturePanel.add(detailsPanel);
+        constraints.gridy = 2;
+        detailsPanel.add(bookGenre, constraints);
+
+        constraints.gridy = 3;
+        detailsPanel.add(bookCopies, constraints);
+
+        constraints.gridy = 4;
+        detailsPanel.add(descPane, constraints);
+
+        constraints.gridy = 5;
+        detailsPanel.add(buttonPanel, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.weightx = 2.0;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        picturePanel.add(picture, constraints);
 
-        add(picturePanel);
+        constraints.gridx = 1;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        picturePanel.add(detailsPanel, constraints);
 
-//        pack();
-//
-//        setLocationRelativeTo(null);
+
+        add(picturePanel, BorderLayout.CENTER);
+
+        pack();
+
+        setLocationRelativeTo(null);
 
     }
 
