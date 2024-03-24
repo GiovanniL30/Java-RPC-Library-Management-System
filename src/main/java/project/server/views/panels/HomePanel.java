@@ -1,6 +1,5 @@
 package project.server.views.panels;
 
-import project.server.GlobalRemoteServant;
 import project.server.controller.ServerObserver;
 import project.server.views.LibrarianMainFrame;
 import project.server.views.components.homePanel.BookSummary;
@@ -9,8 +8,6 @@ import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class HomePanel extends JPanel {
     private final ServerObserver serverController;
@@ -35,18 +32,17 @@ public class HomePanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(holder);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH- 100,700));
+        scrollPane.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH- 100,575));
         scrollPane.setBackground(Color.WHITE);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
         JButton broadcastButton = new JButton("Broadcast");
 
-        buttonPanel.add(broadcastButton);
-
-        broadcastButton.setPreferredSize(new Dimension(200, 40));
+        broadcastButton.setPreferredSize(new Dimension(200, 35));
         broadcastButton.setForeground(Color.BLACK);
         broadcastButton.setBackground(Color.WHITE);
+
+        buttonPanel.add(broadcastButton);
 
         broadcastButton.addActionListener(e -> {
                 BroadcastMessage broadcastMessage = new BroadcastMessage((Frame) SwingUtilities.getWindowAncestor(HomePanel.this),
@@ -54,9 +50,7 @@ public class HomePanel extends JPanel {
                 broadcastMessage.setVisible(true);
         });
 
-        holder.add(buttonPanel, BorderLayout.SOUTH);
-
-        add(scrollPane);
-        holder.add(buttonPanel).setBackground(Color.WHITE);
+       add(scrollPane);
+       add(buttonPanel, BorderLayout.SOUTH);
     }
 }
