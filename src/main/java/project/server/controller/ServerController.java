@@ -221,6 +221,17 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    public void editPassword(Account account){
+        String newPass = JOptionPane.showInputDialog(null, "Enter the new password: ");
+        if (newPass == null || newPass.isEmpty()) return;
+
+        if (newPass.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Password Length Invalid [8 and above]");
+            return;
+        }
+
+        changeUserPassword(account, newPass);
+    }
     @Override
     public void changeUserPassword(Account account, String newPassword) {
 
