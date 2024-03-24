@@ -45,7 +45,16 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void retrieveBook(Book book, Student student) {
-
+        try {
+            Response<String> response = serverMethods.retrieveBook(book,student);
+            if (response.isSuccess()) {
+                JOptionPane.showMessageDialog(null, "Book retrieved successfully.");
+            } else {
+                JOptionPane.showMessageDialog(null, response.getPayload());
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

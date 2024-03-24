@@ -16,7 +16,7 @@ public class BroadcastMessage extends JDialog {
     private JTextField messageTextArea;
     LinkedList<Student> students;
 
-    //TODO:
+    //TODO: DONE
     public BroadcastMessage(Frame frame, ServerObserver serverObserver) {
         super(frame, "Broadcast Message", true);
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
