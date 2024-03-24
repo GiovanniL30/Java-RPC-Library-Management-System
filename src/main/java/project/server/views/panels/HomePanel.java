@@ -9,6 +9,8 @@ import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class HomePanel extends JPanel {
     private final ServerObserver serverController;
@@ -39,11 +41,18 @@ public class HomePanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         JButton broadcastButton = new JButton("Broadcast");
+
         buttonPanel.add(broadcastButton);
 
         broadcastButton.setPreferredSize(new Dimension(200, 40));
         broadcastButton.setForeground(Color.BLACK);
         broadcastButton.setBackground(Color.WHITE);
+
+        broadcastButton.addActionListener(e -> {
+                BroadcastMessage broadcastMessage = new BroadcastMessage((Frame) SwingUtilities.getWindowAncestor(HomePanel.this),
+                        serverController);
+                broadcastMessage.setVisible(true);
+        });
 
         holder.add(buttonPanel, BorderLayout.SOUTH);
 
