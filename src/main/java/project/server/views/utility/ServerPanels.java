@@ -11,7 +11,8 @@ public enum ServerPanels {
     PENDING_RETURN_PANEL("Pending Return"),
     All_BOOKS_PANEL("All Books"),
     AVAILABLE_BOOKS_PANEL("Available Books"),
-    UNAVAILABLE_BOOKS_PANEL("Unavailable Books");
+    UNAVAILABLE_BOOKS_PANEL("Unavailable Books"),
+    ADD_BOOKS_PANEL("Add Books");
 
 
 
