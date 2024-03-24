@@ -37,6 +37,9 @@ public class ManageBookCard extends JPanel{
         acceptBook.setBackground(ColorFactory.green());
 
         cancelBook = new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(13));
+        cancelBook.addActionListener(e -> {
+            serverObserver.cancelPending(book, student);
+        });
         cancelBook.setForeground(Color.white);
         cancelBook.setBackground(ColorFactory.red());
 
