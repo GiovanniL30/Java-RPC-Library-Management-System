@@ -155,12 +155,19 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> editBook(Book book) throws RemoteException {
-        return null;
+
+        if(bookModel.editBook(book)) {
+            return new Response<>(true, book.getBookTitle() + " was successfully edited");
+        }else {
+            return new Response<>(false, book.getBookTitle() + " was not successfully edited");
+        }
+
     }
 
     @Override
     public Response<String> deleteBook(Book book) throws RemoteException {
-        return null;
+        bookModel.deleteBook(book);
+        return new Response<>(true, book.getBookTitle() + " was successfully deleted");
     }
 
     @Override
