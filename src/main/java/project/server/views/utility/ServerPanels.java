@@ -1,8 +1,27 @@
 package project.server.views.utility;
 
+
 public enum ServerPanels {
-    HOME_PANEL,
-    VIEW_BOOKS_PANEL,
-    MANAGE_BOOK_PANEL,
-    MANAGE_ACCOUNTS_PANEL
+    HOME_PANEL("Home"),
+    VIEW_BOOKS_PANEL("View All Books"),
+    MANAGE_BOOK_PANEL("Manage Book"),
+    MANAGE_ACCOUNTS_PANEL("Manage Accounts"),
+    BORROWED_PANEL("Borrowed"),
+    PENDING_BORROW_PANEL("Pending Borrow"),
+    PENDING_RETURN_PANEL("Pending Return"),
+    All_BOOKS_PANEL("All Books"),
+    AVAILABLE_BOOKS_PANEL("Available Books"),
+    UNAVAILABLE_BOOKS_PANEL("Unavailable Books");
+
+
+
+    private final String displayName;
+
+    ServerPanels(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }

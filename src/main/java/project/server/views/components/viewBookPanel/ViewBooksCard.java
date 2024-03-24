@@ -1,7 +1,7 @@
 package project.server.views.components.viewBookPanel;
 
 import project.server.controller.ServerController;
-import project.server.views.components.BookCard;
+import project.server.controller.ServerObserver;
 import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
@@ -12,17 +12,22 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class ViewBookCard extends JPanel implements BookCard {
-    private ServerController serverController;;
-    private Button editBookButton = new Button("Edit", 100, 50, FontFactory.newPoppinsDefault(13));
-    private Button deleteBookButton = new Button("Delete", 100, 50, FontFactory.newPoppinsDefault(13));
+public class ViewBooksCard extends JPanel {
+    private ServerObserver serverObserver;;
+    private Button editBookButton = new Button("Edit", 130, 50, FontFactory.newPoppinsDefault(13));
+    private Button deleteBookButton = new Button("Delete", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button prevOwnersButton = new Button("Previous Owners", 130, 50, FontFactory.newPoppinsDefault(13));
-    public ViewBookCard(Book book) {
+    private Button currentOwnersButton = new Button("Current Owners", 130, 50, FontFactory.newPoppinsDefault(13));
+    public ViewBooksCard(Book book, ServerObserver serverObserver) {
+        this.serverObserver = serverObserver;
         setSize(new Dimension(300, 200));
         setLayout(new GridBagLayout());
         setBorder(new EmptyBorder(0, 10, 0, 20));
+        setBackground(Color.white);
 
         Picture bookPicture = new Picture(book.getImagePath(), 130, 200);
+        bookPicture.setBackground(Color.white);
+
         JLabel bookTitle = new JLabel(book.getBookTitle());
         bookTitle.setFont(FontFactory.newPoppinsBold(18));
         JLabel bookCopies = new JLabel("Copies: " + book.getCopies());
@@ -44,26 +49,38 @@ public class ViewBookCard extends JPanel implements BookCard {
         JPanel buttonsPanel = new JPanel();
         JPanel prevButtonPanel = new JPanel();
 
+
         bookInfoPanel.setLayout(new BoxLayout(bookInfoPanel, BoxLayout.Y_AXIS));
+        bookInfoPanel.setBackground(Color.white);
 
         bookTitlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookTitlePanel.setBackground(Color.white);
+
         bookCopiesPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookCopiesPanel.setBackground(Color.white);
+
         bookTitlePanel.add(bookTitle);
         bookCopiesPanel.add(bookCopies);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        buttonsPanel.setBackground(Color.white);
+
         buttonsPanel.add(editBookButton);
         buttonsPanel.add(deleteBookButton);
 
         prevButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        prevButtonPanel.setBackground(Color.white);
         prevButtonPanel.add(prevOwnersButton);
+        prevButtonPanel.add(currentOwnersButton);
 
         bookInfoPanel.add(bookTitlePanel);
         bookInfoPanel.add(bookCopiesPanel);
         bookInfoPanel.add(buttonsPanel);
         bookInfoPanel.add(prevButtonPanel);
 
+
         bookPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bookPanel.setBackground(Color.white);
         bookPanel.add(bookPicture);
         bookPanel.add(bookInfoPanel);
 
@@ -105,3 +122,4 @@ public class ViewBookCard extends JPanel implements BookCard {
     }
 
 }
+

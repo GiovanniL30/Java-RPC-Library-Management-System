@@ -112,6 +112,44 @@ public class DataModel {
         }
     }
 
+
+    public synchronized  LinkedList<Book> getBooks() {
+        String filePath = "src/main/resources/data/book.json";
+        LinkedList<Book> books = new LinkedList<>();
+
+
+        try {
+            JSONObject json = readJSON(filePath);
+            JSONArray jsonArray = (JSONArray) json.get("book");
+
+            for (Object object : jsonArray) {
+
+                JSONObject jsonObject = (JSONObject) object;
+                String bookId = (String) jsonObject.get("bookId");
+                String bookTitle = (String) jsonObject.get("bookTitle");
+                String author = (String) jsonObject.get("author");
+                String genre = (String) jsonObject.get("genre");
+                long copies = (long) jsonObject.get("copies");
+                String shortDescription = (String) jsonObject.get("shortDescription");
+                String imagePath = (String) jsonObject.get("imagePath");
+
+                JSONArray currentBorrowers = (JSONArray) jsonObject.get("currentBorrowers");
+                JSONArray pendingBorrowers = (JSONArray) jsonObject.get("pendingBorrowers");
+                JSONArray pendingBookReturners = (JSONArray) jsonObject.get("pendingBookReturners");
+                JSONArray prevBookBorrowers = (JSONArray) jsonObject.get("prevBookBorrowers");
+
+
+                Book book = new Book(bookId, bookTitle, author, genre, shortDescription, imagePath, (int) copies, getStudentID(currentBorrowers), getStudentID(prevBookBorrowers), getStudentID(pendingBorrowers), getStudentID(pendingBookReturners));
+                books.add(book);
+            }
+
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        }
+
+        return books;
+    }
+
     public boolean addPending(String bookId, Student studentId){
         return pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/book.json", true, false) &&
         pending(bookId, studentId.getAccount().getAccountId(), "src/main/resources/data/account.json", false, false);
@@ -284,5 +322,24 @@ public class DataModel {
         return false;
     }
 
+    private LinkedList<String> getStudentID(JSONArray jsonArray) {
+
+
+        LinkedList<String> students = new LinkedList<>();
+
+        for (Object object : jsonArray) {
+            JSONObject jsonObject = (JSONObject) object;
+
+            try {
+                String studentID = (String) jsonObject.get("id");
+                students.add(studentID);
+            }catch (NullPointerException e) {
+                return new LinkedList<>();
+            }
+
+        }
+
+        return students;
+    }
 
 }

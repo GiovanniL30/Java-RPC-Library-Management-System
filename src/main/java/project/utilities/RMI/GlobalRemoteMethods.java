@@ -1,6 +1,6 @@
 package project.utilities.RMI;
 
-import project.client.RMI.ClientRemoteMethods;
+import project.client.controller.ClientUpdateReceiver;
 import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
@@ -11,7 +11,7 @@ import java.util.LinkedList;
 
 public interface GlobalRemoteMethods extends Remote {
 
-    Response<Student> logIn(Authentication credential, ClientRemoteMethods clientRemoteMethods) throws RemoteException;
+    Response<Student> logIn(Authentication credential, ClientUpdateReceiver clientUpdateReceiver) throws RemoteException;
 
     /**
      * Handle borrowing a book event
@@ -35,7 +35,7 @@ public interface GlobalRemoteMethods extends Remote {
      */
     Response<String> returnBook(Book book, Student student) throws RemoteException;
 
-    Response<LinkedList<Book>> getBooks() throws RemoteException;
+    Response<LinkedList<Book>> getBooks(boolean isClient) throws RemoteException;
 
     void logout(Student student) throws RemoteException;
 

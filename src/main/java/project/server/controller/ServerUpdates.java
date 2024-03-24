@@ -1,17 +1,15 @@
-package project.server.RMI;
+package project.server.controller;
 
-import project.server.controller.ServerController;
 import project.utilities.utilityClasses.ClientActions;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ServerServant extends UnicastRemoteObject implements ServerRemoteMethods {
+public class ServerUpdates extends UnicastRemoteObject implements ServerUpdateReceiver {
 
     private ServerController serverController;
 
-    public ServerServant(ServerController serverController) throws RemoteException {
+    public ServerUpdates(ServerController serverController) throws RemoteException {
         this.serverController = serverController;
     }
 

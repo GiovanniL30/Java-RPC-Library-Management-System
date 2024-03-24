@@ -1,6 +1,5 @@
 package project.client.controller;
 
-import project.client.RMI.ClientServant;
 import project.client.utility.ClientPanels;
 import project.client.views.ClientMainView;
 import project.client.views.Login;
@@ -30,13 +29,13 @@ public class ClientController implements ClientObserver {
     private Student loggedInAccount;
     private BookViewer bookViewer;
     private ChatView chatView;
-    private ClientServant clientServant;
+    private ClientUpdates clientUpdates;
 
     public ClientController() {
 
         try {
             serverMethods = (GlobalRemoteMethods) LocateRegistry.getRegistry(1099).lookup("server");
-            clientServant = new ClientServant(this);
+            clientUpdates = new ClientUpdates(this);
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +62,7 @@ public class ClientController implements ClientObserver {
         new SwingWorker<Response<Student>, Void>() {
             @Override
             protected Response<Student> doInBackground() throws Exception {
-                return serverMethods.logIn(credential, clientServant);
+                return serverMethods.logIn(credential, clientUpdates);
             }
 
             @Override
@@ -249,7 +248,7 @@ public class ClientController implements ClientObserver {
 
         try {
             serverMethods.logout(loggedInAccount);
-            loggedInAccount = new Student(new Account("", "", "", "", "", ""), 0, null, null);
+            loggedInAccount = new Student(new Account("", "", "", "", "", ""), 0, null, null, null);
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
             login.addClickEvent(this);
@@ -271,7 +270,7 @@ public class ClientController implements ClientObserver {
     public void openBook(Book book) {
 
         try {
-            Book viewBook = serverMethods.getBooks().getPayload().stream().filter( b -> b.getBookId().equals(book.getBookId())).findFirst().get();
+            Book viewBook = serverMethods.getBooks(true).getPayload().stream().filter( b -> b.getBookId().equals(book.getBookId())).findFirst().get();
             bookViewer = new BookViewer(mainView, viewBook, loggedInAccount, this);
             bookViewer.setVisible(true);
         } catch (RemoteException e) {
@@ -296,7 +295,7 @@ public class ClientController implements ClientObserver {
 
     public LinkedList<Book> getBooks() {
         try {
-            Response<LinkedList<Book>> response = serverMethods.getBooks();
+            Response<LinkedList<Book>> response = serverMethods.getBooks(true);
 
             if (response.isSuccess()) {
                 return response.getPayload();
