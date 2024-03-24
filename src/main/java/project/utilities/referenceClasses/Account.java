@@ -1,6 +1,5 @@
 package project.utilities.referenceClasses;
 
-import netscape.javascript.JSObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -14,14 +13,16 @@ public class Account implements Serializable {
     private String lastName;
     private String email;
     private String password;
+    private boolean isBanned;
 
-    public Account(String accountId, String userName, String firstName, String lastName, String email, String password) {
+    public Account(String accountId, String userName, String firstName, String lastName, String email, String password, boolean isBanned) {
         this.accountId = accountId;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.isBanned = isBanned;
     }
 
     public String getAccountId() {
@@ -73,6 +74,7 @@ public class Account implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", isBanned='" + isBanned + '\'' +
                 '}';
     }
 
@@ -95,13 +97,14 @@ public class Account implements Serializable {
         jsonObject.put("totalBorrowedBook", 0);
         jsonObject.put("pendingBooks", new JSONArray());
         jsonObject.put("borrowedBooks", new JSONArray());
-
+        jsonObject.put("isBanned", isBanned);
 
 
         return jsonObject;
     }
 
-    public boolean isBanned() {
-        return true;
+    public boolean getIsBanned() {
+        return isBanned;
     }
+    public void setIsBanned(boolean isBanned) { this.isBanned = isBanned; }
 }
