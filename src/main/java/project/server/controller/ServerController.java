@@ -1,10 +1,7 @@
 package project.server.controller;
 
 import project.server.views.LibrarianMainFrame;
-import project.server.views.panels.HomePanel;
-import project.server.views.panels.ManageAccountsPanel;
-import project.server.views.panels.ManageBookPanel;
-import project.server.views.panels.ViewBookPanel;
+import project.server.views.panels.*;
 import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
 import project.utilities.referenceClasses.Account;
@@ -53,6 +50,14 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void editBook(Book book) {
 
+        try {
+            Response<String> response = serverMethods.editBook(book);
+            if (response.isSuccess()){
+
+            }
+        } catch (RemoteException e){
+            throw new RuntimeException();
+        }
     }
 
     @Override
@@ -271,6 +276,10 @@ public class ServerController implements ServerObserver, Serializable {
                     case MANAGE_ACCOUNTS_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new ManageAccountsPanel(getStudents(), ServerController.this));
+                    }
+                    case ADD_BOOKS_PANEL -> {
+                        mainView.getViewBookPanel().remove(1);
+                        mainView.setCurrentPanel(new AddBooksPanel(ServerController.this));
                     }
                     case PENDING_BORROW_PANEL -> {
                         mainView.getManageBookPanel().setManageBookList(getStudents(), ServerPanels.PENDING_BORROW_PANEL);
