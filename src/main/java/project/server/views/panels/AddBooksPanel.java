@@ -2,7 +2,6 @@ package project.server.views.panels;
 
 import project.server.controller.ServerController;
 import project.utilities.utilityClasses.FontFactory;
-import project.server.controller.ServerObserver;
 import project.utilities.viewComponents.Button;
 import project.utilities.viewComponents.*;
 import project.utilities.referenceClasses.Book;
@@ -36,8 +35,7 @@ public class AddBooksPanel extends JPanel {
     private final FieldInput copies;
     private final DropDown dropDown;
     private final Button addBook;
-    //private final ServerObserver serverObserver;
-    private ServerController serverController;
+    private final ServerController serverController;
     private String filePath = "res/images/imageNotAvailable.png";
 
     public AddBooksPanel(ServerController serverController) {
@@ -119,6 +117,7 @@ public class AddBooksPanel extends JPanel {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setDialogTitle("Choose Image");
         fileChooser.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg", "jpeg"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PNG Images", "png"));
 
         int returnValue = fileChooser.showOpenDialog(this);
 
@@ -133,7 +132,7 @@ public class AddBooksPanel extends JPanel {
         Path targetPath = null;
         try {
             Path sourcePath = imageFile.toPath();
-            targetPath = Paths.get("res/images", imageFile.getName());
+            targetPath = Paths.get("resources/images/bookImages", imageFile.getName());
             Files.copy(sourcePath, targetPath);
             JOptionPane.showMessageDialog(this, "Image saved successfully!");
         } catch (IOException e) {
@@ -195,7 +194,7 @@ public class AddBooksPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Book added");
             clearAll(); // Clear the text fields
             // reset file path to default image
-            filePath = "res/images/imageNotAvailable.png";
+            filePath = "resources/images/bookImages/imageNotAvailable.png";
             picture.updatePicture(filePath);
         });
     } // end of createNewBook method
