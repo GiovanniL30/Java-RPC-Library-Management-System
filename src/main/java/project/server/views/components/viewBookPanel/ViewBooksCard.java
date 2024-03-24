@@ -2,6 +2,7 @@ package project.server.views.components.viewBookPanel;
 
 import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
+import project.server.views.LibrarianMainFrame;
 import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
@@ -14,6 +15,8 @@ import java.awt.*;
 
 public class ViewBooksCard extends JPanel {
     private ServerObserver serverObserver;;
+    private EditBookViewer editBookViewer;
+    private LibrarianMainFrame mainView;
     private Button editBookButton = new Button("Edit", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button deleteBookButton = new Button("Delete", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button prevOwnersButton = new Button("Previous Owners", 130, 50, FontFactory.newPoppinsDefault(13));
@@ -92,7 +95,8 @@ public class ViewBooksCard extends JPanel {
         add(bookPanel, constraints);
 
         editBookButton.addActionListener(e -> {
-
+            editBookViewer = new EditBookViewer(mainView, book, serverObserver);
+            editBookViewer.setVisible(true);
         });
 
         deleteBookButton.addActionListener(e -> {
