@@ -278,7 +278,7 @@ public class ServerController implements ServerObserver, Serializable {
                         mainView.setCurrentPanel(new ManageAccountsPanel(getStudents(), ServerController.this));
                     }
                     case ADD_BOOKS_PANEL -> {
-                        mainView.getViewBookPanel().remove(1);
+                        mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new AddBooksPanel(ServerController.this));
                     }
                     case PENDING_BORROW_PANEL -> {
