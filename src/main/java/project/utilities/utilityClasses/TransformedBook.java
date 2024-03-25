@@ -1,9 +1,11 @@
-package project.utilities.referenceClasses;
+package project.utilities.utilityClasses;
+
+import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Book implements Serializable {
+public class TransformedBook implements Serializable {
 
     private String bookId;
     private String bookTitle;
@@ -12,12 +14,12 @@ public class Book implements Serializable {
     private String shortDescription;
     private String imagePath;
     private int copies;
-    private LinkedList<String> currentBorrowers;
-    private LinkedList<PrevBorrower> prevBookBorrowers;
-    private LinkedList<String> pendingBorrowers;
-    private LinkedList<String> pendingBookReturners;
+    private LinkedList<JsonObject> currentBorrowers;
+    private LinkedList<JsonObject> prevBookBorrowers;
+    private LinkedList<JsonObject> pendingBorrowers;
+    private LinkedList<JsonObject> pendingBookReturners;
 
-    public Book(String bookId, String bookTitle, String author, String genre, String shortDescription, String imagePath, int copies, LinkedList<String> currentBorrowers, LinkedList<PrevBorrower> previousBorrowers, LinkedList<String> pendingBorrowers, LinkedList<String> pendingBookReturners) {
+    public TransformedBook(String bookId, String bookTitle, String author, String genre, String shortDescription, String imagePath, int copies, LinkedList<JsonObject> currentBorrowers, LinkedList<JsonObject> prevBookBorrowers, LinkedList<JsonObject> pendingBorrowers, LinkedList<JsonObject> pendingBookReturners) {
         this.bookId = bookId;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -26,7 +28,7 @@ public class Book implements Serializable {
         this.imagePath = imagePath;
         this.copies = copies;
         this.currentBorrowers = currentBorrowers;
-        this.prevBookBorrowers = previousBorrowers;
+        this.prevBookBorrowers = prevBookBorrowers;
         this.pendingBorrowers = pendingBorrowers;
         this.pendingBookReturners = pendingBookReturners;
     }
@@ -87,42 +89,35 @@ public class Book implements Serializable {
         this.copies = copies;
     }
 
-    public LinkedList<String> getCurrentBorrowers() {
+    public LinkedList<JsonObject> getCurrentBorrowers() {
         return currentBorrowers;
     }
 
-    public void setCurrentBorrowers(LinkedList<String> currentBorrowers) {
+    public void setCurrentBorrowers(LinkedList<JsonObject> currentBorrowers) {
         this.currentBorrowers = currentBorrowers;
     }
 
-    public LinkedList<PrevBorrower> getPrevBookBorrowers() {
+    public LinkedList<JsonObject> getPrevBookBorrowers() {
         return prevBookBorrowers;
     }
 
-    public void setPrevBookBorrowers(LinkedList<PrevBorrower> prevBookBorrowers) {
+    public void setPrevBookBorrowers(LinkedList<JsonObject> prevBookBorrowers) {
         this.prevBookBorrowers = prevBookBorrowers;
     }
 
-    public LinkedList<String> getPendingBorrowers() {
+    public LinkedList<JsonObject> getPendingBorrowers() {
         return pendingBorrowers;
     }
 
-    public void setPendingBorrowers(LinkedList<String> pendingBorrowers) {
+    public void setPendingBorrowers(LinkedList<JsonObject> pendingBorrowers) {
         this.pendingBorrowers = pendingBorrowers;
     }
 
-    public LinkedList<String> getPendingBookReturners() {
+    public LinkedList<JsonObject> getPendingBookReturners() {
         return pendingBookReturners;
     }
 
-    public void setPendingBookReturners(LinkedList<String> pendingBookReturners) {
+    public void setPendingBookReturners(LinkedList<JsonObject> pendingBookReturners) {
         this.pendingBookReturners = pendingBookReturners;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "bookId='" + bookId + '\'' +
-                '}';
     }
 }

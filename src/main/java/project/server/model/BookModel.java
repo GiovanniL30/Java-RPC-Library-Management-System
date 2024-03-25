@@ -1,71 +1,34 @@
-package project.utilities.model;
+package project.server.model;
 
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import project.utilities.referenceClasses.Book;
 
 import java.util.LinkedList;
 
 public class BookModel extends DataModel {
 
-    private final String bookJSONPath = "src/main/resources/data/book.json";
-
-
-
-    public boolean editBook(Book book) {
-
-        LinkedList<Book> books = getBooks();
-
-        for (int i = 0; i < books.size(); i++) {
-
-            if (books.get(i).getBookId().equals(book.getBookId())) {
-                books.remove(i);
-                books.add(i, book);
-                saveBookData(books);
-                return true;
-            }
-
-        }
-
-        return false;
-    } // end of editBook method
 
     public void addBook(Book book) {
         LinkedList<Book> books = getBooks();
         books.addFirst(book);
-        saveBookData(books);
+        saveBookChanges(books);
     }
-
-    public void saveBookData(LinkedList<Book> books) {
-        JSONObject jsonObject = readJSON(bookJSONPath);
-        JSONArray bookArray = new JSONArray();
-
-        for (Book b : books) {
-            bookArray.add(b.toJson());
-        }
-
-        jsonObject.put("book", bookArray);
-        saveJSON(jsonObject, bookJSONPath);
-    }
-
 
 
     public void deleteBook(Book book) {
         LinkedList<Book> books = getBooks();
 
-        for(Book b : books) {
+        for (Book b : books) {
 
-            if(b.getBookId().equals(book.getBookId())) {
+            if (b.getBookId().equals(book.getBookId())) {
                 books.remove(b);
-                saveBookData(books);
+                saveBookChanges(books);
                 break;
             }
 
         }
 
     }
-
 
     public LinkedList<Book> getBooksWithCurrentBorrowers() {
         LinkedList<Book> currentBorrowedBooks = new LinkedList<>();
@@ -98,7 +61,7 @@ public class BookModel extends DataModel {
         LinkedList<Book> books = getBooks();
         if (books != null) {
             for (Book book : books) {
-                if (!book.getPreviousBorrowers().isEmpty()) {
+                if (!book.getPrevBookBorrowers().isEmpty()) {
                     previousBorrowedBooks.add(book);
                 }
             }

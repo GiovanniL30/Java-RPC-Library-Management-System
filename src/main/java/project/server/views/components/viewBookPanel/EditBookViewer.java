@@ -1,10 +1,7 @@
 package project.server.views.components.viewBookPanel;
 
-import project.client.controller.ClientController;
-import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
 import project.utilities.referenceClasses.Book;
-import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.utilityClasses.UtilityMethods;
@@ -146,7 +143,7 @@ public class EditBookViewer extends JDialog {
         }
 
         // Creates a new Book object with the edited details
-        Book editedBook = new Book(book.getBookId(), title, author, genre, description, book.getImagePath(), c, book.getCurrentBorrowers(), book.getPreviousBorrowers(), book.getPendingBorrowers(), book.getPendingBookReturners());
+        Book editedBook = new Book(book.getBookId(), title, author, genre, description, book.getImagePath(), c, book.getCurrentBorrowers(), book.getPrevBookBorrowers(), book.getPendingBorrowers(), book.getPendingBookReturners());
 
         // Calls the server controller to edit the book
         serverObserver.editBook(editedBook);

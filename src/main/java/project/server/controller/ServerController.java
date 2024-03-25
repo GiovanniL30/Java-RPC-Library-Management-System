@@ -9,11 +9,14 @@ import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Response;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.IPGetter;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -434,8 +437,8 @@ public class ServerController implements ServerObserver, Serializable {
 
     public void setServerMethods() {
         try {
-            serverMethods = (GlobalRemoteMethods) LocateRegistry.getRegistry(1099).lookup("server");
-        } catch (RemoteException | NotBoundException e) {
+            serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://"+ IPGetter.askUserForIP("Enter Server IP address")+":3000/servermethods");
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }

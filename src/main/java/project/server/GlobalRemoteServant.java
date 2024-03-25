@@ -3,8 +3,8 @@ package project.server;
 import project.client.controller.ClientUpdateReceiver;
 import project.server.controller.ServerUpdateReceiver;
 import project.utilities.RMI.GlobalRemoteMethods;
-import project.utilities.model.AccountModel;
-import project.utilities.model.BookModel;
+import project.server.model.AccountModel;
+import project.server.model.BookModel;
 import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
@@ -93,9 +93,10 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> returnBook(Book book, Student student) throws RemoteException {
         System.out.println(student.getAccount().getUserName() + " Requested to return a borrowed book" + book.getBookTitle() + "\n\n");
 
-        if (bookModel.removeBorrowed(book.getBookId(), student, true)) {
+        if (bookModel.removeBorrowed(book.getBookId(), student, false)) {
             return new Response<>(true, "Book was successfully returned for pending");
         }
+
         return new Response<>(true, "Book was not successfully returned for pending");
     }
 
@@ -153,7 +154,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     @Override
     public Response<String> retrieveBook(Book book, Student student) throws RemoteException {
         System.out.println("Server retrieves" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
-        if (bookModel.removeBorrowed(book.getBookId(), student, false)) {
+        if (bookModel.removeBorrowed(book.getBookId(), student, true)) {
 
             if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
                 clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.RETRIEVES_BOOK);
@@ -168,7 +169,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     @Override
     public Response<String> editBook(Book book) throws RemoteException {
 
-        if(bookModel.editBook(book)) {
+        if(bookModel.saveBookChanges(book)) {
             return new Response<>(true, book.getBookTitle() + " was successfully edited");
         }else {
             return new Response<>(false, book.getBookTitle() + " was not successfully edited");
@@ -265,7 +266,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     @Override
     public Response<String> banAccount(Student account) throws RemoteException {
         account.getAccount().setIsBanned(true);
-        accountModel.editAccount(account);
+        accountModel.saveStudentAccountChanges(account);
 
         if(clientsHashMap.containsKey(account.getAccount().getAccountId())) {
             clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.BAN_ACCOUNT);
@@ -277,7 +278,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     @Override
     public Response<String> unbanAccount(Student account) throws RemoteException {
         account.getAccount().setIsBanned(false);
-        accountModel.editAccount(account);
+        accountModel.saveStudentAccountChanges(account);
 
         if(clientsHashMap.containsKey(account.getAccount().getAccountId())) {
             clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.UNBAN_ACCOUNT);
@@ -299,7 +300,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> editAccount(Student account) throws RemoteException {
 
         //??usage
-        accountModel.editAccount(account);
+        accountModel.saveStudentAccountChanges(account);
         return new Response<>(true, "Account Edited Successfully");
     }
 
@@ -312,7 +313,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     @Override
     public Response<String> changeUserPassword(Student account, String newPassword) throws RemoteException {
         account.getAccount().setPassword(newPassword);
-        accountModel.editAccount(account);
+        accountModel.saveStudentAccountChanges(account);
 
         if(clientsHashMap.containsKey(account.getAccount().getAccountId())) {
             clientsHashMap.get(account.getAccount().getAccountId()).receiveUpdate(ServerActions.CHANGE_PASSWORD);

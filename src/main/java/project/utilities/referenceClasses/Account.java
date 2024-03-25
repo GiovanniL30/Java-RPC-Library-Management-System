@@ -1,8 +1,5 @@
 package project.utilities.referenceClasses;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.io.Serializable;
 
 public class Account implements Serializable {
@@ -67,15 +64,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "Account{" +
-                "accountId='" + accountId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", isBanned='" + isBanned + '\'' +
-                '}';
+        return "Account{" + "accountId='" + accountId + '\'' + ", userName='" + userName + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + ", isBanned='" + isBanned + '\'' + '}';
     }
 
     public String getEmail() {
@@ -86,24 +75,12 @@ public class Account implements Serializable {
         this.email = email;
     }
 
-    public JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("lastName", lastName);
-        jsonObject.put("firstName", firstName);
-        jsonObject.put("userName", userName);
-        jsonObject.put("email", email);
-        jsonObject.put("password", password);
-        jsonObject.put("id", accountId);
-        jsonObject.put("totalBorrowedBook", 0);
-        jsonObject.put("pendingBooks", new JSONArray());
-        jsonObject.put("borrowedBooks", new JSONArray());
-        jsonObject.put("isBanned", isBanned);
-
-        return jsonObject;
-    }
 
     public boolean getIsBanned() {
         return isBanned;
     }
-    public void setIsBanned(boolean isBanned) { this.isBanned = isBanned; }
+
+    public void setIsBanned(boolean isBanned) {
+        this.isBanned = isBanned;
+    }
 }

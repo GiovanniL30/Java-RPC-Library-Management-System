@@ -9,6 +9,7 @@ import project.utilities.RMI.GlobalRemoteMethods;
 import project.server.controller.ServerUpdateReceiver;
 import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.IPGetter;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
@@ -16,6 +17,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -36,9 +39,9 @@ public class ClientController implements ClientObserver {
     public ClientController() {
 
         try {
-            serverMethods = (GlobalRemoteMethods) LocateRegistry.getRegistry(1099).lookup("server");
+            serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://"+ IPGetter.askUserForIP("Enter Server IP address")+":3000/servermethods");
             clientUpdates = new ClientUpdates(this);
-        } catch (RemoteException | NotBoundException e) {
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
 

@@ -1,6 +1,5 @@
 package project.server.views.components.accountPanel;
 
-import org.junit.internal.runners.statements.FailOnTimeout;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;
@@ -13,7 +12,7 @@ public class AccountSearch extends JPanel {
     private final Button search;
     private final JTextField inputField;
 
-    public AccountSearch(Dimension dimension){
+    public AccountSearch(Dimension dimension) {
         setPreferredSize(dimension);
         setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         setBackground(Color.white);

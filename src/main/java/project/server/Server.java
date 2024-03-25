@@ -6,7 +6,9 @@ import project.server.views.LibrarianMainFrame;
 import project.utilities.RMI.GlobalRemoteMethods;
 
 import javax.swing.*;
+import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -16,13 +18,12 @@ public class Server {
     public static void main(String[] args) {
 
         try {
-            Registry registry = LocateRegistry.createRegistry(1099);
-
+            LocateRegistry.createRegistry(3000);
             ServerController serverController = new ServerController();
             ServerUpdates servant = new ServerUpdates(serverController);
 
             GlobalRemoteMethods globalRemoteMethods = new GlobalRemoteServant(servant);
-            registry.bind("server", globalRemoteMethods);
+             Naming.bind("rmi://localhost:3000" + "/servermethods", globalRemoteMethods);
 
             serverController.setServerMethods();
 
@@ -33,12 +34,10 @@ public class Server {
 
             System.out.println("Server is running...");
 
-        } catch (RuntimeException | RemoteException | AlreadyBoundException e) {
-            throw  new RuntimeException(e);
+        } catch (RuntimeException | RemoteException | AlreadyBoundException | MalformedURLException e) {
+            System.err.println(e.getMessage());
+            System.exit(0);
         }
-
-
-
 
 
     }

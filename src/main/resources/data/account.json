@@ -1,1 +1,15 @@
-{"accounts":[{"lastName":"Leo","firstName":"Giovanni","password":"ascascascasc","pendingReturnBooks":[],"borrowedBooks":[{"id":"001"},{"id":"001"},{"id":"002"},{"id":"003"}],"isBanned":false,"id":"1","totalBorrowedBook":0,"userName":"giovanni123","pendingBooks":[],"email":"2232254@slu.edu.ph"}]}
+[
+  {
+    "accountId": "Giovanni",
+    "userName": "giovanni123",
+    "firstName": "Giovanni",
+    "lastName": "Leo",
+    "email": "2232254@slu.edu.ph",
+    "password": "helloworld",
+    "isBanned": false,
+    "totalBorrowedBooks": 0,
+    "pendingBooks": [],
+    "borrowedBooks": [],
+    "pendingReturnBook": []
+  }
+]
