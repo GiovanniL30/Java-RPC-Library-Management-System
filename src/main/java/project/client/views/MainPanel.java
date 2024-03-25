@@ -34,11 +34,10 @@ public class MainPanel extends JPanel {
         contentHolder.setBackground(Color.white);
 
 
-        JLabel welcomeMessage = new JLabel("Welcome to VanniBooks!");
-        welcomeMessage.setFont(FontFactory.newPoppinsBold(20));
+        HomePanel homePanel = new HomePanel(clientController.getBooks(), clientController);
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.add(welcomeMessage, BorderLayout.CENTER);
+        panel.add(homePanel, BorderLayout.CENTER);
         panel.setBackground(Color.white);
         setContentPanel(panel);
 
@@ -53,6 +52,7 @@ public class MainPanel extends JPanel {
         menu.getBorrowedBooks().addActionListener(e -> this.clientController.changeFrame(ClientPanels.BORROWED_PANEL));
         menu.getAccount().addActionListener(e -> this.clientController.changeFrame(ClientPanels.ACCOUNT_PANEL));
         header.addLogoutAction(this.clientController);
+        menu.setCurrentButton(menu.getHomeButton());
     }
 
     public void setContentPanel(JPanel panel) {

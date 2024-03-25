@@ -1,10 +1,14 @@
 package project.server.views.components.accountPanel;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import project.server.controller.ServerController;
+import project.server.controller.ServerObserver;
 import project.utilities.referenceClasses.Account;
+import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.FieldInput;
 import project.utilities.viewComponents.Button;
+import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,69 +17,73 @@ import static project.utilities.utilityClasses.UtilityMethods.haveNullOrEmpty;
 import static project.utilities.utilityClasses.UtilityMethods.generateRandomID;
 
 public class Signup extends JDialog {
-    private final FieldInput password;
-    private final FieldInput firstName;
-    private final FieldInput lastName;
-    private final FieldInput userName;
-    private final FieldInput email;
-    private final Button createAccountButton;
-    private final GridBagConstraints layout;
+    private final FieldInput password = new FieldInput("Password", new Dimension(450, 50), 40, 1, true );
+    private final FieldInput firstName = new FieldInput("First Name", new Dimension(450, 50), 40, 1, false );
+    private final FieldInput lastName = new FieldInput("Last Name", new Dimension(450, 50), 40, 1, false );
+    private final FieldInput userName = new FieldInput("User Name", new Dimension(450, 50), 40, 1, false );
+    private final FieldInput email = new FieldInput("Email", new Dimension(450, 50), 40, 1, false );
+    private final Button createAccountButton = new Button("Create Account", 225, 50, FontFactory.newPoppinsDefault(13));
+    private final Button cancelCreate = new Button("Cancel", 225, 50, FontFactory.newPoppinsDefault(13));
 
-    public Signup(Dimension dimension, ServerController serverController) {
-        setLayout(new GridBagLayout());
-        getContentPane().setBackground(Color.white);
-        layout = new GridBagConstraints();
+    private ServerObserver serverObserver;
 
-        firstName = new FieldInput("First Name: ", new Dimension(200, 50), 20, 1, false);
-        addComponent(firstName, 0, 0);
-
-        lastName = new FieldInput("Last Name: ", new Dimension(200, 50), 20, 1, false);
-        addComponent(lastName, 1, 0);
-
-        userName = new FieldInput("Username: ", new Dimension(200, 50), 100, 8, false);
-        addComponent(userName, 2, 0);
-
-        email = new FieldInput("Email: ", new Dimension(200, 50), 20, 1, false);
-        addComponent(email, 0, 1);
-
-        password = new FieldInput("Password: ", new Dimension(200, 50), 20, 1, false);
-        addComponent(password, 3, 0);
-
-        layout.insets = new Insets(20, 200, 0, 0);
-
-        createAccountButton = new Button("Create Account", 200, 40, FontFactory.newPoppinsBold(13));
-        createAccountButton.setBackground(Color.BLUE);
-        createAccountButton.setForeground(Color.white);
-        layout.insets = new Insets(0, 250, 0, 0);
-        addComponent(createAccountButton, 4, 0);
-
-        setSize(dimension);
-        setVisible(false);
+    public Signup(Frame owner, Dimension dimension, ServerObserver serverObserver) {
+        super(owner, "Create account for student", true);
         setResizable(false);
+        setBackground(Color.WHITE);
+        this.serverObserver = serverObserver;
+        setLayout(new BorderLayout());
+        setSize(dimension);
 
-        createAccountButton.addActionListener((e) -> {
+        JPanel header = new JPanel();
+        header.setBackground(Color.WHITE);
+        header.setPreferredSize(new Dimension(100, 100));
+        header.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-            String enteredFirstName = firstName.getInput();
-            String enteredLastName = lastName.getInput();
-            String enteredUserName = userName.getInput();
-            String enteredPassword = password.getInput();
-            String enteredEmail = email.getInput();
+        Picture logo = new Picture("src/main/resources/images/logo/logo_vanni.png", 100, 100);
+        logo.setBackground(Color.WHITE);
+        header.add(logo);
 
-            if (haveNullOrEmpty(enteredFirstName, enteredLastName, enteredUserName, enteredPassword, enteredEmail)) {
-                return;
-            }
 
-            Account account = new Account(generateRandomID(), enteredUserName, enteredFirstName, enteredLastName, enteredEmail, enteredPassword);
-            clearAll();
-            serverController.createAccount(account);
-        });
+        JPanel contentHolder = new JPanel();
+        contentHolder.setBackground(Color.white);
+        contentHolder.setLayout(new BoxLayout(contentHolder, BoxLayout.Y_AXIS));
+
+        JPanel titlePanel = new JPanel();
+        JLabel title = new JLabel("Create Account for Student");
+        titlePanel.setBackground(Color.WHITE);
+        titlePanel.add(title);
+        title.setFont(FontFactory.newPoppinsBold(25));
+
+        GridLayout fieldGrid = new GridLayout(3, 2);
+        JPanel fieldPanel = new JPanel();
+        fieldPanel.setBackground(Color.WHITE);
+        fieldPanel.setLayout(fieldGrid);
+        fieldPanel.add(firstName);
+        fieldPanel.add(lastName);
+        fieldPanel.add(userName);
+        fieldPanel.add(email);
+        fieldPanel.add(password);
+
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBackground(Color.WHITE);
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 37));
+        buttonsPanel.add(cancelCreate);
+        buttonsPanel.add(createAccountButton);
+        createAccountButton.setForeground(Color.WHITE);
+        createAccountButton.setBackground(ColorFactory.blue());
+
+        fieldPanel.add(buttonsPanel);
+
+        contentHolder.add(titlePanel);
+        contentHolder.add(fieldPanel);
+
+
+        add(header, BorderLayout.NORTH);
+        add(contentHolder, BorderLayout.CENTER);
     }
 
-    private void addComponent(JComponent component, int y, int x) {
-        layout.gridy = y;
-        layout.gridx = x;
-        add(component, layout);
-    }
 
     public void clearAll() {
         firstName.getTextField().setText("");
@@ -85,4 +93,6 @@ public class Signup extends JDialog {
         userName.getTextField().setText("");
         email.getTextField().setText("");
     }
+
+
 }

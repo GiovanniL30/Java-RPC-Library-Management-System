@@ -1,38 +1,25 @@
-{
-  "accounts": [
-    {
-      "lastName": "Patano",
-      "firstName": "Eugene",
-      "password": "12345678",
-      "pendingReturnBooks": [],
-      "borrowedBooks": [],
-      "id": "2232254",
-      "totalBorrowedBook": 0,
-      "userName": "Eugene123",
-      "pendingBooks": [],
-      "email": "2232254@slu.edu.ph"
-    },
-    {
-      "lastName": "Leo",
-      "firstName": "Giovanni",
-      "password": "12345678",
-      "pendingReturnBooks": [],
-      "borrowedBooks": [],
-      "id": "1",
-      "totalBorrowedBook": 0,
-      "userName": "giovanni123",
-      "pendingBooks": [
-        {
-          "id": "001"
-        },
-        {
-          "id": "002"
-        },
-        {
-          "id": "003"
-        }
-      ],
-      "email": "2232254@slu.edu.ph"
-    }
-  ]
-}
+[
+  {
+    "accountId": "Giovanni",
+    "userName": "giovanni123",
+    "firstName": "Giovanni",
+    "lastName": "Leo",
+    "email": "2232254@slu.edu.ph",
+    "password": "helloworld",
+    "isBanned": false,
+    "totalBorrowedBooks": 0,
+    "pendingBooks": [
+      {
+        "id": "001"
+      },
+      {
+        "id": "002"
+      },
+      {
+        "id": "003"
+      }
+    ],
+    "borrowedBooks": [],
+    "pendingReturnBook": []
+  }
+]

@@ -6,7 +6,10 @@ import project.client.views.Login;
 import project.client.views.MainPanel;
 import project.client.views.components.*;
 import project.utilities.RMI.GlobalRemoteMethods;
+import project.server.controller.ServerUpdateReceiver;
 import project.utilities.referenceClasses.*;
+import project.utilities.utilityClasses.ClientActions;
+import project.utilities.utilityClasses.IPGetter;
 import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
@@ -14,6 +17,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -34,9 +39,9 @@ public class ClientController implements ClientObserver {
     public ClientController() {
 
         try {
-            serverMethods = (GlobalRemoteMethods) LocateRegistry.getRegistry(1099).lookup("server");
+            serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://"+ IPGetter.askUserForIP("Enter Server IP address")+":3000/servermethods");
             clientUpdates = new ClientUpdates(this);
-        } catch (RemoteException | NotBoundException e) {
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
 
@@ -47,17 +52,18 @@ public class ClientController implements ClientObserver {
     @Override
     public void logIn(Authentication credential) {
 
-        this.mainView.addWindowListener(new WindowAdapter() {
+        new Thread(() -> this.mainView.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
                     serverMethods.logout(loggedInAccount);
                     System.exit(0);
                 } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
+                    System.err.println(ex.getMessage());
                 }
             }
-        });
+        })).start();
+
 
         new SwingWorker<Response<Student>, Void>() {
             @Override
@@ -87,23 +93,23 @@ public class ClientController implements ClientObserver {
                             if (response.getPayload().getTotalBorrowedBooks() == 0) {
                                 JOptionPane.showMessageDialog(mainView, "Invalid Username or Password");
                             } else {
-                                JOptionPane.showMessageDialog(mainView, "Your account is already logged in on another machine");
+                                JOptionPane.showMessageDialog(mainView, response.getPayload().getAccount().getAccountId());
                             }
 
                         }
 
-                       // loading.setVisible(false);
+                       loading.setVisible(false);
                         chatView = new ChatView(mainView, "Messages", ClientController.this);
                         mainView.getHeader().addMessageAction(ClientController.this);
                     }
 
                 } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
+                    System.err.println(e.getMessage());
                 }
             }
         }.execute();
 
-       // loading.setVisible(true);
+       loading.setVisible(true);
 
     }
 
@@ -117,12 +123,15 @@ public class ClientController implements ClientObserver {
             if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().add(book);
                 JOptionPane.showMessageDialog(mainView,  book.getBookTitle() + " is added for pending");
+
+                serverMethods.sendNotificationToServer(ClientActions.BORROW_BOOK);
+
             } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
 
         } catch (RemoteException e) {
-
+            System.err.println(e.getMessage());
         }
 
     }
@@ -135,12 +144,15 @@ public class ClientController implements ClientObserver {
             if (response.isSuccess()) {
                 loggedInAccount.getPendingBooks().remove(book);
                 changeFrame(ClientPanels.PENDING_PANEL);
+
+                serverMethods.sendNotificationToServer(ClientActions.CANCEL_PENDING);
+
             } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
 
         } catch (RemoteException e) {
-
+            System.err.println(e.getMessage());
         }
 
     }
@@ -150,8 +162,17 @@ public class ClientController implements ClientObserver {
         try {
             Response<String> response = serverMethods.returnBook(book, loggedInAccount);
 
-        } catch (RemoteException e) {
+            if (response.isSuccess()) {
+                loggedInAccount.getBorrowedBooks().remove(book);
+                changeFrame(ClientPanels.BORROWED_PANEL);
 
+                serverMethods.sendNotificationToServer(ClientActions.RETURN_BOOK);
+            } else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
+
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
         }
 
     }
@@ -161,45 +182,94 @@ public class ClientController implements ClientObserver {
 
         switch (serverActions) {
             case EDIT_BOOK -> {
+                loggedInAccount = updateMyAccount();
+                JOptionPane.showMessageDialog(mainView, "Admin edited a book");
 
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+                    changeFrame(ClientPanels.HOME_PANEL);
+                }
             }
             case BAN_ACCOUNT -> {
-
+                JOptionPane.showMessageDialog(mainView, "Admin banned your account, you will be logged out");
+                logout();
             }
             case DELETE_BOOK -> {
+                loggedInAccount =  updateMyAccount();
+                JOptionPane.showMessageDialog(mainView, "Admin deleted a book");
 
-            }
-            case UNBAN_ACCOUNT -> {
-
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+                    changeFrame(ClientPanels.HOME_PANEL);
+                }
             }
             case ADDED_NEW_BOOK -> {
+                JOptionPane.showMessageDialog(mainView, "Admin added a new book");
 
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+                    changeFrame(ClientPanels.HOME_PANEL);
+                }
             }
             case DELETE_ACCOUNT -> {
-
+                JOptionPane.showMessageDialog(mainView, "Admin deleted your account, you will be logged out");
+                logout();
             }
             case RETRIEVES_BOOK -> {
+                loggedInAccount = updateMyAccount();
 
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Borrowed Books")) {
+                    changeFrame(ClientPanels.BORROWED_PANEL);
+                }
+
+                JOptionPane.showMessageDialog(mainView, "The Admin retrieves your book");
             }
             case CHANGE_PASSWORD -> {
-
+                JOptionPane.showMessageDialog(mainView, "Admin changed your account password, you will be logged out. Please login again");
+                logout();
             }
             case BROADCAST_MESSAGE -> {
 
             }
             case ACCEPT_BOOK_PENDING -> {
 
+                loggedInAccount = updateMyAccount();
+
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Pending Books")) {
+                    changeFrame(ClientPanels.PENDING_PANEL);
+                }else if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Borrowed Books")) {
+                    changeFrame(ClientPanels.BORROWED_PANEL);
+                }
+
+                JOptionPane.showMessageDialog(mainView, "The Admin accepted your book pending");
             }
             case CANCEL_BOOK_PENDING -> {
 
+                loggedInAccount = updateMyAccount();
+
+                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Pending Books")) {
+                    changeFrame(ClientPanels.PENDING_PANEL);
+                }
+
+                JOptionPane.showMessageDialog(mainView, "The Admin canceled your book pending");
             }
 
-            default -> {
-            }
         }
 
     }
 
+    private Student updateMyAccount() {
+
+        try {
+            Response<LinkedList<Student>> studentResponse = serverMethods.getStudentAccounts();
+
+            if(studentResponse.isSuccess()) {
+                return studentResponse.getPayload().stream().filter(student -> student.getAccount().getAccountId().equals(loggedInAccount.getAccount().getAccountId())).findFirst().get();
+            }
+
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return loggedInAccount;
+    }
 
     @Override
     public void changeFrame(ClientPanels clientPanels) {
@@ -230,14 +300,12 @@ public class ClientController implements ClientObserver {
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), this, true));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), this, true, 500));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
-
             }
             case BORROWED_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), this, false));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), this, false, 500));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
-
             }
         }
 
@@ -248,7 +316,7 @@ public class ClientController implements ClientObserver {
 
         try {
             serverMethods.logout(loggedInAccount);
-            loggedInAccount = new Student(new Account("", "", "", "", "", ""), 0, null, null, null);
+            loggedInAccount = new Student(new Account("", "", "", "", "", "", false), 0, null, null, null);
             mainView.getContentPane().removeAll();
             Login login = new Login(new Dimension(ClientMainView.FRAME_WIDTH, 900));
             login.addClickEvent(this);
@@ -256,7 +324,7 @@ public class ClientController implements ClientObserver {
             mainView.revalidate();
             mainView.repaint();
         } catch (RemoteException ex) {
-            throw new RuntimeException(ex);
+            System.err.println(ex.getMessage());
         }
 
     }
@@ -274,7 +342,7 @@ public class ClientController implements ClientObserver {
             bookViewer = new BookViewer(mainView, viewBook, loggedInAccount, this);
             bookViewer.setVisible(true);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
 
     }
@@ -289,7 +357,7 @@ public class ClientController implements ClientObserver {
         try {
             serverMethods.sendMessage(message, loggedInAccount);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 

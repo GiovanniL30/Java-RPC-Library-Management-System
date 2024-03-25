@@ -3,10 +3,7 @@ package project.server.views;
 import com.formdev.flatlaf.FlatLightLaf;
 import project.server.controller.ServerController;
 import project.server.views.components.ServerGuiHeader;
-import project.server.views.panels.HomePanel;
-import project.server.views.panels.ManageAccountsPanel;
-import project.server.views.panels.ManageBookPanel;
-import project.server.views.panels.ViewBookPanel;
+import project.server.views.panels.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +22,7 @@ public class LibrarianMainFrame extends JFrame {
     private ManageAccountsPanel manageAccountsPanel;
     private ManageBookPanel manageBookPanel;
     private HomePanel homePanel;
+    private AddBooksPanel addBooksPanel;
 
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
@@ -84,6 +82,7 @@ public class LibrarianMainFrame extends JFrame {
     public HomePanel getHomePanel() {
         return homePanel;
     }
+    public AddBooksPanel getAddBooksPanel(){return addBooksPanel; }
 
     public void setCurrentPanel(JPanel panel) {
 
@@ -101,6 +100,9 @@ public class LibrarianMainFrame extends JFrame {
         } else if (panel instanceof ViewBookPanel) {
             viewBookPanel = (ViewBookPanel) panel;
             serverGuiHeader.setCurrentClickableText(serverGuiHeader.getViewBooks());
+        } else if (panel instanceof AddBooksPanel) {
+            addBooksPanel = (AddBooksPanel) panel;
+            serverGuiHeader.setCurrentClickableText(serverGuiHeader.getAddBooks());
         }
     }
 }

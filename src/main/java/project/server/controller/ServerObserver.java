@@ -17,8 +17,10 @@ public interface ServerObserver {
     void acceptBook(Book book, Student student);
 
     void retrieveBook(Book book, Student student);
+    void retrievePendingReturnBook(Book book, Student student);
 
     void editBook(Book book);
+    void openBookEditor(Book book);
 
     boolean deleteBook(Book book);
 
@@ -45,17 +47,19 @@ public interface ServerObserver {
     // Methods for handling account-related actions
     void broadcastMessage(String message);
 
-    void banAccount(Account account);
+    void banAccount(Student account);
 
-    void unbanAccount(Account account);
+    void unbanAccount(Student account);
 
     void deleteAccount(Student account);
 
+
     void createAccount(Account account);
 
-    void changeUserPassword(Account account, String newPassword);
+    void changeUserPassword(Student account);
 
     void updateView(ClientActions clientActions);
+    void acceptBook(Student student, Book book);
 
 
 }

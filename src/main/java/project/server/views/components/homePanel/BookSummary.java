@@ -5,11 +5,8 @@ import project.utilities.referenceClasses.Book;
 import project.utilities.utilityClasses.FontFactory;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.LinkedList;
-import java.util.jar.JarEntry;
-import java.util.stream.Collectors;
 
 public class BookSummary extends JPanel {
     private final JPanel summaryPanel;
@@ -18,8 +15,10 @@ public class BookSummary extends JPanel {
     public BookSummary(ServerObserver serverObserver) {
         serverController = serverObserver;
         setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
 
         summaryPanel = new JPanel();
+        summaryPanel.setBackground(Color.WHITE);
         summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
 
         LinkedList<Book> books = serverController.getBooks();
@@ -29,7 +28,7 @@ public class BookSummary extends JPanel {
         int numberOfPendingBooks = (int) books.stream().filter(book -> !book.getPendingBookReturners().isEmpty()).count();
         int numberOfPendingReturningBooks = (int) books.stream().filter(book -> !book.getPendingBookReturners().isEmpty()).count();
         int numberOfBorrowedBooks = (int) books.stream().filter(book -> !book.getCurrentBorrowers().isEmpty()).count();
-        int numberOfPreviousBooks = (int) books.stream().filter(book -> !book.getPreviousBorrowers().isEmpty()).count();
+        int numberOfPreviousBooks = (int) books.stream().filter(book -> !book.getPrevBookBorrowers().isEmpty()).count();
 
         JLabel header = new JLabel("Summary Report");
         JLabel availableBooks = new JLabel("Number of Available Books: " + numberOfAvailableBooks);

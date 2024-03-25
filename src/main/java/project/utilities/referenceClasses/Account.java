@@ -1,9 +1,5 @@
 package project.utilities.referenceClasses;
 
-import netscape.javascript.JSObject;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.io.Serializable;
 
 public class Account implements Serializable {
@@ -14,14 +10,16 @@ public class Account implements Serializable {
     private String lastName;
     private String email;
     private String password;
+    private boolean isBanned;
 
-    public Account(String accountId, String userName, String firstName, String lastName, String email, String password) {
+    public Account(String accountId, String userName, String firstName, String lastName, String email, String password, boolean isBanned) {
         this.accountId = accountId;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.isBanned = isBanned;
     }
 
     public String getAccountId() {
@@ -66,14 +64,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "Account{" +
-                "accountId='" + accountId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "Account{" + "accountId='" + accountId + '\'' + ", userName='" + userName + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + ", isBanned='" + isBanned + '\'' + '}';
     }
 
     public String getEmail() {
@@ -84,24 +75,12 @@ public class Account implements Serializable {
         this.email = email;
     }
 
-    public JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("lastName", lastName);
-        jsonObject.put("firstName", firstName);
-        jsonObject.put("userName", userName);
-        jsonObject.put("email", email);
-        jsonObject.put("password", password);
-        jsonObject.put("id", accountId);
-        jsonObject.put("totalBorrowedBook", 0);
-        jsonObject.put("pendingBooks", new JSONArray());
-        jsonObject.put("borrowedBooks", new JSONArray());
 
-
-
-        return jsonObject;
+    public boolean getIsBanned() {
+        return isBanned;
     }
 
-    public boolean isBanned() {
-        return true;
+    public void setIsBanned(boolean isBanned) {
+        this.isBanned = isBanned;
     }
 }
