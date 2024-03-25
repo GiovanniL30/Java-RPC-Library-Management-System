@@ -6,12 +6,8 @@
     "genre": "Comedy",
     "shortDescription": "Discover a magical world beyond imagination.",
     "imagePath": "src/main/resources/images/bookImages/realm_of_magic.jpg",
-    "copies": 0,
-    "currentBorrowers": [
-      {
-        "id": "Giovanni"
-      }
-    ],
+    "copies": 1,
+    "currentBorrowers": [],
     "prevBookBorrowers": [
       {
         "student": "Giovanni",
@@ -30,7 +26,11 @@
       }
     ],
     "pendingBorrowers": [],
-    "pendingBookReturners": []
+    "pendingBookReturners": [
+      {
+        "id": "Giovanni"
+      }
+    ]
   },
   {
     "bookId": "002",
@@ -39,14 +39,16 @@
     "genre": "Comedy",
     "shortDescription": "A gripping thriller that keeps you on the edge.",
     "imagePath": "src/main/resources/images/bookImages/dangerous_pursuit.jpg",
-    "copies": 4,
+    "copies": 5,
     "currentBorrowers": [],
-    "prevBookBorrowers": [],
-    "pendingBorrowers": [
+    "prevBookBorrowers": [
       {
-        "id": "Giovanni"
+        "student": "Giovanni",
+        "name": "Giovanni Leo",
+        "returnDate": "2024-03-25"
       }
     ],
+    "pendingBorrowers": [],
     "pendingBookReturners": []
   },
   {

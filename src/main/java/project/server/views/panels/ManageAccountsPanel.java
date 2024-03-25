@@ -1,16 +1,12 @@
 package project.server.views.panels;
 
-import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
 import project.server.views.LibrarianMainFrame;
 import project.server.views.components.ClickableText;
 import project.server.views.components.accountPanel.AccountSearch;
-import project.server.views.components.accountPanel.MangeAccountList;
-import project.server.views.components.manageBookPanel.ManageBookList;
+import project.server.views.components.accountPanel.ManageAccountList;
 import project.utilities.referenceClasses.Student;
-import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
-import project.utilities.viewComponents.Picture;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -31,7 +27,7 @@ public class ManageAccountsPanel extends JPanel{
         add(accountSearch, BorderLayout.NORTH);
 
 
-        MangeAccountList mangeAccountList = new MangeAccountList(accounts, serverController);
+        ManageAccountList mangeAccountList = new ManageAccountList(accounts, serverController);
         add(mangeAccountList, BorderLayout.CENTER);
 
         createAccount.setBorder(new EmptyBorder(60, 0, 0, 0));

@@ -10,9 +10,6 @@
     "totalBorrowedBooks": 0,
     "pendingBooks": [
       {
-        "id": "002"
-      },
-      {
         "id": "003"
       }
     ],
