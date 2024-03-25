@@ -143,14 +143,14 @@ public class SubHeader extends JPanel {
     }
 
     public boolean isButton1Enabled() {
-        return isButton1Enabled;
+        return !isButton1Enabled;
     }
 
     public boolean isButton2Enabled() {
-        return isButton2Enabled;
+        return !isButton2Enabled;
     }
 
     public boolean isButton3Enabled() {
-        return isButton3Enabled;
+        return !isButton3Enabled;
     }
 }

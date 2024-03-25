@@ -50,17 +50,17 @@ public class ViewBookPanel extends JPanel {
     private void closeSearch(ActionEvent event){
 
         if(haveSearched) {
-            if (!subHeader.isButton1Enabled()) {
+            if (subHeader.isButton1Enabled()) {
                 setView(serverObserver.getBooks());
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
-            if (!subHeader.isButton2Enabled()) {
+            if (subHeader.isButton2Enabled()) {
                 setView(serverObserver.getAvailableBooks());
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
-            if (!subHeader.isButton3Enabled()) {
+            if (subHeader.isButton3Enabled()) {
                 setView(serverObserver.getUnavailableBooks());
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
@@ -85,7 +85,7 @@ public class ViewBookPanel extends JPanel {
         LinkedList<Book> searchedBooks;
 
 
-        if (!subHeader.isButton1Enabled()) {
+        if (subHeader.isButton1Enabled()) {
             searchedBooks = serverObserver.getBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
             if(searchedBooks.isEmpty()){
                 searchedBooks = serverObserver.getBooks().stream().filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
@@ -94,7 +94,7 @@ public class ViewBookPanel extends JPanel {
             setView(searchedBooks);
         }
 
-        if (!subHeader.isButton2Enabled()) {
+        if (subHeader.isButton2Enabled()) {
             searchedBooks = serverObserver.getAvailableBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
             if(searchedBooks.isEmpty()){
                 searchedBooks = serverObserver.getAvailableBooks().stream().filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
@@ -103,7 +103,7 @@ public class ViewBookPanel extends JPanel {
             setView(searchedBooks);
         }
 
-        if (!subHeader.isButton3Enabled()) {
+        if (subHeader.isButton3Enabled()) {
             searchedBooks = serverObserver.getUnavailableBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
             if(searchedBooks.isEmpty()){
                 searchedBooks = serverObserver.getUnavailableBooks().stream().filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
