@@ -274,7 +274,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         try {
             System.out.println("Server broadcasts: " + message);
             for (ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
-                clientUpdateReceiver.receiveMessage(message, null);
+                clientUpdateReceiver.receiveBroadcast(ServerActions.BROADCAST_MESSAGE, message);
             }
             return new Response<>(true, "Message broadcasted successfully.");
         } catch (Exception e) {
