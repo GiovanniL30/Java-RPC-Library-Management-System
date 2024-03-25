@@ -335,6 +335,11 @@ public class ClientController implements ClientObserver {
         chatView.addMessage(messageBlock);
     }
 
+    @Override
+    public void receiveBroadcast(String message) {
+        JOptionPane.showMessageDialog(mainView, message);
+    }
+
     public void openBook(Book book) {
 
         try {
