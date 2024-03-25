@@ -43,4 +43,6 @@ public interface ClientObserver {
 
     void receiveMessage(String message, Student sender);
 
+    void receiveBroadcast(String message);
+
 }
