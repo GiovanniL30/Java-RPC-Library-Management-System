@@ -64,5 +64,17 @@ public class BroadcastMessage extends JDialog {
         add(fieldPanel);
         add(lowerPart);
 
+        sendButton.addActionListener(e -> {
+           String message = messageTextArea.getText();
+           String selectedClient = (String) clientDropdown.getSelectedItem();
+
+           if (!message.isEmpty() && selectedClient != null) {
+               serverObserver.broadcastMessage(message);
+               messageTextArea.setText("");
+           } else {
+               JOptionPane.showMessageDialog(BroadcastMessage.this, "Please enter a message.");
+           }
+        });
+
     }
 }
