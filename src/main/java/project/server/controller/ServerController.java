@@ -223,9 +223,22 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
-    public void broadcastMessage(String message) {
-
+    public void broadcastMessage(String message, String recipient) {
         //TODO: specific broadcast to a user
+        try {
+            Response<String> response = serverMethods.broadcastMessage(message);
+            if (response.isSuccess()) {
+                System.out.println("Message broadcast successfully.");
+            } else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void broadcastMessageToAll(String message) {
         try {
             Response<String> response = serverMethods.broadcastMessage(message);
             if (response.isSuccess()) {
