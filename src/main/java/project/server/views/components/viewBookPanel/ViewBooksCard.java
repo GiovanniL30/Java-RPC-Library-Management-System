@@ -105,22 +105,42 @@ public class ViewBooksCard extends JPanel {
         });
 
         prevOwnersButton.addActionListener(e -> {
-            StringBuilder prevOwners = new StringBuilder("Previous owners: \n");
+            JPanel prevOwnersPanel = new JPanel();
+            prevOwnersPanel.setLayout(new BoxLayout(prevOwnersPanel, BoxLayout.Y_AXIS));
+            prevOwnersPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding
 
             for (PrevBorrower prevBorrower : book.getPrevBookBorrowers()) {
-                prevOwners.append("Name: ").append(prevBorrower.getName()).append("  Return Date: ").append(prevBorrower.getReturnDate()).append("\n");
+                JLabel prevOwnerLabel = new JLabel("Name: " + prevBorrower.getName());
+                JLabel returnDateLabel = new JLabel("Return Date: " + prevBorrower.getReturnDate());
+                prevOwnerLabel.setFont(FontFactory.newPoppinsDefault(13));
+                returnDateLabel.setFont(FontFactory.newPoppinsDefault(13));
+                prevOwnerLabel.setHorizontalAlignment(JLabel.LEFT); // Align text to the left
+                prevOwnersPanel.add(prevOwnerLabel);
+                prevOwnersPanel.add(returnDateLabel);
             }
-
-            JOptionPane.showMessageDialog(null, prevOwners.toString(), "Previous owners", JOptionPane.INFORMATION_MESSAGE);
+            JScrollPane scrollPane = new JScrollPane(prevOwnersPanel);
+            scrollPane.setPreferredSize(new Dimension(300, 200)); // Set the preferred size of the scroll pane
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            JOptionPane.showMessageDialog(null, scrollPane, "Previous owners", JOptionPane.INFORMATION_MESSAGE);
         });
 
         currentOwnersButton.addActionListener(e -> {
-            StringBuilder currentOwners = new StringBuilder("Current owners: \n");
+            JPanel currentOwnersPanel = new JPanel();
+            currentOwnersPanel.setLayout(new BoxLayout(currentOwnersPanel, BoxLayout.Y_AXIS));
+            currentOwnersPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding
 
-            for (String borrower : book.getCurrentBorrowers()) {
-                currentOwners.append("Name: ").append(borrower).append("\n");
+            for (String currentBorrower : book.getCurrentBorrowers()) {
+                JLabel currentOwnerLabel = new JLabel("Name: " + currentBorrower);
+                currentOwnerLabel.setFont(FontFactory.newPoppinsDefault(13));
+                currentOwnerLabel.setHorizontalAlignment(JLabel.LEFT); // Align text to the left
+                currentOwnersPanel.add(currentOwnerLabel);
             }
-            JOptionPane.showMessageDialog(null, currentOwners.toString(), "Current owners", JOptionPane.INFORMATION_MESSAGE);
+            JScrollPane scrollPane = new JScrollPane(currentOwnersPanel);
+            scrollPane.setPreferredSize(new Dimension(300, 200)); // Set the preferred size of the scroll pane
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            JOptionPane.showMessageDialog(null, scrollPane, "Current owners", JOptionPane.INFORMATION_MESSAGE);
         });
     }
 
