@@ -1,6 +1,19 @@
 [
   {
     "accountId": "Giovanni",
+    "userName": "helloworld",
+    "firstName": "Giovanni",
+    "lastName": "Leo",
+    "email": "2232254@slu.edu.ph",
+    "password": "bleach123@45",
+    "isBanned": false,
+    "totalBorrowedBooks": 0,
+    "pendingBooks": [],
+    "borrowedBooks": [],
+    "pendingReturnBook": []
+  },
+  {
+    "accountId": "Giovanni",
     "userName": "giovanni123",
     "firstName": "Giovanni",
     "lastName": "Leo",

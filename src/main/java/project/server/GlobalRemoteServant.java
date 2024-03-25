@@ -325,6 +325,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> createAccount(Account account) throws RemoteException {
+
+        if(getAccounts().getPayload().stream().anyMatch(ac -> ac.getUserName().equals(account.getUserName()))) {
+            return new Response<>(false, "Username was already taken");
+        }
+
         accountModel.addAccount(new Student(account, 0, new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
         return new Response<>(true, "Account successfully created.");
     }
