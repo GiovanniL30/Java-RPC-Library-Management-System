@@ -10,5 +10,6 @@ public interface ClientUpdateReceiver extends Remote {
    void receiveMessage(String message, Student sender) throws RemoteException;
 
    void receiveUpdate(ServerActions serverActions) throws RemoteException;
+   void receiveBroadcast(ServerActions serverActions, String message) throws RemoteException;
 
 }
