@@ -115,7 +115,12 @@ public class ViewBooksCard extends JPanel {
         });
 
         currentOwnersButton.addActionListener(e -> {
+            StringBuilder currentOwners = new StringBuilder("Current owners: \n");
 
+            for (String borrower : book.getCurrentBorrowers()) {
+                currentOwners.append("Name: ").append(borrower).append("\n");
+            }
+            JOptionPane.showMessageDialog(null, currentOwners.toString(), "Current owners", JOptionPane.INFORMATION_MESSAGE);
         });
     }
 

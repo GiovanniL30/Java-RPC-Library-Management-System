@@ -10,16 +10,17 @@
     "totalBorrowedBooks": 0,
     "pendingBooks": [
       {
-        "id": "001"
-      },
-      {
         "id": "002"
       },
       {
         "id": "003"
       }
     ],
-    "borrowedBooks": [],
+    "borrowedBooks": [
+      {
+        "id": "001"
+      }
+    ],
     "pendingReturnBook": []
   }
 ]
