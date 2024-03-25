@@ -45,7 +45,9 @@ public interface ServerObserver {
     LinkedList<Student> getStudents();
 
     // Methods for handling account-related actions
-    void broadcastMessage(String message);
+    void broadcastMessage(String message, String recipient);
+
+    void broadcastMessageToAll(String message);
 
     void banAccount(Student account);
 
