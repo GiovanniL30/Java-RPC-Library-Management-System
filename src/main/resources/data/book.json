@@ -1,12 +1,12 @@
 [
   {
     "bookId": "001",
-    "bookTitle": "Realm of Magic",
+    "bookTitle": "Realm of Magic (Ed)",
     "author": "Alice Williams",
-    "genre": "Fantasy",
+    "genre": "Comedy",
     "shortDescription": "Discover a magical world beyond imagination.",
     "imagePath": "src/main/resources/images/bookImages/realm_of_magic.jpg",
-    "copies": 10,
+    "copies": 0,
     "currentBorrowers": [],
     "prevBookBorrowers": [
       {
@@ -25,27 +25,35 @@
         "returnDate": "2024-03-25"
       }
     ],
-    "pendingBorrowers": [],
+    "pendingBorrowers": [
+      {
+        "id": "Giovanni"
+      }
+    ],
     "pendingBookReturners": []
   },
   {
     "bookId": "002",
-    "bookTitle": "Dangerous Pursuit",
+    "bookTitle": "Dangerous",
     "author": "David Turner",
-    "genre": "Thriller",
+    "genre": "Comedy",
     "shortDescription": "A gripping thriller that keeps you on the edge.",
     "imagePath": "src/main/resources/images/bookImages/dangerous_pursuit.jpg",
-    "copies": 5,
+    "copies": 4,
     "currentBorrowers": [],
     "prevBookBorrowers": [],
-    "pendingBorrowers": [],
+    "pendingBorrowers": [
+      {
+        "id": "Giovanni"
+      }
+    ],
     "pendingBookReturners": []
   },
   {
     "bookId": "003",
-    "bookTitle": "Timeless Chronicles",
+    "bookTitle": "Timeless",
     "author": "Emily Brown",
-    "genre": "Fiction",
+    "genre": "Comedy",
     "shortDescription": "Explore the past through captivating historical tales.",
     "imagePath": "src/main/resources/images/bookImages/timeless_chronicles.jpg",
     "copies": 8,

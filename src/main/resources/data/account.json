@@ -10,7 +10,13 @@
     "totalBorrowedBooks": 0,
     "pendingBooks": [
       {
-        "id": "4f9fad21-f5fa-4151-baf7-8b009a8581f4"
+        "id": "001"
+      },
+      {
+        "id": "002"
+      },
+      {
+        "id": "003"
       }
     ],
     "borrowedBooks": [],

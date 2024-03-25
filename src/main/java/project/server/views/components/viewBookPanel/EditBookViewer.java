@@ -26,48 +26,54 @@ public class EditBookViewer extends JDialog {
 
     public EditBookViewer(Frame frame, Book book, ServerObserver serverObserver) {
         super(frame, book.getBookTitle(), true);
+        setBackground(Color.WHITE);
 
         setPreferredSize(new Dimension(900, 600));
         setResizable(false);
         GridBagConstraints constraints = new GridBagConstraints();
 
         JPanel picturePanel = new JPanel(new GridBagLayout());
+        picturePanel.setBackground(Color.WHITE);
         JPanel detailsPanel = new JPanel();
-        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+        detailsPanel.setBackground(Color.WHITE);
 
-//        picturePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        picture = new Picture(book.getImagePath(), 150, 300);
+        picture = new Picture(book.getImagePath(), 300, 550);
+        picture.setBackground(Color.WHITE);
 
-        bookTitle = new FieldInput("Title:", new Dimension(150, 50), 20, 1, false);
+        bookTitle = new FieldInput("Title:", new Dimension(400, 50), 20, 1, false);
         bookTitle.getTextField().setText(book.getBookTitle());
 
-        bookAuthor = new FieldInput("Author:",new Dimension(150, 50), 20, 1, false);
+
+        bookAuthor = new FieldInput("Author:",new Dimension(400, 50), 20, 1, false);
         bookAuthor.getTextField().setText(book.getAuthor());
 
-        bookGenre = new DropDown(new Dimension(150, 48), true, "Comedy", "Horror", "Fantasy", "Fiction", "Novel", "Sci-Fi",
+        bookGenre = new DropDown(new Dimension(400, 48), true, "Comedy", "Horror", "Fantasy", "Fiction", "Novel", "Sci-Fi",
                 "Young", "Adult", "Historical", "Thriller", "Fantasy", "Science", "Romance", "Mystery");
 
-        bookCopies = new FieldInput("Copies:", new Dimension(150, 50), 20, 1, false);
+        bookCopies = new FieldInput("Copies:", new Dimension(400, 50), 20, 1, false);
+        bookCopies.getTextField().setText(book.getCopies()+"");
 
         shortDescription = new JTextArea(book.getShortDescription());
         shortDescription.setLineWrap(true);
         shortDescription.setWrapStyleWord(true);
         shortDescription.setEditable(true);
         JScrollPane descPane = new JScrollPane(shortDescription);
-        descPane.setPreferredSize(new Dimension(150, 120));
+        descPane.setPreferredSize(new Dimension(400, 120));
 
         JPanel buttonPanel = new JPanel();
-        Button saveChanges =  new Button("Save Changes", 140, 50, FontFactory.newPoppinsDefault(14));
+        buttonPanel.setBackground(Color.WHITE);
+        Button saveChanges =  new Button("Save Changes", 200, 50, FontFactory.newPoppinsDefault(14));
         saveChanges.setForeground(Color.WHITE);
         saveChanges.setBackground(ColorFactory.green());
 
-        Button cancel =  new Button("Cancel", 100, 50, FontFactory.newPoppinsDefault(14));
+        Button cancel =  new Button("Cancel", 200, 50, FontFactory.newPoppinsDefault(14));
         cancel.setForeground(Color.black);
         cancel.setBackground(Color.white);
 
-        buttonPanel.add(saveChanges);
+
         buttonPanel.add(cancel);
+        buttonPanel.add(saveChanges);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -107,47 +113,47 @@ public class EditBookViewer extends JDialog {
 
         setLocationRelativeTo(null);
 
-    }
+        cancel.addActionListener( e -> this.setVisible(false));
+        saveChanges.addActionListener(e -> {
 
-    private void saveChangeAction(ActionEvent e, ServerObserver serverObserver) {
-        // Retrieves input values from input fields
-        String author = bookAuthor.getInput();
-        String title = bookTitle.getInput();
-        String copies = bookCopies.getInput();
-        String genre = bookGenre.dropDownChoice();
-        String description = shortDescription.getText();
+            String author = bookAuthor.getInput();
+            String title = bookTitle.getInput();
+            String copies = bookCopies.getInput();
+            String genre = bookGenre.dropDownChoice();
+            String description = shortDescription.getText();
 
-        // Checks if any of the input fields are null or empty
-        if (UtilityMethods.haveNullOrEmpty(author, title, copies, description)) {
-            return;
-        }
 
-        int c;
-
-        try {
-            // Parses the input for the number of copies into an integer
-            c = Integer.parseInt(copies);
-            // Checks if the number of copies is negative
-            if (c < 0) {
-                // Displays an error message for negative values
-                bookCopies.enableError("Negative value not allowed");
-                // Clears the text field for number of copies
-                bookCopies.getTextField().setText("");
+            if (UtilityMethods.haveNullOrEmpty(author, title, copies, description)) {
                 return;
             }
 
-        } catch (NumberFormatException exception) {
-            // Displays an error message for invalid integer input
-            bookCopies.enableError("Please enter a valid Integer Value");
-            return;
-        }
+            int c;
 
-        // Creates a new Book object with the edited details
-        Book editedBook = new Book(book.getBookId(), title, author, genre, description, book.getImagePath(), c, book.getCurrentBorrowers(), book.getPrevBookBorrowers(), book.getPendingBorrowers(), book.getPendingBookReturners());
+            try {
+                // Parses the input for the number of copies into an integer
+                c = Integer.parseInt(copies);
+                // Checks if the number of copies is negative
+                if (c < 0) {
+                    // Displays an error message for negative values
+                    bookCopies.enableError("Negative value not allowed");
+                    // Clears the text field for number of copies
+                    bookCopies.getTextField().setText("");
+                    return;
+                }
 
-        // Calls the server controller to edit the book
-        serverObserver.editBook(editedBook);
+            } catch (NumberFormatException exception) {
+                // Displays an error message for invalid integer input
+                bookCopies.enableError("Please enter a valid Integer Value");
+                return;
+            }
 
-    } // end of saveChangeAction method
+
+            Book editedBook = new Book(book.getBookId(), title, author, genre, description, book.getImagePath(), c, book.getCurrentBorrowers(), book.getPrevBookBorrowers(), book.getPendingBorrowers(), book.getPendingBookReturners());
+            serverObserver.editBook(editedBook);
+            this.setVisible(false);
+        });
+
+    }
+
 
 }

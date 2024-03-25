@@ -52,17 +52,18 @@ public class ClientController implements ClientObserver {
     @Override
     public void logIn(Authentication credential) {
 
-        this.mainView.addWindowListener(new WindowAdapter() {
+        new Thread(() -> this.mainView.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
                     serverMethods.logout(loggedInAccount);
                     System.exit(0);
                 } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
+                    System.err.println(ex.getMessage());
                 }
             }
-        });
+        })).start();
+
 
         new SwingWorker<Response<Student>, Void>() {
             @Override
@@ -97,18 +98,18 @@ public class ClientController implements ClientObserver {
 
                         }
 
-                       // loading.setVisible(false);
+                       loading.setVisible(false);
                         chatView = new ChatView(mainView, "Messages", ClientController.this);
                         mainView.getHeader().addMessageAction(ClientController.this);
                     }
 
                 } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
+                    System.err.println(e.getMessage());
                 }
             }
         }.execute();
 
-       // loading.setVisible(true);
+       loading.setVisible(true);
 
     }
 
@@ -130,7 +131,7 @@ public class ClientController implements ClientObserver {
             }
 
         } catch (RemoteException e) {
-
+            System.err.println(e.getMessage());
         }
 
     }
@@ -151,7 +152,7 @@ public class ClientController implements ClientObserver {
             }
 
         } catch (RemoteException e) {
-
+            System.err.println(e.getMessage());
         }
 
     }
@@ -171,7 +172,7 @@ public class ClientController implements ClientObserver {
             }
 
         } catch (RemoteException e) {
-
+            System.err.println(e.getMessage());
         }
 
     }
@@ -181,6 +182,7 @@ public class ClientController implements ClientObserver {
 
         switch (serverActions) {
             case EDIT_BOOK -> {
+                loggedInAccount = updateMyAccount();
                 JOptionPane.showMessageDialog(mainView, "Admin edited a book");
 
                 if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
@@ -263,7 +265,7 @@ public class ClientController implements ClientObserver {
             }
 
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
 
         return loggedInAccount;
@@ -298,11 +300,11 @@ public class ClientController implements ClientObserver {
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getAccount());
             }
             case PENDING_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), this, true));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getPendingBooks(), this, true, 500));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getPendingBooks());
             }
             case BORROWED_PANEL -> {
-                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), this, false));
+                mainView.setContentPanel(new BookListPanel(loggedInAccount.getBorrowedBooks(), this, false, 500));
                 mainView.getMenu().setCurrentButton(mainView.getMenu().getBorrowedBooks());
             }
         }
@@ -322,7 +324,7 @@ public class ClientController implements ClientObserver {
             mainView.revalidate();
             mainView.repaint();
         } catch (RemoteException ex) {
-            throw new RuntimeException(ex);
+            System.err.println(ex.getMessage());
         }
 
     }
@@ -340,7 +342,7 @@ public class ClientController implements ClientObserver {
             bookViewer = new BookViewer(mainView, viewBook, loggedInAccount, this);
             bookViewer.setVisible(true);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
 
     }
@@ -355,7 +357,7 @@ public class ClientController implements ClientObserver {
         try {
             serverMethods.sendMessage(message, loggedInAccount);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 

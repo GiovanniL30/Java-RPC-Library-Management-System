@@ -17,7 +17,7 @@ public class BookListPanel extends JPanel {
     private final boolean isPending;
     private final ClientController clientController;
 
-    public BookListPanel(LinkedList<Book> pendingBooks, ClientController clientController, boolean isPending) {
+    public BookListPanel(LinkedList<Book> pendingBooks, ClientController clientController, boolean isPending, int height) {
 
         this.isPending = isPending;
         this.clientController = clientController;
@@ -32,7 +32,7 @@ public class BookListPanel extends JPanel {
         }
 
         JScrollPane scrollPane = new JScrollPane(holder);
-        scrollPane.setPreferredSize(new Dimension(900, 400));
+        scrollPane.setPreferredSize(new Dimension(900, height));
 
         add(scrollPane);
 
