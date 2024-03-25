@@ -102,7 +102,8 @@ public class Signup extends JDialog {
                 return;
             }
 
-            serverObserver.createAccount(new Account(UtilityMethods.generateRandomID(), userN, firstN, lastN, emailAdd, pass, false));
+            Account account = new Account(UtilityMethods.generateRandomID(), userN, firstN, lastN, emailAdd, pass, false);
+            serverObserver.createAccount(account);
             this.dispose();
         });
     }

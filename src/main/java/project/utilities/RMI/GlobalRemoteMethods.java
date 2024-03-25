@@ -57,6 +57,7 @@ public interface GlobalRemoteMethods extends Remote {
     Response<String> createNewBook(Book book) throws RemoteException;
 
     Response<String> broadcastMessage(String message) throws RemoteException;
+    Response<String> broadcastMessage(String message, String receiver) throws RemoteException;
 
     Response<String> banAccount(Student account) throws RemoteException;
 

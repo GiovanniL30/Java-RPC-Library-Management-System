@@ -16,11 +16,10 @@ public class BroadcastMessage extends JDialog {
     private JTextField messageTextArea;
     LinkedList<Student> students;
 
-    //TODO: DONE
     public BroadcastMessage(Frame frame, ServerObserver serverObserver) {
         super(frame, "Broadcast Message", true);
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-        setSize(new Dimension(600, 130));
+        setSize(new Dimension(640, 130));
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -28,21 +27,20 @@ public class BroadcastMessage extends JDialog {
 
 
         clientDropdown = new JComboBox<>();
-        clientDropdown.setForeground(ColorFactory.white());
-        clientDropdown.setBackground(ColorFactory.blue());
         clientDropdown.setPreferredSize(new Dimension(200, 30));
 
         LinkedList<String> clients = new LinkedList<>();
         clients.add("All");
 
         for (Student student : students) {
-            clients.addLast(student.getAccount().getUserName());
+            clients.addLast("User name: "+student.getAccount().getUserName()+"-id="+student.getAccount().getAccountId());
         }
 
         for (String clientId : clients) {
             clientDropdown.addItem(clientId);
         }
 
+        clientDropdown.setSelectedItem(0);
 
         JPanel fieldPanel = new JPanel();
         fieldPanel.setPreferredSize(new Dimension(420, 50));
@@ -55,16 +53,12 @@ public class BroadcastMessage extends JDialog {
         sendButton.setForeground(ColorFactory.white());
         sendButton.setBackground(ColorFactory.blue());
 
-        Button cancelButton = new Button("Cancel", 100, 30, FontFactory.newPoppinsDefault(14));
-        cancelButton.setForeground(ColorFactory.white());
-        cancelButton.setBackground(ColorFactory.red());
 
         JPanel lowerPart = new JPanel();
         lowerPart.setPreferredSize(new Dimension(100, 50));
         lowerPart.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         lowerPart.add(clientDropdown);
         lowerPart.add(sendButton);
-        lowerPart.add(cancelButton);
 
         add(fieldPanel);
         add(lowerPart);
@@ -74,22 +68,21 @@ public class BroadcastMessage extends JDialog {
            String selectedClient = (String) clientDropdown.getSelectedItem();
 
            if (!message.isEmpty() && selectedClient != null) {
-               if (selectedClient == "All"){
+               if (selectedClient.equals("All")){
                    serverObserver.broadcastMessageToAll(message);
                    messageTextArea.setText("");
                } else {
-                   serverObserver.broadcastMessage(message, selectedClient);
+                   serverObserver.broadcastMessage(message, selectedClient.split("-id=")[1]);
                    messageTextArea.setText("");
                }
 
            } else {
                JOptionPane.showMessageDialog(BroadcastMessage.this, "Please enter a message.");
            }
+
+           dispose();
         });
 
-        cancelButton.addActionListener(e -> {
-
-        });
 
     }
 }

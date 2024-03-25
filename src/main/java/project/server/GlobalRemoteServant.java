@@ -276,7 +276,22 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
             for (ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
                 clientUpdateReceiver.receiveBroadcast(ServerActions.BROADCAST_MESSAGE, message);
             }
-            return new Response<>(true, "Message broadcasted successfully.");
+            return new Response<>(true, "Message broadcast successfully.");
+        } catch (Exception e) {
+            return new Response<>(false, "Failed to broadcast message: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Response<String> broadcastMessage(String message, String receiver) throws RemoteException {
+
+        try {
+            System.out.println("Server broadcasts: " + message);
+            if(clientsHashMap.containsKey(receiver)) {
+                clientsHashMap.get(receiver).receiveBroadcast(ServerActions.BROADCAST_MESSAGE, message);
+            }
+
+            return new Response<>(true, "Message broadcast successfully.");
         } catch (Exception e) {
             return new Response<>(false, "Failed to broadcast message: " + e.getMessage());
         }

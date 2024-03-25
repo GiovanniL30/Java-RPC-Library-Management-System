@@ -61,9 +61,6 @@ public class DataModel {
 
                     for (Student student : students) {
 
-                        System.out.println(student.getAccount().getAccountId());
-
-
                         if (student.getAccount().getAccountId().equals(current.get("student").toString().replace("\"", ""))) {
                             prevBorrowers.add(new PrevBorrower(current.get("returnDate").toString().replace("\"", ""), current.get("student").getAsString(), current.get("name").getAsString()));
                         }
@@ -249,6 +246,7 @@ public class DataModel {
         return false;
     }
 
+
     public LinkedList<Student> getStudentAccounts(LinkedList<Book> allBooks) {
         try (FileReader reader = new FileReader(accountJSONfilePath)) {
             Type linkedListType = new TypeToken<LinkedList<TransformedStudent>>() {}.getType();
@@ -258,6 +256,7 @@ public class DataModel {
             LinkedList<Student> students = new LinkedList<>();
 
             studentsFromJson.forEach(transformedStudent -> {
+
 
                 LinkedList<String> borrowed = transformedStudent.getBorrowedBooks().stream().map(current -> current.get("id").toString().replace("\"", "")).collect(Collectors.toCollection(LinkedList::new));
                 LinkedList<String> pending = transformedStudent.getPendingBooks().stream().map(current -> current.get("id").toString().replace("\"", "")).collect(Collectors.toCollection(LinkedList::new));
@@ -382,7 +381,7 @@ public class DataModel {
             });
 
 
-            transformed.add(new TransformedStudent(studentAccount.getFirstName(), studentAccount.getUserName(), studentAccount.getFirstName(), studentAccount.getLastName(), studentAccount.getEmail(), studentAccount.getPassword(), studentAccount.getIsBanned(), student.getTotalBorrowedBooks(), pending, borrowed, pendingReturn));
+            transformed.add(new TransformedStudent(studentAccount.getAccountId(), studentAccount.getUserName(), studentAccount.getFirstName(), studentAccount.getLastName(), studentAccount.getEmail(), studentAccount.getPassword(), studentAccount.getIsBanned(), student.getTotalBorrowedBooks(), pending, borrowed, pendingReturn));
         }
         return transformed;
     }

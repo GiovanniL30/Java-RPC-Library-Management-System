@@ -232,9 +232,9 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void broadcastMessage(String message, String recipient) {
-        //TODO: specific broadcast to a user
+
         try {
-            Response<String> response = serverMethods.broadcastMessage(message);
+            Response<String> response = serverMethods.broadcastMessage(message, recipient);
             if (response.isSuccess()) {
                 System.out.println("Message broadcast successfully.");
             } else {
