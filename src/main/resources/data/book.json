@@ -39,7 +39,7 @@
     "genre": "Comedy",
     "shortDescription": "A gripping thriller that keeps you on the edge.",
     "imagePath": "src/main/resources/images/bookImages/dangerous_pursuit.jpg",
-    "copies": 5,
+    "copies": 0,
     "currentBorrowers": [],
     "prevBookBorrowers": [
       {
