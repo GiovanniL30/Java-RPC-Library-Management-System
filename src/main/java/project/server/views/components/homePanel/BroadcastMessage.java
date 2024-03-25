@@ -20,7 +20,7 @@ public class BroadcastMessage extends JDialog {
     public BroadcastMessage(Frame frame, ServerObserver serverObserver) {
         super(frame, "Broadcast Message", true);
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-        setSize(new Dimension(500, 130));
+        setSize(new Dimension(600, 130));
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -55,11 +55,16 @@ public class BroadcastMessage extends JDialog {
         sendButton.setForeground(ColorFactory.white());
         sendButton.setBackground(ColorFactory.blue());
 
+        Button cancelButton = new Button("Cancel", 100, 30, FontFactory.newPoppinsDefault(14));
+        cancelButton.setForeground(ColorFactory.white());
+        cancelButton.setBackground(ColorFactory.red());
+
         JPanel lowerPart = new JPanel();
         lowerPart.setPreferredSize(new Dimension(100, 50));
         lowerPart.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         lowerPart.add(clientDropdown);
         lowerPart.add(sendButton);
+        lowerPart.add(cancelButton);
 
         add(fieldPanel);
         add(lowerPart);
@@ -80,6 +85,10 @@ public class BroadcastMessage extends JDialog {
            } else {
                JOptionPane.showMessageDialog(BroadcastMessage.this, "Please enter a message.");
            }
+        });
+
+        cancelButton.addActionListener(e -> {
+
         });
 
     }
