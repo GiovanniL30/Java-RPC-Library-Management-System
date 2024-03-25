@@ -192,6 +192,7 @@ public class ClientController implements ClientObserver {
                 logout();
             }
             case DELETE_BOOK -> {
+                loggedInAccount =  updateMyAccount();
                 JOptionPane.showMessageDialog(mainView, "Admin deleted a book");
 
                 if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {

@@ -8,7 +8,11 @@
     "password": "helloworld",
     "isBanned": false,
     "totalBorrowedBooks": 0,
-    "pendingBooks": [],
+    "pendingBooks": [
+      {
+        "id": "4f9fad21-f5fa-4151-baf7-8b009a8581f4"
+      }
+    ],
     "borrowedBooks": [],
     "pendingReturnBook": []
   }

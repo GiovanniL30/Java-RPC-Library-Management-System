@@ -197,6 +197,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> deleteBook(Book book) throws RemoteException {
+
         bookModel.deleteBook(book);
         for(ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
             clientUpdateReceiver.receiveUpdate(ServerActions.DELETE_BOOK);

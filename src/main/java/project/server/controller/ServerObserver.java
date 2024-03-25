@@ -20,6 +20,7 @@ public interface ServerObserver {
     void retrievePendingReturnBook(Book book, Student student);
 
     void editBook(Book book);
+    void openBookEditor(Book book);
 
     boolean deleteBook(Book book);
 

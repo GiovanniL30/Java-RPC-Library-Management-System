@@ -2,6 +2,7 @@ package project.server.model;
 
 
 import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.Student;
 
 import java.util.LinkedList;
 
@@ -18,10 +19,23 @@ public class BookModel extends DataModel {
     public void deleteBook(Book book) {
         LinkedList<Book> books = getBooks();
 
-        for (Book b : books) {
 
-            if (b.getBookId().equals(book.getBookId())) {
-                books.remove(b);
+
+        for (Book currentBook : books) {
+
+            if (currentBook.getBookId().equals(book.getBookId())) {
+                books.remove(currentBook);
+
+                LinkedList<Student> students = getStudentAccounts(books);
+
+                for(Student student : students) {
+                    student.getPendingReturnBook().removeIf(b -> b.getBookId().equals(book.getBookId()));
+                    student.getBorrowedBooks().removeIf(b -> b.getBookId().equals(book.getBookId()));
+                    student.getPendingBooks().removeIf(b -> b.getBookId().equals(book.getBookId()));
+                    student.setTotalBorrowedBooks(student.getBorrowedBooks().size());
+                }
+
+                saveStudentAccountChanges(students);
                 saveBookChanges(books);
                 break;
             }

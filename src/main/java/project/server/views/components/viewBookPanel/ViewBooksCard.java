@@ -14,15 +14,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class ViewBooksCard extends JPanel {
-    private ServerObserver serverObserver;;
-    private EditBookViewer editBookViewer;
-    private LibrarianMainFrame mainView;
+
     private Button editBookButton = new Button("Edit", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button deleteBookButton = new Button("Delete", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button prevOwnersButton = new Button("Previous Owners", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button currentOwnersButton = new Button("Current Owners", 130, 50, FontFactory.newPoppinsDefault(13));
     public ViewBooksCard(Book book, ServerObserver serverObserver) {
-        this.serverObserver = serverObserver;
+
         setSize(new Dimension(300, 200));
         setLayout(new GridBagLayout());
         setBorder(new EmptyBorder(0, 10, 0, 20));
@@ -95,29 +93,14 @@ public class ViewBooksCard extends JPanel {
         add(bookPanel, constraints);
 
         editBookButton.addActionListener(e -> {
-            editBookViewer = new EditBookViewer(mainView, book, serverObserver);
-            editBookViewer.setVisible(true);
+           serverObserver.openBookEditor(book);
         });
 
         deleteBookButton.addActionListener(e -> {
-
-
-//            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this book?", "Book delete confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null);
-//
-//            if (choice == JOptionPane.YES_OPTION) {
-//                if (serverController.deleteBook(book.getBookId())) {
-//                    // Message dialog for successful deletion
-//                    JOptionPane.showMessageDialog(null, "Book deleted successfully.");
-//                    booksPanel.remove(this);
-//                    booksPanel.revalidate();
-//                    booksPanel.repaint();
-//                } else {
-//                    // Message dialog for failed deletion
-//                    JOptionPane.showMessageDialog(null, "Failed to delete book");
-//                }
-//            }
-
-
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this book?", "Book delete confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null);
+            if (choice == JOptionPane.YES_OPTION) {
+               serverObserver.deleteBook(book);
+            }
         });
 
         prevOwnersButton.addActionListener(e -> {

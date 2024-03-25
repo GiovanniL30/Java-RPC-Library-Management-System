@@ -1,6 +1,7 @@
 package project.server.controller;
 
 import project.server.views.LibrarianMainFrame;
+import project.server.views.components.viewBookPanel.EditBookViewer;
 import project.server.views.panels.*;
 import project.server.views.utility.ServerPanels;
 import project.utilities.RMI.GlobalRemoteMethods;
@@ -19,7 +20,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.util.LinkedList;
 
 public class ServerController implements ServerObserver, Serializable {
@@ -35,7 +35,7 @@ public class ServerController implements ServerObserver, Serializable {
         try {
             Response<String> response = serverMethods.acceptBook(book, student);
             if (response.isSuccess()) {
-               changeFrame(ServerPanels.PENDING_BORROW_PANEL);
+                changeFrame(ServerPanels.PENDING_BORROW_PANEL);
             }
 
             JOptionPane.showMessageDialog(mainView, response.getPayload());
@@ -49,7 +49,7 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void retrieveBook(Book book, Student student) {
         try {
-            Response<String> response = serverMethods.retrieveBook(book,student);
+            Response<String> response = serverMethods.retrieveBook(book, student);
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.BORROWED_PANEL);
             }
@@ -62,7 +62,7 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void retrievePendingReturnBook(Book book, Student student) {
         try {
-            Response<String> response = serverMethods.retrievePendingReturnBook(book,student);
+            Response<String> response = serverMethods.retrievePendingReturnBook(book, student);
 
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.PENDING_RETURN_PANEL);
@@ -79,17 +79,35 @@ public class ServerController implements ServerObserver, Serializable {
 
         try {
             Response<String> response = serverMethods.editBook(book);
-            if (response.isSuccess()){
-
+            if (response.isSuccess()) {
+                changeFrame(ServerPanels.All_BOOKS_PANEL);
             }
-        } catch (RemoteException e){
-            throw new RuntimeException();
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
         }
     }
 
     @Override
+    public void openBookEditor(Book book) {
+        EditBookViewer editBookViewer = new EditBookViewer(mainView, book,this);
+        editBookViewer.setVisible(true);
+    }
+
+    @Override
     public boolean deleteBook(Book book) {
-        return false;
+
+        try {
+            Response<String> response = serverMethods.deleteBook(book);
+            if (response.isSuccess()) {
+                changeFrame(ServerPanels.All_BOOKS_PANEL);
+            }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
+            return true;
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -211,7 +229,7 @@ public class ServerController implements ServerObserver, Serializable {
         try {
             Response<String> response = serverMethods.broadcastMessage(message);
             if (response.isSuccess()) {
-                System.out.println("Message broadcasted successfully.");
+                System.out.println("Message broadcast successfully.");
             } else {
                 JOptionPane.showMessageDialog(mainView, response.getPayload());
             }
@@ -269,7 +287,6 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
 
-
     @Override
     public void createAccount(Account account) {
         try {
@@ -297,13 +314,13 @@ public class ServerController implements ServerObserver, Serializable {
         }
 
         try {
-           Response<String> response =  serverMethods.changeUserPassword(account, newPass);
+            Response<String> response = serverMethods.changeUserPassword(account, newPass);
 
-           if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
-           }
+            }
 
-           JOptionPane.showMessageDialog(mainView, response.getPayload());
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
 
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -332,7 +349,7 @@ public class ServerController implements ServerObserver, Serializable {
         try {
             Response<LinkedList<Student>> studentResponse = serverMethods.getStudentAccounts();
 
-            if(studentResponse.isSuccess()) {
+            if (studentResponse.isSuccess()) {
                 return studentResponse.getPayload();
             }
 
@@ -418,34 +435,35 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void updateView(ClientActions clientActions) {
-       switch (clientActions) {
-           case BORROW_BOOK, CANCEL_PENDING -> {
-               System.out.println(clientActions);
-               if(mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.PENDING_BORROW_PANEL.getDisplayName())){
-                   changeFrame(ServerPanels.PENDING_BORROW_PANEL);
-               }
-           }case RETURN_BOOK -> {
-               if(mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.BORROWED_PANEL.getDisplayName())){
-                   changeFrame(ServerPanels.BORROWED_PANEL);
-               }else if (mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.PENDING_RETURN_PANEL.getDisplayName())) {
-                   changeFrame(ServerPanels.PENDING_RETURN_PANEL);
-               }
-           }
-       }
+        switch (clientActions) {
+            case BORROW_BOOK, CANCEL_PENDING -> {
+                System.out.println(clientActions);
+                if (mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.PENDING_BORROW_PANEL.getDisplayName())) {
+                    changeFrame(ServerPanels.PENDING_BORROW_PANEL);
+                }
+            }
+            case RETURN_BOOK -> {
+                if (mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.BORROWED_PANEL.getDisplayName())) {
+                    changeFrame(ServerPanels.BORROWED_PANEL);
+                } else if (mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.PENDING_RETURN_PANEL.getDisplayName())) {
+                    changeFrame(ServerPanels.PENDING_RETURN_PANEL);
+                }
+            }
+        }
     }
 
     @Override
     public void acceptBook(Student student, Book book) {
         try {
-          Response<String> acceptBookResponse = serverMethods.acceptBook(book, student);
+            Response<String> acceptBookResponse = serverMethods.acceptBook(book, student);
 
-          if(acceptBookResponse.isSuccess()) {
-              changeFrame(ServerPanels.PENDING_BORROW_PANEL);
-              JOptionPane.showMessageDialog(getServerMainView(), acceptBookResponse.getPayload());
-              serverMethods.sendNotificationToClient(ServerActions.ACCEPT_BOOK_PENDING, student);
-          }else {
-              JOptionPane.showMessageDialog(getServerMainView(), acceptBookResponse.getPayload() );
-          }
+            if (acceptBookResponse.isSuccess()) {
+                changeFrame(ServerPanels.PENDING_BORROW_PANEL);
+                JOptionPane.showMessageDialog(getServerMainView(), acceptBookResponse.getPayload());
+                serverMethods.sendNotificationToClient(ServerActions.ACCEPT_BOOK_PENDING, student);
+            } else {
+                JOptionPane.showMessageDialog(getServerMainView(), acceptBookResponse.getPayload());
+            }
 
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -454,7 +472,7 @@ public class ServerController implements ServerObserver, Serializable {
 
     public void setServerMethods() {
         try {
-            serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://"+ IPGetter.askUserForIP("Enter Server IP address")+":3000/servermethods");
+            serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://" + IPGetter.askUserForIP("Enter Server IP address") + ":3000/servermethods");
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
             throw new RuntimeException(e);
         }

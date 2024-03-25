@@ -1,57 +1,5 @@
 [
   {
-    "bookId": "64892794-9481-43d9-87e3-e60eae9450cf",
-    "bookTitle": "asca",
-    "author": "scascasc",
-    "genre": "Science",
-    "shortDescription": "asc",
-    "imagePath": "src/main/resources/images/bookImages/imageNotAvailable.png",
-    "copies": 12,
-    "currentBorrowers": [],
-    "prevBookBorrowers": [],
-    "pendingBorrowers": [],
-    "pendingBookReturners": []
-  },
-  {
-    "bookId": "4f9fad21-f5fa-4151-baf7-8b009a8581f4",
-    "bookTitle": "asc",
-    "author": "asc",
-    "genre": "Fantasy",
-    "shortDescription": "asc",
-    "imagePath": "src\\main\\resources\\images\\bookImages\\429003345_959151212506096_2037273309077878754_n (1).png",
-    "copies": 16,
-    "currentBorrowers": [],
-    "prevBookBorrowers": [
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      },
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      },
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      },
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      },
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      }
-    ],
-    "pendingBorrowers": [],
-    "pendingBookReturners": []
-  },
-  {
     "bookId": "001",
     "bookTitle": "Realm of Magic",
     "author": "Alice Williams",
