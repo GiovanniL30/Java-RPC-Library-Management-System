@@ -1,6 +1,7 @@
 package project.server.controller;
 
 import project.server.views.LibrarianMainFrame;
+import project.server.views.components.accountPanel.Signup;
 import project.server.views.components.viewBookPanel.EditBookViewer;
 import project.server.views.panels.*;
 import project.server.views.utility.ServerPanels;
@@ -15,6 +16,7 @@ import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -138,6 +140,12 @@ public class ServerController implements ServerObserver, Serializable {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void openSignUp() {
+        Signup signup = new Signup(mainView, new Dimension(1000, 500), this);
+        signup.setVisible(true);
     }
 
     @Override

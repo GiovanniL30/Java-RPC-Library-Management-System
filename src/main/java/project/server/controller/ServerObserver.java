@@ -27,6 +27,7 @@ public interface ServerObserver {
     void cancelPending(Book book, Student student);
 
     void createNewBook(Book book);
+    void openSignUp();
 
     //Methods for showing book information
 
