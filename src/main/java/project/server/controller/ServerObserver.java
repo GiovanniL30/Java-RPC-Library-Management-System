@@ -17,6 +17,7 @@ public interface ServerObserver {
     void acceptBook(Book book, Student student);
 
     void retrieveBook(Book book, Student student);
+    void retrievePendingReturnBook(Book book, Student student);
 
     void editBook(Book book);
 

@@ -6,10 +6,21 @@ public class PrevBorrower implements Serializable {
 
     private String returnDate;
     private String student;
+    private String name;
 
-    public PrevBorrower(String returnDate, String student) {
+    public PrevBorrower(String returnDate, String student, String name) {
         this.returnDate = returnDate;
         this.student = student;
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getReturnDate() {

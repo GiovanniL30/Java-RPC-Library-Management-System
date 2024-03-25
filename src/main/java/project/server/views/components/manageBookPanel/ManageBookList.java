@@ -51,7 +51,7 @@ public class ManageBookList extends JPanel {
                         case PENDING_BORROW_PANEL -> {
 
                             for(Book book : student.getPendingBooks()) {
-                                holder.add(new ManageBookCard(book, student, false, serverObserver));
+                                holder.add(new ManageBookCard(book, student, serverObserver, ServerPanels.PENDING_BORROW_PANEL));
                                 holder.revalidate();
                                 holder.repaint();
                             }
@@ -59,7 +59,7 @@ public class ManageBookList extends JPanel {
 
                         }case PENDING_RETURN_PANEL -> {
                             for(Book book : student.getPendingReturnBook()) {
-                                holder.add(new ManageBookCard(book, student, true, serverObserver));
+                                holder.add(new ManageBookCard(book, student, serverObserver, ServerPanels.PENDING_RETURN_PANEL));
                                 holder.revalidate();
                                 holder.repaint();
                             }
@@ -69,7 +69,7 @@ public class ManageBookList extends JPanel {
 
                             for(Book book : student.getBorrowedBooks()) {
                                 System.out.println(book);
-                                holder.add(new ManageBookCard(book, student, true, serverObserver));
+                                holder.add(new ManageBookCard(book, student,  serverObserver, ServerPanels.BORROWED_PANEL));
                                 holder.revalidate();
                                 holder.repaint();
                             }

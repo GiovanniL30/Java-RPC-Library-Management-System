@@ -48,20 +48,24 @@ public class DataModel {
         try (FileReader reader = new FileReader("src/main/resources/data/book.json")) {
             Type linkedListType = new TypeToken<LinkedList<TransformedBook>>() {}.getType();
             LinkedList<TransformedBook> transformedBooks = gson.fromJson(reader, linkedListType);
+
             LinkedList<Book> books = new LinkedList<>();
+            LinkedList<Student> students = getStudentAccounts(books);
 
-            transformedBooks.forEach(transformedBook -> {
-
+            for(TransformedBook transformedBook : transformedBooks) {
 
                 LinkedList<String> currentBorrowers = transformedBook.getCurrentBorrowers().stream().map(current -> current.get("id").toString().replace("\"", "")).collect(Collectors.toCollection(LinkedList::new));
                 LinkedList<PrevBorrower> prevBorrowers = new LinkedList<>();
 
                 transformedBook.getPrevBookBorrowers().forEach(current -> {
 
-                    for (Student student : getStudentAccounts()) {
+                    for (Student student : students) {
+
+                        System.out.println(student.getAccount().getAccountId());
+
 
                         if (student.getAccount().getAccountId().equals(current.get("student").toString().replace("\"", ""))) {
-                            prevBorrowers.add(new PrevBorrower(current.get("returnDate").toString().replace("\"", ""), student.getAccount().getFirstName() + " " + student.getAccount().getLastName()));
+                            prevBorrowers.add(new PrevBorrower(current.get("returnDate").toString().replace("\"", ""), current.get("student").getAsString(), current.get("name").getAsString()));
                         }
 
                     }
@@ -70,7 +74,10 @@ public class DataModel {
                 LinkedList<String> pendingReturn = transformedBook.getPendingBookReturners().stream().map(current -> current.get("id").toString().replace("\"", "")).collect(Collectors.toCollection(LinkedList::new));
                 LinkedList<String> pendingBorrow = transformedBook.getPendingBorrowers().stream().map(current -> current.get("id").toString().replace("\"", "")).collect(Collectors.toCollection(LinkedList::new));
                 books.add(new Book(transformedBook.getBookId(), transformedBook.getBookTitle(), transformedBook.getAuthor(), transformedBook.getGenre(), transformedBook.getShortDescription(), transformedBook.getImagePath(), transformedBook.getCopies(), currentBorrowers, prevBorrowers, pendingBorrow, pendingReturn));
-            });
+           }
+
+
+
 
 
             return books;
@@ -86,6 +93,7 @@ public class DataModel {
 
         for (Book book : books) {
             if (book.getBookId().equals(bookId)) {
+                book.setCopies(book.getCopies() - 1);
                 book.getPendingBorrowers().add(student.getAccount().getAccountId());
                 student.getPendingBooks().add(book);
 
@@ -106,6 +114,7 @@ public class DataModel {
         for (Book book : books) {
 
             if (book.getBookId().equals(bookId)) {
+                book.setCopies(book.getCopies() + 1);
                 book.getPendingBorrowers().remove(student.getAccount().getAccountId());
                 removeBookOnStudentPending(bookId, student);
 
@@ -131,7 +140,6 @@ public class DataModel {
 
         LinkedList<Book> books = getBooks();
 
-
         for (Book book : books) {
 
             if (book.getBookId().equals(bookId)) {
@@ -149,52 +157,57 @@ public class DataModel {
         return false;
     }
 
-    private void removeBookOnStudentBorrow(String bookId, Student student) {
-        for(int i = 0 ; i < student.getBorrowedBooks().size(); i++) {
-            if(student.getBorrowedBooks().get(i).getBookId().equals(bookId)) {
-                student.getBorrowedBooks().remove(i);
-                break;
-            }
-        }
-    }
 
     public boolean removeBorrowed(String bookId, Student student, boolean isAdmin) {
         LinkedList<Book> books = getBooks();
 
         for (Book book : books) {
             if (book.getBookId().equals(bookId)) {
-                if (!book.getCurrentBorrowers().contains(student.getAccount().getAccountId())) {
-                    // Book is not currently borrowed by the student
-                    return false;
-                }
 
-                // Remove the student from the list of current borrowers
                 book.getCurrentBorrowers().remove(student.getAccount().getAccountId());
 
                 if (isAdmin) {
-                    // If it's an admin operation, add the student to the list of previous borrowers
-                    book.getPrevBookBorrowers().add(new PrevBorrower(Date.valueOf(LocalDate.now()).toString(), student.getAccount().getFirstName() + " " + student.getAccount().getLastName()));
+                    book.getPrevBookBorrowers().add(new PrevBorrower(Date.valueOf(LocalDate.now()).toString(), student.getAccount().getAccountId(), student.getAccount().getFirstName() + " " + student.getAccount().getLastName()));
                 } else {
-                    // If it's a regular student, add the book to the pending return list
                     book.getPendingBookReturners().add(student.getAccount().getAccountId());
                     student.getPendingReturnBook().add(book);
                 }
 
-                // Remove the book from the student's borrowed list
+                book.setCopies(book.getCopies() + 1);
                 student.getBorrowedBooks().removeIf(b -> b.getBookId().equals(bookId));
 
-                // Save changes
                 saveStudentAccountChanges(student);
                 saveBookChanges(books);
                 return true;
             }
         }
 
-        return false; // Book not found
+        return false;
+    }
+
+    public boolean retrivePendingReturnBook(String bookId, Student student) {
+        LinkedList<Book> books = getBooks();
+
+        for (Book book : books) {
+
+            if (book.getBookId().equals(bookId)) {
+
+                book.getPendingBookReturners().remove(student.getAccount().getAccountId());
+                book.getPrevBookBorrowers().add(new PrevBorrower(Date.valueOf(LocalDate.now()).toString(), student.getAccount().getAccountId(), student.getAccount().getFirstName() + " " + student.getAccount().getLastName()));
+                student.getPendingReturnBook().removeIf(b -> b.getBookId().equals(bookId));
+
+
+                saveStudentAccountChanges(student);
+                saveBookChanges(books);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void saveStudentAccountChanges(Student student) {
-        LinkedList<Student> accounts = getStudentAccounts();
+        LinkedList<Student> accounts = getStudentAccounts(getBooks());
 
         for (int i = 0; i < accounts.size(); i++) {
 
@@ -236,7 +249,7 @@ public class DataModel {
         return false;
     }
 
-    public LinkedList<Student> getStudentAccounts() {
+    public LinkedList<Student> getStudentAccounts(LinkedList<Book> allBooks) {
         try (FileReader reader = new FileReader(accountJSONfilePath)) {
             Type linkedListType = new TypeToken<LinkedList<TransformedStudent>>() {}.getType();
             LinkedList<TransformedStudent> studentsFromJson = gson.fromJson(reader, linkedListType);
@@ -254,7 +267,7 @@ public class DataModel {
                 LinkedList<Book> currentBorrowedBooks = new LinkedList<>();
                 LinkedList<Book> pendingBooks = new LinkedList<>();
                 LinkedList<Book> pendingReturnBooks = new LinkedList<>();
-                LinkedList<Book> allBooks = getBooks();
+
 
 
                 allBooks.forEach(book -> {
@@ -328,6 +341,7 @@ public class DataModel {
             book.getPrevBookBorrowers().forEach(prevBorrower -> {
                 JsonObject prev = new JsonObject();
                 prev.add("student", gson.toJsonTree(prevBorrower.getStudent()));
+                prev.add("name", gson.toJsonTree(prevBorrower.getName()));
                 prev.add("returnDate", gson.toJsonTree(prevBorrower.getReturnDate()));
                 prevBorrowers.add(prev);
             });

@@ -11,6 +11,7 @@ public enum ServerActions implements Serializable {
     CANCEL_BOOK_PENDING,
     ACCEPT_BOOK_PENDING,
     RETRIEVES_BOOK,
+    RETRIVE_PENDING_BOOK,
     CHANGE_PASSWORD,
     BAN_ACCOUNT,
     UNBAN_ACCOUNT,

@@ -1,6 +1,7 @@
 package project.server.views.components.manageBookPanel;
 
 import project.server.controller.ServerObserver;
+import project.server.views.utility.ServerPanels;
 import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ColorFactory;
@@ -19,7 +20,7 @@ public class ManageBookCard extends JPanel{
     private final Button retrieveBook;
     private final ServerObserver serverObserver;
 
-    ManageBookCard(Book book, Student student, boolean isBorrowed, ServerObserver serverObserver) {
+    ManageBookCard(Book book, Student student, ServerObserver serverObserver, ServerPanels serverPanels) {
         this.serverObserver = serverObserver;
         setLayout(null);
         setPreferredSize(new Dimension(430, 170));
@@ -48,9 +49,25 @@ public class ManageBookCard extends JPanel{
         buttonPanel.setBackground(Color.white);
 
         // Add appropriate buttons based on borrow status
-        if (isBorrowed) {
+        if (ServerPanels.BORROWED_PANEL.equals(serverPanels)) {
             buttonPanel.add(retrieveBook);
-        } else {
+
+            retrieveBook.addActionListener(e -> {
+                serverObserver.retrieveBook(book, student);
+            });
+
+        }else if(ServerPanels.PENDING_RETURN_PANEL.equals(serverPanels)) {
+            buttonPanel.add(retrieveBook);
+            retrieveBook.setText("Get");
+            retrieveBook.setBackground(ColorFactory.green());
+            retrieveBook.setForeground(Color.white);
+
+            retrieveBook.addActionListener(e -> {
+                serverObserver.retrievePendingReturnBook(book, student);
+            });
+
+        }
+        else if(ServerPanels.PENDING_BORROW_PANEL.equals(serverPanels)) {
             buttonPanel.add(cancelBook);
             buttonPanel.add(acceptBook);
         }
@@ -76,9 +93,7 @@ public class ManageBookCard extends JPanel{
             serverObserver.cancelPending(book, student);
         });
 
-        retrieveBook.addActionListener(e -> {
-            serverObserver.retrieveBook(book, student);
-        }); // end of action listeners
+
     } // end of Card constructor
 }
 

@@ -120,4 +120,21 @@ public class TransformedBook implements Serializable {
     public void setPendingBookReturners(LinkedList<JsonObject> pendingBookReturners) {
         this.pendingBookReturners = pendingBookReturners;
     }
+
+    @Override
+    public String toString() {
+        return "TransformedBook{" +
+                "bookId='" + bookId + '\'' +
+                ", bookTitle='" + bookTitle + '\'' +
+                ", author='" + author + '\'' +
+                ", genre='" + genre + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", copies=" + copies +
+                ", currentBorrowers=" + currentBorrowers +
+                ", prevBookBorrowers=" + prevBookBorrowers +
+                ", pendingBorrowers=" + pendingBorrowers +
+                ", pendingBookReturners=" + pendingBookReturners +
+                '}';
+    }
 }

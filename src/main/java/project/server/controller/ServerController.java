@@ -60,6 +60,21 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
+    public void retrievePendingReturnBook(Book book, Student student) {
+        try {
+            Response<String> response = serverMethods.retrievePendingReturnBook(book,student);
+
+            if (response.isSuccess()) {
+                changeFrame(ServerPanels.PENDING_RETURN_PANEL);
+            }
+
+            JOptionPane.showMessageDialog(mainView, response.getPayload());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void editBook(Book book) {
 
         try {
@@ -412,6 +427,8 @@ public class ServerController implements ServerObserver, Serializable {
            }case RETURN_BOOK -> {
                if(mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.BORROWED_PANEL.getDisplayName())){
                    changeFrame(ServerPanels.BORROWED_PANEL);
+               }else if (mainView.getManageBookPanel() != null && mainView.getManageBookPanel().getSubHeader().getCurrentButton().getText().equals(ServerPanels.PENDING_RETURN_PANEL.getDisplayName())) {
+                   changeFrame(ServerPanels.PENDING_RETURN_PANEL);
                }
            }
        }

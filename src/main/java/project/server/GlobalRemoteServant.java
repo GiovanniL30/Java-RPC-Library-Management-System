@@ -94,6 +94,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         System.out.println(student.getAccount().getUserName() + " Requested to return a borrowed book" + book.getBookTitle() + "\n\n");
 
         if (bookModel.removeBorrowed(book.getBookId(), student, false)) {
+            sendNotificationToServer(ClientActions.RETURN_BOOK);
             return new Response<>(true, "Book was successfully returned for pending");
         }
 
@@ -154,6 +155,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     @Override
     public Response<String> retrieveBook(Book book, Student student) throws RemoteException {
         System.out.println("Server retrieves" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
+
         if (bookModel.removeBorrowed(book.getBookId(), student, true)) {
 
             if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
@@ -165,6 +167,22 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         }
         return new Response<>(false, "Book was not retrieved");
     }
+
+    @Override
+    public Response<String> retrievePendingReturnBook(Book book, Student student) throws RemoteException {
+        System.out.println("Server retrieves pending return book" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
+
+        if (bookModel.retrivePendingReturnBook(book.getBookId(), student)) {
+
+            if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
+                clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.RETRIVE_PENDING_BOOK);
+            }
+
+            return new Response<>(true, "Book was successfully retrieved");
+        }
+        return new Response<>(false, "Book was not retrieved");
+    }
+
 
     @Override
     public Response<String> editBook(Book book) throws RemoteException {
@@ -334,7 +352,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     }
 
     public Response<LinkedList<Student>> getStudentAccounts() {
-        LinkedList<Student> studentAccounts = accountModel.getStudentAccounts();
+        LinkedList<Student> studentAccounts = accountModel.getStudentAccounts(accountModel.getBooks());
         return new Response<>(true, studentAccounts);
     }
 

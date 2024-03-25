@@ -46,6 +46,7 @@ public interface GlobalRemoteMethods extends Remote {
     Response<String> acceptBook(Book book, Student student) throws RemoteException;
 
     Response<String> retrieveBook(Book book, Student student) throws RemoteException;
+    Response<String> retrievePendingReturnBook(Book book, Student student) throws RemoteException;
 
     Response<String> editBook(Book book) throws RemoteException;
 
