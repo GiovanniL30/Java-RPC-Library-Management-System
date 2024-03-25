@@ -4,6 +4,7 @@ import project.server.controller.ServerController;
 import project.server.controller.ServerObserver;
 import project.server.views.LibrarianMainFrame;
 import project.utilities.referenceClasses.Book;
+import project.utilities.referenceClasses.PrevBorrower;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
 import project.utilities.viewComponents.Button;
@@ -104,8 +105,15 @@ public class ViewBooksCard extends JPanel {
         });
 
         prevOwnersButton.addActionListener(e -> {
+            StringBuilder prevOwners = new StringBuilder("Previous owners: \n");
 
+            for (PrevBorrower prevBorrower : book.getPrevBookBorrowers()) {
+                prevOwners.append("Name: ").append(prevBorrower.getName()).append("  Return Date: ").append(prevBorrower.getReturnDate()).append("\n");
+            }
+
+            JOptionPane.showMessageDialog(null, prevOwners.toString(), "Previous owners", JOptionPane.INFORMATION_MESSAGE);
         });
+
         currentOwnersButton.addActionListener(e -> {
 
         });
