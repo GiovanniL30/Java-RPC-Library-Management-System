@@ -80,7 +80,7 @@ public class BookModel extends DataModel {
                 }
             }
         }
-        // Return the list of Unavailable Books
+        // Return the list of Previous Borrowed Books
         return previousBorrowedBooks;
     }
 

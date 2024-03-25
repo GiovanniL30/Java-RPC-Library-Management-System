@@ -185,7 +185,7 @@ public class DataModel {
         return false;
     }
 
-    public boolean retrivePendingReturnBook(String bookId, Student student) {
+    public boolean retrievePendingReturnBook(String bookId, Student student) {
         LinkedList<Book> books = getBooks();
 
         for (Book book : books) {

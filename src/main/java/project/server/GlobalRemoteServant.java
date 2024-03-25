@@ -172,7 +172,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> retrievePendingReturnBook(Book book, Student student) throws RemoteException {
         System.out.println("Server retrieves pending return book" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
 
-        if (bookModel.retrivePendingReturnBook(book.getBookId(), student)) {
+        if (bookModel.retrievePendingReturnBook(book.getBookId(), student)) {
 
             if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
                 clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.RETRIVE_PENDING_BOOK);
