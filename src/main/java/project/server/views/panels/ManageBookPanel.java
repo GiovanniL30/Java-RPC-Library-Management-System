@@ -103,18 +103,18 @@ public class ManageBookPanel extends JPanel {
         LinkedList<Book> searchedBooks = new LinkedList<>();
 
         if (subHeader.isButton1NotEnabled()) {
-            searchedBooks = searchByTitleThenAuthorThenStudent(serverObserver.getPendingBorrowingBooks(), searchInput);
+            searchedBooks = searchBy(serverObserver.getPendingBorrowingBooks(), searchInput);
         } else if (subHeader.isButton2NotEnabled()) {
-            searchedBooks = searchByTitleThenAuthorThenStudent(serverObserver.getPendingReturningBooks(), searchInput);
+            searchedBooks = searchBy(serverObserver.getPendingReturningBooks(), searchInput);
         } else if (subHeader.isButton3NotEnabled()) {
-            searchedBooks = searchByTitleThenAuthorThenStudent(serverObserver.getCurrentBorrowedBooks(), searchInput);
+            searchedBooks = searchBy(serverObserver.getCurrentBorrowedBooks(), searchInput);
         }
 
         haveSearched = true;
         setView(searchedBooks);
     }
 
-    private LinkedList<Book> searchByTitleThenAuthorThenStudent(LinkedList<Book> books, String searchInput) {
+    private LinkedList<Book> searchBy(LinkedList<Book> books, String searchInput) {
         LinkedList<Book> searchedBooks;
 
         searchedBooks = books.stream()
