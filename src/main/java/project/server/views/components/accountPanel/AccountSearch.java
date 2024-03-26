@@ -48,4 +48,9 @@ public class AccountSearch extends JPanel {
     public Button getCreateAccount() {
         return createAccount;
     }
+    public void enableError(String message) {
+
+        JOptionPane.showMessageDialog(null, message, "Search Error", JOptionPane.INFORMATION_MESSAGE);
+
+    }
 }
