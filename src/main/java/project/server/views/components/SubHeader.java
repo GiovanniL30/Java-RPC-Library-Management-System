@@ -16,9 +16,6 @@ public class SubHeader extends JPanel {
     private final ClickableText button3;
     private ClickableText currentButton;
     private final JLabel errorMessage;
-    private boolean isButton1NotEnabled;
-    private boolean isButton2NotEnabled;
-    private boolean isButton3NotEnabled;
 
     public SubHeader(ClickableText button1, ClickableText button2, ClickableText button3, ServerObserver serverObserver) {
         this.errorMessage = new JLabel();
@@ -52,7 +49,6 @@ public class SubHeader extends JPanel {
         constraints.weightx = 2.0;
         add(searchBar, constraints);
         setCurrentClickableText(button1);
-        isButton1NotEnabled = true;
 
         constraints.gridy = 1;
         errorMessage.setForeground(Color.RED);
@@ -61,22 +57,15 @@ public class SubHeader extends JPanel {
 
         this.button1.addActionListener(e -> {
 
-            isButton2NotEnabled = false;
-            isButton3NotEnabled = false;
-
             if (button1.getText().equals(ServerPanels.All_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.All_BOOKS_PANEL);
             } else if (button1.getText().equals(ServerPanels.PENDING_BORROW_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.PENDING_BORROW_PANEL);
             }
 
-            isButton1NotEnabled = true;
-
         });
-        this.button2.addActionListener(e -> {
 
-            isButton1NotEnabled = false;
-            isButton3NotEnabled = false;
+        this.button2.addActionListener(e -> {
 
             if (button2.getText().equals(ServerPanels.AVAILABLE_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.AVAILABLE_BOOKS_PANEL);
@@ -84,21 +73,13 @@ public class SubHeader extends JPanel {
                 serverObserver.changeFrame(ServerPanels.PENDING_RETURN_PANEL);
             }
 
-            isButton2NotEnabled = true;
-
         });
         this.button3.addActionListener(e -> {
-
-            isButton1NotEnabled = false;
-            isButton2NotEnabled = false;
-
             if (button3.getText().equals(ServerPanels.UNAVAILABLE_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.UNAVAILABLE_BOOKS_PANEL);
             }else if(button3.getText().equals(ServerPanels.BORROWED_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.BORROWED_PANEL);
             }
-
-            isButton3NotEnabled = true;
 
         });
     }
@@ -142,15 +123,4 @@ public class SubHeader extends JPanel {
         return searchBar;
     }
 
-    public boolean isButton1NotEnabled() {
-        return isButton1NotEnabled;
-    }
-
-    public boolean isButton2NotEnabled() {
-        return isButton2NotEnabled;
-    }
-
-    public boolean isButton3NotEnabled() {
-        return isButton3NotEnabled;
-    }
 }

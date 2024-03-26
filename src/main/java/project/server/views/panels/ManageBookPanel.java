@@ -65,19 +65,20 @@ public class ManageBookPanel extends JPanel {
         return subHeader;
     }
     private void closeSearch(ActionEvent event){
-    LinkedList<Student> students = new LinkedList<>();
+    LinkedList<Student> students = serverObserver.getStudents();
+
         if(haveSearched) {
-            if (subHeader.isButton1NotEnabled()) {
+            if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
                 setManageBookList(students, ServerPanels.PENDING_BORROW_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
-            if (subHeader.isButton2NotEnabled()) {
+            if (subHeader.getCurrentButton().equals(subHeader.getButton2())) {
                 setManageBookList(students, ServerPanels.PENDING_RETURN_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
-            if (subHeader.isButton3NotEnabled()) {
+            if (subHeader.getCurrentButton().equals(subHeader.getButton3())) {
                 setManageBookList(students, ServerPanels.BORROWED_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
@@ -95,11 +96,11 @@ public class ManageBookPanel extends JPanel {
 
         LinkedList<Student> searchedStudents = new LinkedList<>();
 
-        if (subHeader.isButton1NotEnabled()) {
+        if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
             searchedStudents = searchBy(serverObserver.getPendingBorrowingBooks(), searchInput);
-        } else if (subHeader.isButton2NotEnabled()) {
+        } else if (subHeader.getCurrentButton().equals(subHeader.getButton2())) {
             searchedStudents = searchBy(serverObserver.getPendingReturningBooks(), searchInput);
-        } else if (subHeader.isButton3NotEnabled()) {
+        } else if (subHeader.getCurrentButton().equals(subHeader.getButton3())) {
             searchedStudents = searchBy(serverObserver.getCurrentBorrowedBooks(), searchInput);
         }
 
