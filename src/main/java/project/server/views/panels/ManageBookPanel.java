@@ -27,7 +27,7 @@ public class ManageBookPanel extends JPanel {
     private SubHeader subHeader;
     private boolean haveSearched = false;
     private ViewBooksList viewBooksList;
-
+    private ServerPanels serverPanels;
     private ManageBookList manageBookList;
 
     public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver) {
@@ -65,32 +65,25 @@ public class ManageBookPanel extends JPanel {
         return subHeader;
     }
     private void closeSearch(ActionEvent event){
-
+    LinkedList<Student> students = new LinkedList<>();
         if(haveSearched) {
             if (subHeader.isButton1NotEnabled()) {
-                setView(serverObserver.getPendingBorrowingBooks());
+                setManageBookList(students, ServerPanels.PENDING_BORROW_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
             if (subHeader.isButton2NotEnabled()) {
-                setView(serverObserver.getPendingReturningBooks());
+                setManageBookList(students, ServerPanels.PENDING_RETURN_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
             if (subHeader.isButton3NotEnabled()) {
-                setView(serverObserver.getCurrentBorrowedBooks());
+                setManageBookList(students, ServerPanels.BORROWED_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
         }
 
-    }
-    public synchronized void setView(LinkedList<Book> books) {
-        remove(1);
-        viewBooksList = new ViewBooksList(books, this.serverObserver);
-        add(viewBooksList);
-        revalidate();
-        repaint();
     }
     private void performSearch(ActionEvent event) {
         String searchInput = subHeader.getSearchBar().getSearch();
@@ -100,40 +93,46 @@ public class ManageBookPanel extends JPanel {
             return;
         }
 
-        LinkedList<Book> searchedBooks = new LinkedList<>();
+        LinkedList<Student> searchedStudents = new LinkedList<>();
 
         if (subHeader.isButton1NotEnabled()) {
-            searchedBooks = searchBy(serverObserver.getPendingBorrowingBooks(), searchInput);
+            searchedStudents = searchBy(serverObserver.getPendingBorrowingBooks(), searchInput);
         } else if (subHeader.isButton2NotEnabled()) {
-            searchedBooks = searchBy(serverObserver.getPendingReturningBooks(), searchInput);
+            searchedStudents = searchBy(serverObserver.getPendingReturningBooks(), searchInput);
         } else if (subHeader.isButton3NotEnabled()) {
-            searchedBooks = searchBy(serverObserver.getCurrentBorrowedBooks(), searchInput);
+            searchedStudents = searchBy(serverObserver.getCurrentBorrowedBooks(), searchInput);
         }
 
         haveSearched = true;
-        setView(searchedBooks);
+        setManageBookList(searchedStudents, serverPanels);
     }
 
-    private LinkedList<Book> searchBy(LinkedList<Book> books, String searchInput) {
-        LinkedList<Book> searchedBooks;
+    private LinkedList<Student> searchBy(LinkedList<Book> books, String searchInput) {
+        LinkedList<Student> searchedStudents = new LinkedList<>();
 
-        searchedBooks = books.stream()
-                .filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase()))
-                .collect(Collectors.toCollection(LinkedList::new));
+        for (Book book : books) {
+            if (book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase()) ||
+                    book.getAuthor().toLowerCase().contains(searchInput.toLowerCase()) ||
+                    book.getCurrentBorrowers().stream().anyMatch(studentName ->
+                            studentName.toLowerCase().contains(searchInput.toLowerCase()))) {
 
-        if (searchedBooks.isEmpty()) {
-            searchedBooks = books.stream()
-                    .filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase()))
-                    .collect(Collectors.toCollection(LinkedList::new));
+                for (String studentName : book.getCurrentBorrowers()) {
+                    Student student = getStudentByName(studentName);
+                    if (student != null && !searchedStudents.contains(student)) {
+                        searchedStudents.add(student);
+                    }
+                }
+            }
         }
 
-        if (searchedBooks.isEmpty()) {
-            searchedBooks = books.stream()
-                    .filter(book -> book.getCurrentBorrowers().stream()
-                            .anyMatch(studentName -> studentName.toLowerCase().contains(searchInput.toLowerCase())))
-                    .collect(Collectors.toCollection(LinkedList::new));
+        return searchedStudents;
+    }
+    private Student getStudentByName(String studentName) {
+        for (Student student : students) {
+            if (student.getAccount().getUserName().equalsIgnoreCase(studentName)) {
+                return student;
+            }
         }
-
-        return searchedBooks;
+        return null;
     }
 }
