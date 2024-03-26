@@ -38,6 +38,7 @@ public class ManageBookList extends JPanel {
         new SwingWorker<>() {
             @Override
             protected Object doInBackground() {
+                holder.removeAll();
 
 
                 if (students.isEmpty()) {

@@ -17,6 +17,7 @@ import project.utilities.viewComponents.Button;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
@@ -43,13 +44,13 @@ public class ManageBookPanel extends JPanel {
                 new ClickableText(ServerPanels.BORROWED_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)),
                 serverObserver);
 
-        manageBookList = new ManageBookList( students, serverObserver, ServerPanels.PENDING_BORROW_PANEL);
+        manageBookList = new ManageBookList(students, serverObserver, ServerPanels.PENDING_BORROW_PANEL);
 
         add(subHeader, BorderLayout.NORTH);
         add(manageBookList, BorderLayout.CENTER);
 
         subHeader.getSearchBar().getCancelSearch().addActionListener(this::closeSearch);
-        //subHeader.getSearchBar().getSearchButton().addActionListener(this::performSearch);
+        subHeader.getSearchBar().getSearchButton().addActionListener(this::performSearch);
     }
 
     public void setManageBookList( LinkedList<Student> students, ServerPanels serverPanels) {
@@ -65,6 +66,7 @@ public class ManageBookPanel extends JPanel {
         return subHeader;
     }
     private void closeSearch(ActionEvent event){
+
         if(haveSearched) {
             if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
                 setManageBookList(students, ServerPanels.PENDING_BORROW_PANEL);
@@ -83,5 +85,84 @@ public class ManageBookPanel extends JPanel {
             }
         }
 
+    }
+
+    private void performSearch(ActionEvent e) {
+
+        String search = subHeader.getSearchBar().getSearch();
+
+        if(search.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter something", "Empty Search", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
+            manageBookList.updateView(getStudents(search, ServerPanels.PENDING_BORROW_PANEL), ServerPanels.PENDING_BORROW_PANEL);
+        } else if (subHeader.getCurrentButton().equals(subHeader.getButton2())) {
+             manageBookList.updateView(getStudents(search, ServerPanels.PENDING_RETURN_PANEL), ServerPanels.PENDING_RETURN_PANEL);
+        }else if (subHeader.getCurrentButton().equals(subHeader.getButton3())) {
+            manageBookList.updateView(getStudents(search, ServerPanels.BORROWED_PANEL), ServerPanels.BORROWED_PANEL);
+        }
+
+        haveSearched = true;
+    }
+
+    private LinkedList<Student> getStudents(String search, ServerPanels panels) {
+        LinkedList<Student> filtered;
+
+        filtered =  students.stream().filter(student -> student.getAccount().getFirstName().concat(student.getAccount().getLastName()).toLowerCase().contains(search)).collect(Collectors.toCollection(LinkedList::new));
+
+        if (filtered.isEmpty()) {
+
+            for (Student student : serverObserver.getStudents()) {
+
+                LinkedList<Book> booksToRemove = new LinkedList<>();
+
+                switch (panels) {
+                    case PENDING_BORROW_PANEL -> {
+
+                        for (Book book : student.getPendingBooks()) {
+                            if (book.getBookTitle().toLowerCase().contains(search)) {
+                                filtered.add(student);
+                            }else {
+                                booksToRemove.add(book);
+                            }
+                        }
+
+                        student.getPendingBooks().removeAll(booksToRemove);
+                    }
+                    case PENDING_RETURN_PANEL -> {
+
+                        for (Book book : student.getPendingReturnBook()) {
+                            if (book.getBookTitle().toLowerCase().contains(search)) {
+                                filtered.add(student);
+                            }else {
+                                booksToRemove.add(book);
+                            }
+                        }
+
+                        student.getPendingReturnBook().removeAll(booksToRemove);
+
+                    }
+                    case BORROWED_PANEL -> {
+
+                        for (Book book : student.getBorrowedBooks()) {
+                            if (book.getBookTitle().toLowerCase().contains(search)) {
+                                filtered.add(student);
+                            }else {
+                                booksToRemove.add(book);
+                            }
+                        }
+
+
+                        student.getBorrowedBooks().removeAll(booksToRemove);
+
+                    }
+                }
+
+            }
+        }
+
+        return filtered;
     }
 }
