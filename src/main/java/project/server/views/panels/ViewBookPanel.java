@@ -74,12 +74,12 @@ public class ViewBookPanel extends JPanel {
         String searchInput = subHeader.getSearchBar().getSearch();
 
         if(searchInput == null){
-            subHeader.enableError("Enter something");
+            subHeader.enableError("Enter a Title or an Author");
             return;
         }
 
         if(searchInput.trim().isEmpty()) {
-            subHeader.enableError("Enter something");
+            subHeader.enableError("Enter a Title or an Author");
             return;
         }
 

@@ -15,10 +15,9 @@ public class SubHeader extends JPanel {
     private final ClickableText button2;
     private final ClickableText button3;
     private ClickableText currentButton;
-    private final JLabel errorMessage;
 
     public SubHeader(ClickableText button1, ClickableText button2, ClickableText button3, ServerObserver serverObserver) {
-        this.errorMessage = new JLabel();
+
         this.button1 = button1;
         this.button2 = button2;
         this.button3 = button3;
@@ -50,11 +49,6 @@ public class SubHeader extends JPanel {
         add(searchBar, constraints);
         setCurrentClickableText(button1);
 
-        constraints.gridy = 1;
-        errorMessage.setForeground(Color.RED);
-        errorMessage.setVisible(false);
-        add(errorMessage, constraints);
-
         this.button1.addActionListener(e -> {
 
             if (button1.getText().equals(ServerPanels.All_BOOKS_PANEL.getDisplayName())) {
@@ -85,8 +79,7 @@ public class SubHeader extends JPanel {
     }
     public void enableError(String message) {
 
-        errorMessage.setText(message);
-        errorMessage.setVisible(true);
+        JOptionPane.showMessageDialog(null, message, "Search Error", JOptionPane.INFORMATION_MESSAGE);
 
     } // end of enableError method
     public void setCurrentClickableText(ClickableText currentText) {
