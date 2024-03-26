@@ -69,17 +69,17 @@ public class ManageBookPanel extends JPanel {
 
         if(haveSearched) {
             if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
-                setManageBookList(students, ServerPanels.PENDING_BORROW_PANEL);
+                setManageBookList(serverObserver.getStudents(), ServerPanels.PENDING_BORROW_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
             if (subHeader.getCurrentButton().equals(subHeader.getButton2())) {
-                setManageBookList(students, ServerPanels.PENDING_RETURN_PANEL);
+                setManageBookList(serverObserver.getStudents(), ServerPanels.PENDING_RETURN_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
             if (subHeader.getCurrentButton().equals(subHeader.getButton3())) {
-                setManageBookList(students, ServerPanels.BORROWED_PANEL);
+                setManageBookList(serverObserver.getStudents(), ServerPanels.BORROWED_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
                 haveSearched = false;
             }
