@@ -31,6 +31,7 @@ public class ServerController implements ServerObserver, Serializable {
     private LibrarianMainFrame mainView;
 
 
+
     @Override
     public void acceptBook(Book book, Student student) {
 
@@ -491,11 +492,18 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
-    public void setServerMethods() {
+    public void setServerMethods(ServerUpdates updates) {
         try {
+
+            if(updates == null) {
+                serverMethods.registerServerController(null);
+                System.exit(0);
+            }
             serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://" + IPGetter.askUserForIP("Enter Server IP address") + ":3000/servermethods");
+            serverMethods.registerServerController(updates);
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Server Not Available", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
     }
 

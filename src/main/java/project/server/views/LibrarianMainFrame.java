@@ -8,6 +8,8 @@ import project.server.views.panels.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LibrarianMainFrame extends JFrame {
 
@@ -29,6 +31,13 @@ public class LibrarianMainFrame extends JFrame {
         this.serverGuiHeader = new ServerGuiHeader(this.serverController);
 
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                serverController.setServerMethods(null);
+            }
+
+        });
 
         initializeFrame();
         this.getContentPane().add(serverGuiHeader, BorderLayout.NORTH);

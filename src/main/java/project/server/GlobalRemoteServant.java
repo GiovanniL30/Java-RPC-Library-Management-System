@@ -20,11 +20,12 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     private final HashMap<String, ClientUpdateReceiver> clientsHashMap = new HashMap<>();
     private final BookModel bookModel = new BookModel();
     private final AccountModel accountModel = new AccountModel();
-    private final ServerUpdateReceiver serverUpdateReceiver;
+    private ServerUpdateReceiver serverUpdateReceiver;
 
-    public GlobalRemoteServant(ServerUpdateReceiver serverUpdateReceiver) throws RemoteException {
-        this.serverUpdateReceiver = serverUpdateReceiver;
+    protected GlobalRemoteServant() throws RemoteException {
+        super();
     }
+
 
     ///////////  Client Remote Methods--------
 
@@ -94,7 +95,6 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         System.out.println(student.getAccount().getUserName() + " Requested to return a borrowed book" + book.getBookTitle() + "\n\n");
 
         if (bookModel.removeBorrowed(book.getBookId(), student, false)) {
-            sendNotificationToServer(ClientActions.RETURN_BOOK);
             return new Response<>(true, "Book was successfully returned for pending");
         }
 
@@ -125,9 +125,14 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public void sendNotificationToServer(ClientActions clientActions) throws RemoteException {
-        System.out.println(serverUpdateReceiver);
-        System.out.println(clientActions);
-        serverUpdateReceiver.receiveUpdate(clientActions);
+
+        if(serverUpdateReceiver != null) {
+            try {
+                serverUpdateReceiver.receiveUpdate(clientActions);
+            }catch (Exception ignore){}
+
+        }
+
     }
 
 
@@ -377,6 +382,10 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         return new Response<>(true, studentAccounts);
     }
 
+    @Override
+    public void registerServerController(ServerUpdateReceiver serverUpdateReceiver) throws RemoteException {
+        this.serverUpdateReceiver = serverUpdateReceiver;
+    }
 
 
     private Student getStudentAccount(Account account) {
