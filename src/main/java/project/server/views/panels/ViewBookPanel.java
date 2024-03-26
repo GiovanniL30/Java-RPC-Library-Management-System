@@ -83,36 +83,28 @@ public class ViewBookPanel extends JPanel {
             return;
         }
 
-        LinkedList<Book> searchedBooks;
-
+        LinkedList<Book> searchedBooks = new LinkedList<>();
 
         if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
-            searchedBooks = serverObserver.getBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
-            if(searchedBooks.isEmpty()){
-                searchedBooks = serverObserver.getBooks().stream().filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
-            }
-            haveSearched = true;
-            setView(searchedBooks);
+            searchedBooks = serverObserver.getBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())
+                    || book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())
+            ).collect(Collectors.toCollection(LinkedList::new));
         }
 
         if (subHeader.getCurrentButton().equals(subHeader.getButton2())) {
-            searchedBooks = serverObserver.getAvailableBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
-            if(searchedBooks.isEmpty()){
-                searchedBooks = serverObserver.getAvailableBooks().stream().filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
-            }
-            haveSearched = true;
-            setView(searchedBooks);
+            searchedBooks = serverObserver.getAvailableBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())
+                    || book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())
+            ).collect(Collectors.toCollection(LinkedList::new));
         }
 
         if (subHeader.getCurrentButton().equals(subHeader.getButton3())) {
-            searchedBooks = serverObserver.getUnavailableBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
-            if(searchedBooks.isEmpty()){
-                searchedBooks = serverObserver.getUnavailableBooks().stream().filter(book -> book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())).collect(Collectors.toCollection(LinkedList::new));
-            }
-            haveSearched = true;
-            setView(searchedBooks);
+            searchedBooks = serverObserver.getUnavailableBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())
+                    || book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())
+            ).collect(Collectors.toCollection(LinkedList::new));
         }
 
+        haveSearched = true;
+        setView(searchedBooks);
     }
 
 }
