@@ -43,16 +43,16 @@ public class ManageBookPanel extends JPanel {
                 new ClickableText(ServerPanels.BORROWED_PANEL.getDisplayName(), 0, 50, FontFactory.newPoppinsBold(14)),
                 serverObserver);
 
-        manageBookList = new ManageBookList(students, serverObserver, ServerPanels.PENDING_BORROW_PANEL);
+        manageBookList = new ManageBookList( students, serverObserver, ServerPanels.PENDING_BORROW_PANEL);
 
         add(subHeader, BorderLayout.NORTH);
         add(manageBookList, BorderLayout.CENTER);
 
         subHeader.getSearchBar().getCancelSearch().addActionListener(this::closeSearch);
-        //subHeader.getSearchBar().getSearchButton().addActionListener(this::performSearch);
+        subHeader.getSearchBar().getSearchButton().addActionListener(this::performSearch);
     }
 
-    public synchronized void setManageBookList(LinkedList<Student> students, ServerPanels serverPanels) {
+    public void setManageBookList( LinkedList<Student> students, ServerPanels serverPanels) {
         manageBookList = new ManageBookList(students, serverObserver, serverPanels);
         remove(1);
         add(manageBookList);
@@ -64,10 +64,9 @@ public class ManageBookPanel extends JPanel {
     public SubHeader getSubHeader() {
         return subHeader;
     }
-
-    private void closeSearch(ActionEvent event) {
-
-        if (haveSearched) {
+    private void closeSearch(ActionEvent event){
+    LinkedList<Student> students = new LinkedList<>();
+        if(haveSearched) {
             if (subHeader.isButton1NotEnabled()) {
                 setManageBookList(students, ServerPanels.PENDING_BORROW_PANEL);
                 subHeader.getSearchBar().getInputField().setText("");
@@ -84,5 +83,56 @@ public class ManageBookPanel extends JPanel {
                 haveSearched = false;
             }
         }
+
+    }
+    private void performSearch(ActionEvent event) {
+        String searchInput = subHeader.getSearchBar().getSearch();
+
+        if (searchInput == null || searchInput.trim().isEmpty()) {
+            subHeader.enableError("Enter something");
+            return;
+        }
+
+        LinkedList<Student> searchedStudents = new LinkedList<>();
+
+        if (subHeader.isButton1NotEnabled()) {
+            searchedStudents = searchBy(serverObserver.getPendingBorrowingBooks(), searchInput);
+        } else if (subHeader.isButton2NotEnabled()) {
+            searchedStudents = searchBy(serverObserver.getPendingReturningBooks(), searchInput);
+        } else if (subHeader.isButton3NotEnabled()) {
+            searchedStudents = searchBy(serverObserver.getCurrentBorrowedBooks(), searchInput);
+        }
+
+        haveSearched = true;
+        setManageBookList(searchedStudents, serverPanels);
+    }
+
+    private LinkedList<Student> searchBy(LinkedList<Book> books, String searchInput) {
+        LinkedList<Student> searchedStudents = new LinkedList<>();
+
+        for (Book book : books) {
+            if (book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase()) ||
+                    book.getAuthor().toLowerCase().contains(searchInput.toLowerCase()) ||
+                    book.getCurrentBorrowers().stream().anyMatch(studentName ->
+                            studentName.toLowerCase().contains(searchInput.toLowerCase()))) {
+
+                for (String studentName : book.getCurrentBorrowers()) {
+                    Student student = getStudentByName(studentName);
+                    if (student != null && !searchedStudents.contains(student)) {
+                        searchedStudents.add(student);
+                    }
+                }
+            }
+        }
+
+        return searchedStudents;
+    }
+    private Student getStudentByName(String studentName) {
+        for (Student student : students) {
+            if (student.getAccount().getUserName().equalsIgnoreCase(studentName)) {
+                return student;
+            }
+        }
+        return null;
     }
 }
