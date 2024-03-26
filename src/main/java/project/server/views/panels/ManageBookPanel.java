@@ -22,17 +22,15 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 public class ManageBookPanel extends JPanel {
-    private final LinkedList<Book> books;
+
     private final LinkedList<Student> students;
     private final ServerObserver serverObserver;
     private SubHeader subHeader;
     private boolean haveSearched = false;
-    private ViewBooksList viewBooksList;
-    private ServerPanels serverPanels;
     private ManageBookList manageBookList;
 
-    public ManageBookPanel(LinkedList<Book> books, LinkedList<Student> students, ServerObserver serverObserver) {
-        this.books = books;
+    public ManageBookPanel( LinkedList<Student> students, ServerObserver serverObserver) {
+
         this.students = students;
         this.serverObserver = serverObserver;
 
