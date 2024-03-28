@@ -29,6 +29,7 @@ public class ServerController implements ServerObserver, Serializable {
     private GlobalRemoteMethods serverMethods;
     private Loading loading;
     private LibrarianMainFrame mainView;
+    private Signup signup;
 
 
 
@@ -145,7 +146,7 @@ public class ServerController implements ServerObserver, Serializable {
 
     @Override
     public void openSignUp() {
-        Signup signup = new Signup(mainView, new Dimension(1000, 500), this);
+        signup = new Signup(mainView, new Dimension(1000, 500), this);
         signup.setVisible(true);
     }
 
@@ -316,9 +317,10 @@ public class ServerController implements ServerObserver, Serializable {
 
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
+                signup.dispose();
             }
 
-            JOptionPane.showMessageDialog(mainView, response.getPayload());
+            signup.getUserName().enableError(response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

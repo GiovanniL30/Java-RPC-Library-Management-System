@@ -104,19 +104,11 @@ public class Signup extends JDialog {
 
             Account account = new Account(UtilityMethods.generateRandomID(), userN, firstN, lastN, emailAdd, pass, false);
             serverObserver.createAccount(account);
-            this.dispose();
         });
     }
 
 
-    public void clearAll() {
-        firstName.getTextField().setText("");
-        lastName.getTextField().setText("");
-        userName.getTextField().setText("");
-        password.getTextField().setText("");
-        userName.getTextField().setText("");
-        email.getTextField().setText("");
+    public FieldInput getUserName() {
+        return userName;
     }
-
-
 }

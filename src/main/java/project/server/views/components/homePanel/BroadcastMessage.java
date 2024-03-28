@@ -9,6 +9,7 @@ import project.utilities.viewComponents.Button;
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class BroadcastMessage extends JDialog {
 
@@ -46,7 +47,7 @@ public class BroadcastMessage extends JDialog {
         fieldPanel.setPreferredSize(new Dimension(420, 50));
         fieldPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         messageTextArea = new JTextField();
-        messageTextArea.setPreferredSize(new Dimension(400, 30));
+        messageTextArea.setPreferredSize(new Dimension(420, 30));
         fieldPanel.add(messageTextArea);
 
         Button sendButton = new Button("Send", 200, 30, FontFactory.newPoppinsDefault(14));
@@ -67,7 +68,7 @@ public class BroadcastMessage extends JDialog {
            String message = messageTextArea.getText();
            String selectedClient = (String) clientDropdown.getSelectedItem();
 
-           if (!message.isEmpty() && selectedClient != null) {
+           if (!message.isEmpty()) {
                if (selectedClient.equals("All")){
                    serverObserver.broadcastMessageToAll(message);
                    messageTextArea.setText("");
@@ -75,12 +76,11 @@ public class BroadcastMessage extends JDialog {
                    serverObserver.broadcastMessage(message, selectedClient.split("-id=")[1]);
                    messageTextArea.setText("");
                }
-
+               dispose();
            } else {
                JOptionPane.showMessageDialog(BroadcastMessage.this, "Please enter a message.");
            }
 
-           dispose();
         });
 
 
