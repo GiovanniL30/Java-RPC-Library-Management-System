@@ -19,19 +19,9 @@ public class Server {
 
         try {
             LocateRegistry.createRegistry(3000);
-            ServerController serverController = new ServerController();
-            ServerUpdates servant = new ServerUpdates(serverController);
 
-            GlobalRemoteMethods globalRemoteMethods = new GlobalRemoteServant(servant);
+            GlobalRemoteMethods globalRemoteMethods = new GlobalRemoteServant();
              Naming.bind("rmi://localhost:3000" + "/servermethods", globalRemoteMethods);
-
-            serverController.setServerMethods();
-
-            SwingUtilities.invokeLater(() -> {
-                LibrarianMainFrame mainFrame = new LibrarianMainFrame(serverController);
-                serverController.setServerMainView(mainFrame);
-            });
-
             System.out.println("Server is running...");
 
         } catch (RuntimeException | RemoteException | AlreadyBoundException | MalformedURLException e) {
@@ -39,6 +29,14 @@ public class Server {
             System.exit(0);
         }
 
+
+    }
+
+    public  class ServerApplication {
+
+        ServerApplication() {
+
+        }
 
     }
 

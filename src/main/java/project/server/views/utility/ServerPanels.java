@@ -15,7 +15,6 @@ public enum ServerPanels {
     ADD_BOOKS_PANEL("Add Books");
 
 
-
     private final String displayName;
 
     ServerPanels(String displayName) {

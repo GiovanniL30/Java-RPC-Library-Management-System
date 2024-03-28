@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class UtilityMethods {
 
-    private static boolean validateEmail(String emailAddress) {
+    public static boolean validateEmail(String emailAddress) {
 
         String emailRegex = "[1-9]{7}@slu.edu.ph";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -15,7 +15,7 @@ public class UtilityMethods {
 
     public static boolean haveNullOrEmpty(String... strings){
         for (String str : strings) {
-            if (str == null || str.trim().isEmpty()){
+            if (str == null || str.trim().replace(" ", "").isEmpty()){
                 return true;
             }
         }

@@ -1,21 +1,18 @@
 package project.server.views.components.accountPanel;
 
 import project.server.controller.ServerObserver;
-import project.server.views.components.manageBookPanel.ManageBookCard;
-import project.server.views.utility.ServerPanels;
-import project.utilities.referenceClasses.Book;
 import project.utilities.referenceClasses.Student;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class MangeAccountList extends JPanel {
+public class ManageAccountList extends JPanel {
 
     private final ServerObserver serverObserver;
     private final JPanel holder = new JPanel();
 
-    public MangeAccountList(LinkedList<Student> students, ServerObserver serverObserver) {
+    public ManageAccountList(LinkedList<Student> students, ServerObserver serverObserver) {
 
         this.serverObserver = serverObserver;
 

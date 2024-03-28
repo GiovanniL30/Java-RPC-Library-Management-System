@@ -20,11 +20,12 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     private final HashMap<String, ClientUpdateReceiver> clientsHashMap = new HashMap<>();
     private final BookModel bookModel = new BookModel();
     private final AccountModel accountModel = new AccountModel();
-    private final ServerUpdateReceiver serverUpdateReceiver;
+    private ServerUpdateReceiver serverUpdateReceiver;
 
-    public GlobalRemoteServant(ServerUpdateReceiver serverUpdateReceiver) throws RemoteException {
-        this.serverUpdateReceiver = serverUpdateReceiver;
+    protected GlobalRemoteServant() throws RemoteException {
+        super();
     }
+
 
     ///////////  Client Remote Methods--------
 
@@ -94,7 +95,6 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         System.out.println(student.getAccount().getUserName() + " Requested to return a borrowed book" + book.getBookTitle() + "\n\n");
 
         if (bookModel.removeBorrowed(book.getBookId(), student, false)) {
-            sendNotificationToServer(ClientActions.RETURN_BOOK);
             return new Response<>(true, "Book was successfully returned for pending");
         }
 
@@ -125,9 +125,14 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public void sendNotificationToServer(ClientActions clientActions) throws RemoteException {
-        System.out.println(serverUpdateReceiver);
-        System.out.println(clientActions);
-        serverUpdateReceiver.receiveUpdate(clientActions);
+
+        if(serverUpdateReceiver != null) {
+            try {
+                serverUpdateReceiver.receiveUpdate(clientActions);
+            }catch (Exception ignore){}
+
+        }
+
     }
 
 
@@ -172,7 +177,7 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> retrievePendingReturnBook(Book book, Student student) throws RemoteException {
         System.out.println("Server retrieves pending return book" + book.getBookTitle() + " for " + student.getAccount().getUserName() + "\n\n");
 
-        if (bookModel.retrivePendingReturnBook(book.getBookId(), student)) {
+        if (bookModel.retrievePendingReturnBook(book.getBookId(), student)) {
 
             if(clientsHashMap.containsKey(student.getAccount().getAccountId())) {
                 clientsHashMap.get(student.getAccount().getAccountId()).receiveUpdate(ServerActions.RETRIVE_PENDING_BOOK);
@@ -274,9 +279,24 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         try {
             System.out.println("Server broadcasts: " + message);
             for (ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
-                clientUpdateReceiver.receiveMessage(message, null);
+                clientUpdateReceiver.receiveBroadcast(ServerActions.BROADCAST_MESSAGE, message);
             }
-            return new Response<>(true, "Message broadcasted successfully.");
+            return new Response<>(true, "Message broadcast successfully.");
+        } catch (Exception e) {
+            return new Response<>(false, "Failed to broadcast message: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Response<String> broadcastMessage(String message, String receiver) throws RemoteException {
+
+        try {
+            System.out.println("Server broadcasts: " + message);
+            if(clientsHashMap.containsKey(receiver)) {
+                clientsHashMap.get(receiver).receiveBroadcast(ServerActions.BROADCAST_MESSAGE, message);
+            }
+
+            return new Response<>(true, "Message broadcast successfully.");
         } catch (Exception e) {
             return new Response<>(false, "Failed to broadcast message: " + e.getMessage());
         }
@@ -325,6 +345,11 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
 
     @Override
     public Response<String> createAccount(Account account) throws RemoteException {
+
+        if(getAccounts().getPayload().stream().anyMatch(ac -> ac.getUserName().equals(account.getUserName()))) {
+            return new Response<>(false, "Username was already taken");
+        }
+
         accountModel.addAccount(new Student(account, 0, new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
         return new Response<>(true, "Account successfully created.");
     }
@@ -357,6 +382,10 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
         return new Response<>(true, studentAccounts);
     }
 
+    @Override
+    public void registerServerController(ServerUpdateReceiver serverUpdateReceiver) throws RemoteException {
+        this.serverUpdateReceiver = serverUpdateReceiver;
+    }
 
 
     private Student getStudentAccount(Account account) {

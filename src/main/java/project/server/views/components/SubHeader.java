@@ -17,6 +17,7 @@ public class SubHeader extends JPanel {
     private ClickableText currentButton;
 
     public SubHeader(ClickableText button1, ClickableText button2, ClickableText button3, ServerObserver serverObserver) {
+
         this.button1 = button1;
         this.button2 = button2;
         this.button3 = button3;
@@ -57,8 +58,9 @@ public class SubHeader extends JPanel {
             }
 
         });
+
         this.button2.addActionListener(e -> {
-            
+
             if (button2.getText().equals(ServerPanels.AVAILABLE_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.AVAILABLE_BOOKS_PANEL);
             } else if (button2.getText().equals(ServerPanels.PENDING_RETURN_PANEL.getDisplayName())) {
@@ -67,17 +69,19 @@ public class SubHeader extends JPanel {
 
         });
         this.button3.addActionListener(e -> {
-
             if (button3.getText().equals(ServerPanels.UNAVAILABLE_BOOKS_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.UNAVAILABLE_BOOKS_PANEL);
             }else if(button3.getText().equals(ServerPanels.BORROWED_PANEL.getDisplayName())) {
                 serverObserver.changeFrame(ServerPanels.BORROWED_PANEL);
             }
 
-
         });
     }
+    public void enableError(String message) {
 
+        JOptionPane.showMessageDialog(null, message, "Search Error", JOptionPane.INFORMATION_MESSAGE);
+
+    } // end of enableError method
     public void setCurrentClickableText(ClickableText currentText) {
 
         currentButton = currentText;
@@ -107,4 +111,9 @@ public class SubHeader extends JPanel {
     public ClickableText getCurrentButton() {
         return currentButton;
     }
+
+    public ServerSearchBar getSearchBar() {
+        return searchBar;
+    }
+
 }

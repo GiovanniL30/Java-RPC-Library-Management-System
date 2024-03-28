@@ -11,14 +11,17 @@ public class AccountSearch extends JPanel {
     private final Button cancel;
     private final Button search;
     private final JTextField inputField;
+    private final Button createAccount = new Button("Create Account", 160, 50, FontFactory.newPoppinsDefault(14));
 
     public AccountSearch(Dimension dimension) {
         setPreferredSize(dimension);
         setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         setBackground(Color.white);
 
+        add(createAccount);
+
         inputField = new JTextField();
-        inputField.setPreferredSize(new Dimension(700, 50));
+        inputField.setPreferredSize(new Dimension(600, 50));
         add(inputField);
 
         cancel = new Button("X", 50, 50, FontFactory.newPoppinsDefault(13));
@@ -28,5 +31,26 @@ public class AccountSearch extends JPanel {
         search.setBackground(ColorFactory.blue());
         search.setForeground(Color.WHITE);
         add(search);
+    }
+
+    public Button getCancel() {
+        return cancel;
+    }
+
+    public Button getSearch() {
+        return search;
+    }
+
+    public JTextField getInputField() {
+        return inputField;
+    }
+
+    public Button getCreateAccount() {
+        return createAccount;
+    }
+    public void enableError(String message) {
+
+        JOptionPane.showMessageDialog(null, message, "Search Error", JOptionPane.INFORMATION_MESSAGE);
+
     }
 }

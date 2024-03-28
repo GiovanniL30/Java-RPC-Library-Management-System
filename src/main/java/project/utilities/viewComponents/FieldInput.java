@@ -95,7 +95,7 @@ public class FieldInput extends JPanel {
         }
 
         // Validate user input
-        if (userInput.length() < minInput || userInput.length() > maxInput) {
+        if (userInput.trim().replace(" ", "").length() < minInput || userInput.length() > maxInput) {
             enableError("Please enter text with a length of [" + minInput + "-" + maxInput + "]");
             return false;
         }

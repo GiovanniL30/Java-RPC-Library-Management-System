@@ -1,6 +1,7 @@
 package project.utilities.RMI;
 
 import project.client.controller.ClientUpdateReceiver;
+import project.server.controller.ServerUpdateReceiver;
 import project.utilities.referenceClasses.*;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
@@ -57,6 +58,7 @@ public interface GlobalRemoteMethods extends Remote {
     Response<String> createNewBook(Book book) throws RemoteException;
 
     Response<String> broadcastMessage(String message) throws RemoteException;
+    Response<String> broadcastMessage(String message, String receiver) throws RemoteException;
 
     Response<String> banAccount(Student account) throws RemoteException;
 
@@ -84,6 +86,7 @@ public interface GlobalRemoteMethods extends Remote {
     Response<LinkedList<Book>> getPendingReturningBooks() throws RemoteException;
     Response<LinkedList<Account>> getAccounts() throws RemoteException;
     Response<LinkedList<Student>> getStudentAccounts() throws RemoteException;
+    void registerServerController(ServerUpdateReceiver serverUpdateReceiver)throws RemoteException;
 
 
 

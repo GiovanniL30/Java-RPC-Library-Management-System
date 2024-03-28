@@ -6,6 +6,7 @@ import project.server.controller.ServerObserver;
 import project.utilities.referenceClasses.Account;
 import project.utilities.utilityClasses.ColorFactory;
 import project.utilities.utilityClasses.FontFactory;
+import project.utilities.utilityClasses.UtilityMethods;
 import project.utilities.viewComponents.FieldInput;
 import project.utilities.viewComponents.Button;
 import project.utilities.viewComponents.Picture;
@@ -17,11 +18,11 @@ import static project.utilities.utilityClasses.UtilityMethods.haveNullOrEmpty;
 import static project.utilities.utilityClasses.UtilityMethods.generateRandomID;
 
 public class Signup extends JDialog {
-    private final FieldInput password = new FieldInput("Password", new Dimension(450, 50), 40, 1, true );
+    private final FieldInput password = new FieldInput("Password", new Dimension(450, 50), 40, 8, true );
     private final FieldInput firstName = new FieldInput("First Name", new Dimension(450, 50), 40, 1, false );
     private final FieldInput lastName = new FieldInput("Last Name", new Dimension(450, 50), 40, 1, false );
-    private final FieldInput userName = new FieldInput("User Name", new Dimension(450, 50), 40, 1, false );
-    private final FieldInput email = new FieldInput("Email", new Dimension(450, 50), 40, 1, false );
+    private final FieldInput userName = new FieldInput("User Name", new Dimension(450, 50), 40, 8, false );
+    private final FieldInput email = new FieldInput("Email", new Dimension(450, 50), 18, 18, false );
     private final Button createAccountButton = new Button("Create Account", 225, 50, FontFactory.newPoppinsDefault(13));
     private final Button cancelCreate = new Button("Cancel", 225, 50, FontFactory.newPoppinsDefault(13));
 
@@ -82,17 +83,32 @@ public class Signup extends JDialog {
 
         add(header, BorderLayout.NORTH);
         add(contentHolder, BorderLayout.CENTER);
+
+        cancelCreate.addActionListener(e -> this.dispose());
+        createAccountButton.addActionListener( e ->  {
+
+            String pass = password.getInput();
+            String userN = userName.getInput();
+            String lastN = lastName.getInput();
+            String firstN = firstName.getInput();
+            String emailAdd = email.getInput();
+
+            if(UtilityMethods.haveNullOrEmpty(pass, userN, lastN, firstN, emailAdd)) {
+                return;
+            }
+
+            if(!UtilityMethods.validateEmail(emailAdd)) {
+                email.enableError("Please enter a valid slu email format([7digit]@slu.edu.ph)");
+                return;
+            }
+
+            Account account = new Account(UtilityMethods.generateRandomID(), userN, firstN, lastN, emailAdd, pass, false);
+            serverObserver.createAccount(account);
+        });
     }
 
 
-    public void clearAll() {
-        firstName.getTextField().setText("");
-        lastName.getTextField().setText("");
-        userName.getTextField().setText("");
-        password.getTextField().setText("");
-        userName.getTextField().setText("");
-        email.getTextField().setText("");
+    public FieldInput getUserName() {
+        return userName;
     }
-
-
 }

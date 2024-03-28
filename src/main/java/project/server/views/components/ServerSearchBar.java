@@ -25,8 +25,6 @@ public class ServerSearchBar extends JPanel {
         add(cancelSearch);
         add(searchButton);
     }
-
-
     public Button getCancelSearch() {
         return cancelSearch;
     }
@@ -35,7 +33,9 @@ public class ServerSearchBar extends JPanel {
         return inputField.getText().toLowerCase().trim();
     }
 
-
+    public JTextField getInputField() {
+        return inputField;
+    }
 
     public Button getSearchButton() {
         return searchButton;

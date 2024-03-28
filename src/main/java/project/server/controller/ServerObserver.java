@@ -27,6 +27,7 @@ public interface ServerObserver {
     void cancelPending(Book book, Student student);
 
     void createNewBook(Book book);
+    void openSignUp();
 
     //Methods for showing book information
 
@@ -45,7 +46,9 @@ public interface ServerObserver {
     LinkedList<Student> getStudents();
 
     // Methods for handling account-related actions
-    void broadcastMessage(String message);
+    void broadcastMessage(String message, String recipient);
+
+    void broadcastMessageToAll(String message);
 
     void banAccount(Student account);
 

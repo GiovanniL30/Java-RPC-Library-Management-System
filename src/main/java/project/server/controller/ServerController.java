@@ -1,6 +1,7 @@
 package project.server.controller;
 
 import project.server.views.LibrarianMainFrame;
+import project.server.views.components.accountPanel.Signup;
 import project.server.views.components.viewBookPanel.EditBookViewer;
 import project.server.views.panels.*;
 import project.server.views.utility.ServerPanels;
@@ -15,6 +16,7 @@ import project.utilities.utilityClasses.ServerActions;
 import project.utilities.viewComponents.Loading;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -27,6 +29,8 @@ public class ServerController implements ServerObserver, Serializable {
     private GlobalRemoteMethods serverMethods;
     private Loading loading;
     private LibrarianMainFrame mainView;
+    private Signup signup;
+
 
 
     @Override
@@ -141,6 +145,12 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
+    public void openSignUp() {
+        signup = new Signup(mainView, new Dimension(1000, 500), this);
+        signup.setVisible(true);
+    }
+
+    @Override
     public LinkedList<Book> getAvailableBooks() {
         try {
             Response<LinkedList<Book>> response = serverMethods.getAvailableBooks();
@@ -223,9 +233,22 @@ public class ServerController implements ServerObserver, Serializable {
     }
 
     @Override
-    public void broadcastMessage(String message) {
+    public void broadcastMessage(String message, String recipient) {
 
-        //TODO: specific broadcast to a user
+        try {
+            Response<String> response = serverMethods.broadcastMessage(message, recipient);
+            if (response.isSuccess()) {
+                System.out.println("Message broadcast successfully.");
+            } else {
+                JOptionPane.showMessageDialog(mainView, response.getPayload());
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void broadcastMessageToAll(String message) {
         try {
             Response<String> response = serverMethods.broadcastMessage(message);
             if (response.isSuccess()) {
@@ -294,9 +317,10 @@ public class ServerController implements ServerObserver, Serializable {
 
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
+                signup.dispose();
             }
 
-            JOptionPane.showMessageDialog(mainView, response.getPayload());
+            signup.getUserName().enableError(response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -381,7 +405,7 @@ public class ServerController implements ServerObserver, Serializable {
                     }
                     case MANAGE_BOOK_PANEL -> {
                         mainView.getContentPane().remove(1);
-                        mainView.setCurrentPanel(new ManageBookPanel(getBooks(), getStudents(), ServerController.this));
+                        mainView.setCurrentPanel(new ManageBookPanel(getStudents(), ServerController.this));
                     }
                     case MANAGE_ACCOUNTS_PANEL -> {
                         mainView.getContentPane().remove(1);
@@ -470,11 +494,18 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
-    public void setServerMethods() {
+    public void setServerMethods(ServerUpdates updates) {
         try {
+
+            if(updates == null) {
+                serverMethods.registerServerController(null);
+                System.exit(0);
+            }
             serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://" + IPGetter.askUserForIP("Enter Server IP address") + ":3000/servermethods");
+            serverMethods.registerServerController(updates);
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Server Not Available", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
     }
 

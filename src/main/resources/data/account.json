@@ -1,5 +1,18 @@
 [
   {
+    "accountId": "50046d5d-9b8f-4dfe-80ad-01d1f9b010ee",
+    "userName": "asascascascasc",
+    "firstName": "ascasc",
+    "lastName": "ascasc",
+    "email": "2232254@slu.edu.ph",
+    "password": "ascascascascascasc",
+    "isBanned": false,
+    "totalBorrowedBooks": 0,
+    "pendingBooks": [],
+    "borrowedBooks": [],
+    "pendingReturnBook": []
+  },
+  {
     "accountId": "Giovanni",
     "userName": "giovanni123",
     "firstName": "Giovanni",
@@ -10,16 +23,14 @@
     "totalBorrowedBooks": 0,
     "pendingBooks": [
       {
-        "id": "001"
-      },
-      {
-        "id": "002"
-      },
-      {
         "id": "003"
       }
     ],
-    "borrowedBooks": [],
+    "borrowedBooks": [
+      {
+        "id": "001"
+      }
+    ],
     "pendingReturnBook": []
   }
 ]

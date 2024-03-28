@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 public class ClientController implements ClientObserver {
 
-    private final GlobalRemoteMethods serverMethods;
+    private  GlobalRemoteMethods serverMethods;
     private ClientMainView mainView;
     private Loading loading;
     private Student loggedInAccount;
@@ -42,7 +42,8 @@ public class ClientController implements ClientObserver {
             serverMethods = (GlobalRemoteMethods) Naming.lookup("rmi://"+ IPGetter.askUserForIP("Enter Server IP address")+":3000/servermethods");
             clientUpdates = new ClientUpdates(this);
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Server Not Available", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
 
     }
@@ -333,6 +334,11 @@ public class ClientController implements ClientObserver {
     public void receiveMessage(String message, Student sender) {
         MessageBlock messageBlock = new MessageBlock(sender, loggedInAccount, message, Calendar.getInstance().getTime().toString());
         chatView.addMessage(messageBlock);
+    }
+
+    @Override
+    public void receiveBroadcast(String message) {
+        JOptionPane.showMessageDialog(mainView, message);
     }
 
     public void openBook(Book book) {
