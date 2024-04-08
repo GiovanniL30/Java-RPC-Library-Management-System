@@ -9,6 +9,9 @@ import midproject.utilities.viewComponents.Loading;
 import javax.swing.*;
 import java.awt.*;
 
+ /**
+  *  Class that represents the main view of the client using a JFrame
+ */
 public class ClientMainView extends JFrame {
 
     public static int FRAME_WIDTH = 1000;
@@ -19,8 +22,10 @@ public class ClientMainView extends JFrame {
     private MainPanel mainPanel;
     private JPanel currentPanel;
 
-
-
+    /**
+     * Constructor
+     * @param clientController controller
+     */
     public ClientMainView(ClientController clientController) {
 
         this.clientController = clientController;
@@ -29,9 +34,11 @@ public class ClientMainView extends JFrame {
         Login login = new Login(new Dimension(FRAME_WIDTH, 900));
         login.addClickEvent(this.clientController);
         this.getContentPane().add(login);
-    }
+    } // end of constructor
 
-
+    /**
+     * Initializes the properties of the frame
+     */
     private void initializeFrame() {
 
         try {
@@ -43,7 +50,7 @@ public class ClientMainView extends JFrame {
             UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
-        }
+        } // end of try catch
 
         setSize(new Dimension(FRAME_WIDTH, 800));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,33 +58,56 @@ public class ClientMainView extends JFrame {
 
 
         setVisible(true);
-    }
+    } // end of initializeFrame
 
+    /**
+     * Gets the header
+     * @return
+     */
     public Header getHeader() {
         return mainPanel.getHeader();
-    }
+    } // end of getHeader
 
+    /**
+     * Gets the menu
+     * @return
+     */
     public Menu getMenu() {
         return mainPanel.getMenu();
-    }
+    } // end of getMenu
 
+    /**
+     * Sets the content panel
+     * @param panel
+     */
     public void setContentPanel(JPanel panel) {
         this.currentPanel = panel;
         mainPanel.setContentPanel(panel);
-    }
+    } // end of setContentPanel
 
 
+    /**
+     * Sets the client controller
+     * @param clientController
+     */
     public void setClientController(ClientController clientController) {
         this.clientController = clientController;
+    } // end of setClientController
 
-
-    }
-
+    /**
+     * Sets the main panel
+     * @param mainPanel
+     */
     public void setMainPanel(MainPanel mainPanel) {
         this.mainPanel = mainPanel;
-    }
+    } // end of setMainPanel
 
+    /**
+     * Gets the current panel
+     * @return
+     */
     public JPanel getCurrentPanel() {
         return currentPanel;
-    }
-}
+    } // end of getCurrentPanel
+} // end of class
+

@@ -37,25 +37,31 @@ public class Menu extends JPanel {
         buttons.add(borrowedBooks);
         buttons.add(account);
 
-       GridBagConstraints constraints = new GridBagConstraints();
-       constraints.insets = new Insets(0, 20, 0, 20);
-       setLayout(new GridBagLayout());
+        // set layout to GridBagLayout
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(0, 20, 0, 20);
+        setLayout(new GridBagLayout());
 
-       constraints.gridy = 0;
-       constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridx = 0;
 
-       add(homeButton, constraints);
+        // add the buttons using the specified constraints
+        add(homeButton, constraints);
 
-       constraints.gridx = 1;
-       add(pendingBooks, constraints);
+        constraints.gridx = 1;
+        add(pendingBooks, constraints);
 
-       constraints.gridx = 2;
-       add(borrowedBooks, constraints);
+        constraints.gridx = 2;
+        add(borrowedBooks, constraints);
 
-       constraints.gridx = 3;
-       add(account, constraints);
-    }
+        constraints.gridx = 3;
+        add(account, constraints);
+    } // end of constructor
 
+    /**
+     * Enables/Disables the current button
+     * @param currentButton
+     */
     public void setCurrentButton(Button currentButton) {
 
         this.currentButton = currentButton;
@@ -64,29 +70,51 @@ public class Menu extends JPanel {
         for(Button button: buttons) {
 
             if(!button.equals(currentButton)){
+                // enable buttons that are not pressed
                 button.setEnabled(true);
-            }
+            } // end of if statement
 
-        }
-    }
+        } // end of for each
+    } // end of setCurrentButton
 
+    /**
+     * Gets the home button
+     * @return
+     */
     public Button getHomeButton() {
         return homeButton;
-    }
+    } // end of getHomeButton
 
+    /**
+     * Gets the pending books button
+     * @return
+     */
     public Button getPendingBooks() {
         return pendingBooks;
-    }
+    } // end of getPendingBooks
 
+    /**
+     * Gets the borrowed books button
+     * @return
+     */
     public Button getBorrowedBooks() {
         return borrowedBooks;
-    }
+    } // end of getBorrowedBooks
 
+    /**
+     * Gets the current button
+     * @return
+     */
     public Button getCurrentButton() {
         return currentButton;
-    }
+    } // end of getCurrentButton
 
+    /**
+     * Gets the account
+     * @return
+     */
     public Button getAccount() {
         return account;
-    }
-}
+    } // end of getAccount
+} // end of class
+
