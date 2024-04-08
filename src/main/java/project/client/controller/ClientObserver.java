@@ -7,6 +7,9 @@ import project.utilities.referenceClasses.Student;
 import project.utilities.utilityClasses.ClientActions;
 import project.utilities.utilityClasses.ServerActions;
 
+/**
+ * Interface for client methods
+ */
 public interface ClientObserver {
 
     /**
