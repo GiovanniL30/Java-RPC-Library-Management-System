@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
+/**
+ * Class used for the meny of the client
+ */
 public class Menu extends JPanel {
 
     private final LinkedList<Button> buttons = new LinkedList<>();
@@ -17,8 +20,13 @@ public class Menu extends JPanel {
     private final Button account;
     private Button currentButton;
 
+    /**
+     * Constructor
+     */
     public Menu() {
         setBackground(ColorFactory.blue());
+
+        // instantiate buttons
         homeButton = new Button("Books", 200, 50, FontFactory.newPoppinsBold(15));
         pendingBooks = new Button("Pending Books", 200, 50, FontFactory.newPoppinsBold(15));
         borrowedBooks = new Button("Borrowed Books", 200, 50, FontFactory.newPoppinsBold(15));
