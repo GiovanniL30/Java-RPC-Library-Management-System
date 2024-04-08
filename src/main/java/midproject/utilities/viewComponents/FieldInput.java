@@ -72,9 +72,9 @@ public class FieldInput extends JPanel {
         if (validateUserInput()) {
             removeError();
             if (isPasswordField) {
-                return new String(passwordField.getPassword());
+                return new String(passwordField.getPassword()).trim().replaceAll("\\s+", " ");
             } else {
-                return textField.getText();
+                return textField.getText().trim().replaceAll("\\s+", " ");
             }
         }
         return null;

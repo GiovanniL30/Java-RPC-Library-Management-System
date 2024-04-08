@@ -1,5 +1,6 @@
 package midproject.utilities.utilityClasses;
 
+import javax.swing.*;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -44,5 +45,9 @@ public class UtilityMethods {
      */
     public static String generateRandomID(){
         return UUID.randomUUID().toString();
+    }
+
+    public static boolean askValidation(String prompt) {
+        return JOptionPane.showConfirmDialog(null,prompt, "Confirmation", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION;
     }
 }
