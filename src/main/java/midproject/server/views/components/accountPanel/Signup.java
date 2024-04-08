@@ -111,6 +111,20 @@ public class Signup extends JDialog {
                 return;
             }
 
+            if(pass.matches(".*\\s+.*") || userN.matches(".*\\s+.*")) {
+
+                if(pass.matches(".*\\s+.*")) {
+                    password.enableError("Spaces are not allowed here");
+                }
+
+                if(userN.matches(".*\\s+.*")) {
+                    userName.enableError("Spaces are not allowed here");
+                }
+
+                return;
+            }
+
+
             Account account = new Account(UtilityMethods.generateRandomID(), userN, firstN, lastN, emailAdd, pass, false);
             serverObserver.createAccount(account);
         });

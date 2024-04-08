@@ -13,6 +13,7 @@ import midproject.utilities.referenceClasses.Student;
 import midproject.utilities.utilityClasses.ClientActions;
 import midproject.utilities.utilityClasses.IPGetter;
 import midproject.utilities.utilityClasses.ServerActions;
+import midproject.utilities.utilityClasses.UtilityMethods;
 import midproject.utilities.viewComponents.Loading;
 
 import javax.swing.*;
@@ -39,6 +40,8 @@ public class ServerController implements ServerObserver, Serializable {
      */
     @Override
     public void acceptBook(Book book, Student student) {
+
+        if(UtilityMethods.askValidation("Are you want to accept the book")) return;
         try {
             Response<String> response = serverMethods.acceptBook(book, student);
             if (response.isSuccess()) {
@@ -55,6 +58,7 @@ public class ServerController implements ServerObserver, Serializable {
      */
     @Override
     public void retrieveBook(Book book, Student student) {
+        if(UtilityMethods.askValidation("Are you want to retrieve the book?")) return;
         try {
             Response<String> response = serverMethods.retrieveBook(book, student);
             if (response.isSuccess()) {
@@ -71,6 +75,7 @@ public class ServerController implements ServerObserver, Serializable {
      */
     @Override
     public void retrievePendingReturnBook(Book book, Student student) {
+
         try {
             Response<String> response = serverMethods.retrievePendingReturnBook(book, student);
             if (response.isSuccess()) {
@@ -111,6 +116,7 @@ public class ServerController implements ServerObserver, Serializable {
      */
     @Override
     public boolean deleteBook(Book book) {
+
         try {
             Response<String> response = serverMethods.deleteBook(book);
             if (response.isSuccess()) {
@@ -129,6 +135,8 @@ public class ServerController implements ServerObserver, Serializable {
      */
     @Override
     public void cancelPending(Book book, Student student) {
+
+        if(UtilityMethods.askValidation("Are you want to cancel the book?")) return;
         try {
             Response<String> response = serverMethods.cancelPending(book, student);
             if (response.isSuccess()) {
@@ -301,6 +309,8 @@ public class ServerController implements ServerObserver, Serializable {
     @Override
     public void banAccount(Student account) {
 
+        if(UtilityMethods.askValidation("Are you want to ban " +  account.getAccount().getUserName())) return;
+
         try {
             Response<String> response = serverMethods.banAccount(account);
             if (response.isSuccess()) {
@@ -317,6 +327,8 @@ public class ServerController implements ServerObserver, Serializable {
      */
     @Override
     public void unbanAccount(Student account) {
+
+        if(UtilityMethods.askValidation("Are you want to unban " +  account.getAccount().getUserName())) return;
         try {
             Response<String> response = serverMethods.unbanAccount(account);
             if (response.isSuccess()) {
@@ -333,6 +345,7 @@ public class ServerController implements ServerObserver, Serializable {
      */
     @Override
     public void deleteAccount(Student account) {
+        if(UtilityMethods.askValidation("Are you want to delete " +  account.getAccount().getUserName())) return;
         try {
             Response<String> response = serverMethods.deleteAccount(account);
             if (response.isSuccess()) {

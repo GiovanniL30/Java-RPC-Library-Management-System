@@ -138,6 +138,8 @@ public class ClientController implements ClientObserver {
      */
     @Override
     public void borrowBook(Book book) {
+
+
         bookViewer.setVisible(false);
 
         try {
