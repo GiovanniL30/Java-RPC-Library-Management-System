@@ -37,15 +37,34 @@ public interface ClientObserver {
      */
     void returnBook(Book book);
 
+    /**
+     * Handle updating the client's views according to server's actions
+     * @param serverActions action that the server had done
+     */
     void updateView(ServerActions serverActions);
 
-
+    /**
+     * Handle updating the client's views
+     * @param clientPanels available views for the client
+     */
     void changeFrame(ClientPanels clientPanels);
 
+    /**
+     * Handle logging a client out
+     */
     void logout();
 
+    /**
+     * Handle receiving a message from a client
+     * @param message message to be sent
+     * @param sender who the message came from
+     */
     void receiveMessage(String message, Student sender);
 
+    /**
+     * Handle receiving a broadcast message from the server
+     * @param message message to be broadcasted
+     */
     void receiveBroadcast(String message);
 
 }
