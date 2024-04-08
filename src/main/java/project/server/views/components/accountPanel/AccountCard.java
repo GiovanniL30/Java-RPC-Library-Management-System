@@ -12,19 +12,28 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class AccountCard extends JPanel {
+/**
+ * Represents a card for displaying account information and actions for a student.
+ */
 
+public class AccountCard extends JPanel {
     private final ServerObserver serverObserver;
 
+    /**
+     * Constructs an AccountCard object with the specified student and server observer.
+     * @param student The student whose account information will be displayed.
+     * @param serverObserver The server observer for handling actions related to the account.
+     */
     public AccountCard(Student student, ServerObserver serverObserver) {
         this.serverObserver = serverObserver;
 
-
+        //Set panel properties
         setBorder(new EmptyBorder(20, 0, 0, 0));
         setMaximumSize(new Dimension(500, 400));
         setMaximumSize(getPreferredSize());
         setBackground(Color.white);
 
+        // Panel for buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setBackground(Color.white);
         GridLayout buttonsGrid = new GridLayout(2, 2);
@@ -32,10 +41,12 @@ public class AccountCard extends JPanel {
         buttonsGrid.setVgap(10);
         buttonsPanel.setLayout(buttonsGrid);
 
+        // Panel for displaying account information
         JPanel accountInfo = new JPanel();
         accountInfo.setBackground(Color.white);
         accountInfo.setLayout(new GridLayout(3, 1));
 
+        //Buttons
         Button banButton = new Button("Ban", 100, 50, FontFactory.newPoppinsDefault(13));
         banButton.setForeground(Color.white);
         banButton.setBackground(ColorFactory.purple());
@@ -91,22 +102,16 @@ public class AccountCard extends JPanel {
             unbanButton.setEnabled(false);
             unbanButton.setBackground(Color.white);
         }
-
-
         rightSide.setBorder(new EmptyBorder(0, 10, 0, 0));
         add(picture);
 
         add(rightSide);
 
-        // Action listeners for banning, unbanning, deleting, and edting account
+        // Action listeners for banning, unbanning, deleting, and editing account
         banButton.addActionListener(e -> serverObserver.banAccount(student));
         unbanButton.addActionListener(e -> serverObserver.unbanAccount(student));
         deleteAccount.addActionListener(e -> serverObserver.deleteAccount(student));
         editAccount.addActionListener(e -> serverObserver.changeUserPassword(student));
 
-        //clickableText.addActionListener(e -> signup.setVisible(true));
-
-    }
-
-
-}
+    } // end AccountCard constructor
+} // end AccountCard class

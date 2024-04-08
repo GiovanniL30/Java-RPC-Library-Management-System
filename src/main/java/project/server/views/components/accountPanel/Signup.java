@@ -17,6 +17,10 @@ import java.awt.*;
 import static project.utilities.utilityClasses.UtilityMethods.haveNullOrEmpty;
 import static project.utilities.utilityClasses.UtilityMethods.generateRandomID;
 
+/**
+ * Represents a dialog for signing up new users.
+ */
+
 public class Signup extends JDialog {
     private final FieldInput password = new FieldInput("Password", new Dimension(450, 50), 40, 8, true );
     private final FieldInput firstName = new FieldInput("First Name", new Dimension(450, 50), 40, 1, false );
@@ -28,6 +32,12 @@ public class Signup extends JDialog {
 
     private ServerObserver serverObserver;
 
+    /**
+     * Constructs a Signup dialog with the specified owner frame, dimension, and server observer.
+     * @param owner          The owner frame of the dialog.
+     * @param dimension      The dimension of the dialog.
+     * @param serverObserver The server observer for handling actions related to user accounts.
+     */
     public Signup(Frame owner, Dimension dimension, ServerObserver serverObserver) {
         super(owner, "Create account for student", true);
         setResizable(false);
@@ -36,26 +46,30 @@ public class Signup extends JDialog {
         setLayout(new BorderLayout());
         setSize(dimension);
 
+        // Header panel
         JPanel header = new JPanel();
         header.setBackground(Color.WHITE);
         header.setPreferredSize(new Dimension(100, 100));
         header.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+        // Logo
         Picture logo = new Picture("src/main/resources/images/logo/logo_vanni.png", 100, 100);
         logo.setBackground(Color.WHITE);
         header.add(logo);
 
-
+        // Content Holder panel
         JPanel contentHolder = new JPanel();
         contentHolder.setBackground(Color.white);
         contentHolder.setLayout(new BoxLayout(contentHolder, BoxLayout.Y_AXIS));
 
+        // Title Panel
         JPanel titlePanel = new JPanel();
         JLabel title = new JLabel("Create Account for Student");
         titlePanel.setBackground(Color.WHITE);
         titlePanel.add(title);
         title.setFont(FontFactory.newPoppinsBold(25));
 
+        // Fields
         GridLayout fieldGrid = new GridLayout(3, 2);
         JPanel fieldPanel = new JPanel();
         fieldPanel.setBackground(Color.WHITE);
@@ -66,7 +80,7 @@ public class Signup extends JDialog {
         fieldPanel.add(email);
         fieldPanel.add(password);
 
-
+        // Buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setBackground(Color.WHITE);
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 37));
@@ -80,10 +94,10 @@ public class Signup extends JDialog {
         contentHolder.add(titlePanel);
         contentHolder.add(fieldPanel);
 
-
         add(header, BorderLayout.NORTH);
         add(contentHolder, BorderLayout.CENTER);
 
+        // Add action listeners
         cancelCreate.addActionListener(e -> this.dispose());
         createAccountButton.addActionListener( e ->  {
 
@@ -105,10 +119,12 @@ public class Signup extends JDialog {
             Account account = new Account(UtilityMethods.generateRandomID(), userN, firstN, lastN, emailAdd, pass, false);
             serverObserver.createAccount(account);
         });
-    }
+    } // end of constructor
 
-
+    /**
+     * Gets the username field input
+     */
     public FieldInput getUserName() {
         return userName;
     }
-}
+} // end of Signup class
