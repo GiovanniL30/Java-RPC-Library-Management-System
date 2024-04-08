@@ -16,6 +16,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -252,13 +255,7 @@ public class ClientController implements ClientObserver {
             } // end of DELETE_BOOK
 
             case ADDED_NEW_BOOK -> {
-                // notifies the clients that the admin had added a book
-                new Thread(() ->JOptionPane.showMessageDialog(mainView, "Admin added a new book")).start();
 
-                if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
-                    // changes the frame of the client to the home page
-                    changeFrame(ClientPanels.HOME_PANEL);
-                } // end of if statement
             } // end of ADDED_NEW_BOOK
 
             case DELETE_ACCOUNT -> {
@@ -517,4 +514,27 @@ public class ClientController implements ClientObserver {
     public Student getLoggedInAccount() {
         return loggedInAccount;
     } // end of getLoggedInAccount
+
+    public void uploadImage(String fileName, byte[] bytes) {
+
+        // notifies the clients that the admin had added a book
+        new Thread(() ->JOptionPane.showMessageDialog(mainView, "Admin added a new book")).start();
+
+        if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+            // changes the frame of the client to the home page
+            changeFrame(ClientPanels.HOME_PANEL);
+        } // end of if statement
+
+        File file = new File(fileName);
+        if(!file.exists()) {
+            try ( FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                fileOutputStream.write(bytes);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("downloaded image");
+        }else {
+            System.out.println("image is already downloaded");
+        }
+    }
 } // end of class

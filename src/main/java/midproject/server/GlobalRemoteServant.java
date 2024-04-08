@@ -231,7 +231,6 @@ public class GlobalRemoteServant extends UnicastRemoteObject implements GlobalRe
     public Response<String> createNewBook(Book book) throws RemoteException {
         bookModel.addBook(book);
         for(ClientUpdateReceiver clientUpdateReceiver : clientsHashMap.values()) {
-            clientUpdateReceiver.receiveUpdate(ServerActions.ADDED_NEW_BOOK);
             try(FileInputStream stream = new FileInputStream(book.getImagePath())) {
                 clientUpdateReceiver.getFile(book.getImagePath(), stream.readAllBytes());
             } catch (IOException e) {
