@@ -3,8 +3,11 @@ package midproject.server.views.components;
 import javax.swing.*;
 import java.awt.*;
 
-public class ClickableText extends JButton {
+/**
+ * This class represents a clickable text that can be clicked on.
+ */
 
+public class ClickableText extends JButton {
     private String text;
 
     /**

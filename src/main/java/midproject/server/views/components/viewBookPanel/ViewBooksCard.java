@@ -12,14 +12,22 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class ViewBooksCard extends JPanel {
+/**
+ * Represents a card for displaying book details and actions in the view books panel.
+ */
 
+public class ViewBooksCard extends JPanel {
     private Button editBookButton = new Button("Edit", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button deleteBookButton = new Button("Delete", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button prevOwnersButton = new Button("Previous Owners", 130, 50, FontFactory.newPoppinsDefault(13));
     private Button currentOwnersButton = new Button("Current Owners", 130, 50, FontFactory.newPoppinsDefault(13));
-    public ViewBooksCard(Book book, ServerObserver serverObserver) {
 
+    /**
+     * Constructs a ViewBooksCard.
+     * @param book           The book to display.
+     * @param serverObserver The server observer for interacting with server functionalities.
+     */
+    public ViewBooksCard(Book book, ServerObserver serverObserver) {
         setSize(new Dimension(300, 200));
         setLayout(new GridBagLayout());
         setBorder(new EmptyBorder(0, 10, 0, 20));
@@ -49,7 +57,6 @@ public class ViewBooksCard extends JPanel {
         JPanel buttonsPanel = new JPanel();
         JPanel prevButtonPanel = new JPanel();
 
-
         bookInfoPanel.setLayout(new BoxLayout(bookInfoPanel, BoxLayout.Y_AXIS));
         bookInfoPanel.setBackground(Color.white);
 
@@ -78,7 +85,6 @@ public class ViewBooksCard extends JPanel {
         bookInfoPanel.add(buttonsPanel);
         bookInfoPanel.add(prevButtonPanel);
 
-
         bookPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         bookPanel.setBackground(Color.white);
         bookPanel.add(bookPicture);
@@ -91,6 +97,7 @@ public class ViewBooksCard extends JPanel {
         constraints.fill = 2;
         add(bookPanel, constraints);
 
+        // ACTION LISTENERS FOR THE BUTTONS
         editBookButton.addActionListener(e -> {
            serverObserver.openBookEditor(book);
         });
@@ -140,7 +147,6 @@ public class ViewBooksCard extends JPanel {
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             JOptionPane.showMessageDialog(null, scrollPane, "Current owners", JOptionPane.INFORMATION_MESSAGE);
         });
-    }
-
-}
+    } // end of ViewBooksCard Constructor
+} // end of ViewBooksCard class
 
