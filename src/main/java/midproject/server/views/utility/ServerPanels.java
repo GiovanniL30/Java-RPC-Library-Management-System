@@ -1,5 +1,8 @@
 package midproject.server.views.utility;
 
+/**
+ * Enum representing different panels in the server GUI.
+ */
 
 public enum ServerPanels {
     HOME_PANEL("Home"),
@@ -14,14 +17,20 @@ public enum ServerPanels {
     UNAVAILABLE_BOOKS_PANEL("Unavailable Books"),
     ADD_BOOKS_PANEL("Add Books");
 
-
     private final String displayName;
 
+    /**
+     * Constructs a ServerPanels enum with the specified display name.
+     * @param displayName The display name of the panel.
+     */
     ServerPanels(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * Gets the display name of the panel.
+     */
     public String getDisplayName() {
         return displayName;
     }
-}
+} // end of ServerPanels enum
