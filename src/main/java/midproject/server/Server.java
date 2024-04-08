@@ -31,6 +31,6 @@ public class Server {
             System.err.println(e.getMessage());
             // Exit the server application
             System.exit(0);
-        }
+        } // End of try-catch block
     } // End of main method
 } // End of Server class
