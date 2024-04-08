@@ -6,23 +6,28 @@ import project.utilities.referenceClasses.Student;
 
 import java.util.LinkedList;
 
+/**
+ * the logic class for the book-related actions
+ */
+
 public class BookModel extends DataModel {
 
-
+    /**
+     * Adds the newly created book to the list of all books
+     */
     public void addBook(Book book) {
         LinkedList<Book> books = getBooks();
         books.addFirst(book);
         saveBookChanges(books);
-    }
+    } // end of addBook method
 
-
+    /**
+     * Action for the deletion of books
+     */
     public void deleteBook(Book book) {
         LinkedList<Book> books = getBooks();
 
-
-
         for (Book currentBook : books) {
-
             if (currentBook.getBookId().equals(book.getBookId())) {
                 books.remove(currentBook);
 
@@ -34,16 +39,16 @@ public class BookModel extends DataModel {
                     student.getPendingBooks().removeIf(b -> b.getBookId().equals(book.getBookId()));
                     student.setTotalBorrowedBooks(student.getBorrowedBooks().size());
                 }
-
                 saveStudentAccountChanges(students);
                 saveBookChanges(books);
                 break;
             }
-
         }
+    } // end of deleteBook method
 
-    }
-
+    /**
+     * Retrieve the list of books that have current borrowers
+     */
     public LinkedList<Book> getBooksWithCurrentBorrowers() {
         LinkedList<Book> currentBorrowedBooks = new LinkedList<>();
         LinkedList<Book> books = getBooks();
