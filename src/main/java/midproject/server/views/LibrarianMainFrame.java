@@ -11,8 +11,11 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class LibrarianMainFrame extends JFrame {
+/**
+ * The main frame of the librarian server application.
+ */
 
+public class LibrarianMainFrame extends JFrame {
     public static int FRAME_WIDTH = 1000;
     public static int FRAME_HEIGHT = 800;
 
@@ -26,11 +29,15 @@ public class LibrarianMainFrame extends JFrame {
     private HomePanel homePanel;
     private AddBooksPanel addBooksPanel;
 
+    /**
+     * Constructs the main frame of the librarian server application.
+     * @param serverController The server controller instance.
+     */
     public LibrarianMainFrame(ServerController serverController) {
         this.serverController = serverController;
         this.serverGuiHeader = new ServerGuiHeader(this.serverController);
 
-
+        //Set up window closing event
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -39,17 +46,21 @@ public class LibrarianMainFrame extends JFrame {
 
         });
 
+        // Initialize Frame
         initializeFrame();
         this.getContentPane().add(serverGuiHeader, BorderLayout.NORTH);
         homePanel = new HomePanel(this.serverController);
         setCurrentPanel(homePanel);
     }
 
-
+    /**
+     * Initializes the main frame of the librarian server application.
+     */
     private void initializeFrame() {
-
         try {
+            // Set FlatLaf look and feel
             UIManager.setLookAndFeel(new FlatLightLaf());
+            // Customize UI components
             UIManager.put("Button.arc", 10);
             UIManager.put("TextComponent.arc", 5);
             UIManager.put("ScrollBar.width", 10);
@@ -59,6 +70,7 @@ public class LibrarianMainFrame extends JFrame {
             System.err.println("Failed to initialize LaF");
         }
 
+        // Set frame properties
         setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(mainPanel);
@@ -68,10 +80,12 @@ public class LibrarianMainFrame extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-
         setVisible(true);
-    }
+    } // end initializeFrame method
 
+    /**
+     * ----- Getters -----
+     */
     public ServerGuiHeader getServerGuiHeader() {
         return this.serverGuiHeader;
     }
@@ -93,8 +107,11 @@ public class LibrarianMainFrame extends JFrame {
     }
     public AddBooksPanel getAddBooksPanel(){return addBooksPanel; }
 
+    /**
+     * Sets the current panel to be displayed.
+     * @param panel The panel to set as the current panel.
+     */
     public void setCurrentPanel(JPanel panel) {
-
         this.getContentPane().add(panel, BorderLayout.CENTER);
 
         if (panel instanceof HomePanel) {
@@ -113,5 +130,5 @@ public class LibrarianMainFrame extends JFrame {
             addBooksPanel = (AddBooksPanel) panel;
             serverGuiHeader.setCurrentClickableText(serverGuiHeader.getAddBooks());
         }
-    }
-}
+    } // end setCurrentPanel method
+} // end LibrarianMainFrame class
