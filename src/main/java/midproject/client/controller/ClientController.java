@@ -517,14 +517,6 @@ public class ClientController implements ClientObserver {
 
     public void uploadImage(String fileName, byte[] bytes) {
 
-        // notifies the clients that the admin had added a book
-        new Thread(() ->JOptionPane.showMessageDialog(mainView, "Admin added a new book")).start();
-
-        if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
-            // changes the frame of the client to the home page
-            changeFrame(ClientPanels.HOME_PANEL);
-        } // end of if statement
-
         File file = new File(fileName);
         if(!file.exists()) {
             try ( FileOutputStream fileOutputStream = new FileOutputStream(file)) {
@@ -536,5 +528,15 @@ public class ClientController implements ClientObserver {
         }else {
             System.out.println("image is already downloaded");
         }
+
+        // notifies the clients that the admin had added a book
+        new Thread(() ->JOptionPane.showMessageDialog(mainView, "Admin added a new book")).start();
+
+        if(mainView.getMenu() != null && mainView.getMenu().getCurrentButton().getText().equals("Books")) {
+            // changes the frame of the client to the home page
+            changeFrame(ClientPanels.HOME_PANEL);
+        } // end of if statement
+
+
     }
 } // end of class
