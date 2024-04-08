@@ -14,8 +14,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class EditBookViewer extends JDialog {
+/**
+ * Represents a dialog for editing book details.
+ */
 
+public class EditBookViewer extends JDialog {
     private Book book;
     private final Picture picture;
     private final FieldInput bookTitle;
@@ -24,6 +27,12 @@ public class EditBookViewer extends JDialog {
     private final DropDown bookGenre;
     private final JTextArea shortDescription;
 
+    /**
+     * Constructs an EditBookViewer dialog.
+     * @param frame          The parent frame.
+     * @param book           The book to be edited.
+     * @param serverObserver The server observer for interacting with server functionalities.
+     */
     public EditBookViewer(Frame frame, Book book, ServerObserver serverObserver) {
         super(frame, book.getBookTitle(), true);
         setBackground(Color.WHITE);
@@ -37,13 +46,11 @@ public class EditBookViewer extends JDialog {
         JPanel detailsPanel = new JPanel();
         detailsPanel.setBackground(Color.WHITE);
 
-
         picture = new Picture(book.getImagePath(), 300, 550);
         picture.setBackground(Color.WHITE);
 
         bookTitle = new FieldInput("Title:", new Dimension(400, 50), 20, 1, false);
         bookTitle.getTextField().setText(book.getBookTitle());
-
 
         bookAuthor = new FieldInput("Author:",new Dimension(400, 50), 20, 1, false);
         bookAuthor.getTextField().setText(book.getAuthor());
@@ -106,7 +113,6 @@ public class EditBookViewer extends JDialog {
         constraints.weighty = 1.0;
         picturePanel.add(detailsPanel, constraints);
 
-
         add(picturePanel, BorderLayout.CENTER);
 
         pack();
@@ -115,20 +121,17 @@ public class EditBookViewer extends JDialog {
 
         cancel.addActionListener( e -> this.setVisible(false));
         saveChanges.addActionListener(e -> {
-
             String author = bookAuthor.getInput();
             String title = bookTitle.getInput();
             String copies = bookCopies.getInput();
             String genre = bookGenre.dropDownChoice();
             String description = shortDescription.getText();
 
-
             if (UtilityMethods.haveNullOrEmpty(author, title, copies, description)) {
                 return;
             }
 
             int c;
-
             try {
                 // Parses the input for the number of copies into an integer
                 c = Integer.parseInt(copies);
@@ -140,20 +143,15 @@ public class EditBookViewer extends JDialog {
                     bookCopies.getTextField().setText("");
                     return;
                 }
-
             } catch (NumberFormatException exception) {
                 // Displays an error message for invalid integer input
                 bookCopies.enableError("Please enter a valid Integer Value");
                 return;
             }
 
-
             Book editedBook = new Book(book.getBookId(), title, author, genre, description, book.getImagePath(), c, book.getCurrentBorrowers(), book.getPrevBookBorrowers(), book.getPendingBorrowers(), book.getPendingBookReturners());
             serverObserver.editBook(editedBook);
             this.setVisible(false);
         });
-
-    }
-
-
-}
+    } // End of constructor
+} // End of class
