@@ -9,9 +9,18 @@ import midproject.utilities.viewComponents.Picture;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the home panel of the server GUI.
+ * It displays a summary of books and provides a button to broadcast messages.
+ */
+
 public class HomePanel extends JPanel {
     private final ServerObserver serverController;
 
+    /**
+     * Constructs the HomePanel with the specified server observer.
+     * @param serverObserver The server observer to handle actions.
+     */
     public HomePanel(ServerObserver serverObserver) {
         serverController = serverObserver;
         setBackground(Color.WHITE);
@@ -22,7 +31,9 @@ public class HomePanel extends JPanel {
         holder.setLayout(new BorderLayout());
         holder.setPreferredSize(new Dimension(LibrarianMainFrame.FRAME_WIDTH - 100, 575));
 
+        // Display book summary
         BookSummary bookSummary = new BookSummary(serverController);
+        // Display banner
         Picture banner = new Picture("src/main/resources/images/logo/vanni_banner.png", LibrarianMainFrame.FRAME_WIDTH - 200, 250);
         banner.setBackground(Color.WHITE);
 
@@ -31,6 +42,7 @@ public class HomePanel extends JPanel {
 
         add(holder, BorderLayout.NORTH);
 
+        // Add broadcast button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,50,5));
         buttonPanel.setBackground(Color.WHITE);
         JButton broadcastButton = new JButton("Broadcast");
@@ -40,12 +52,12 @@ public class HomePanel extends JPanel {
 
         buttonPanel.add(broadcastButton);
 
+        // Open broadcast message dialog on button click
         broadcastButton.addActionListener(e -> {
             BroadcastMessage broadcastMessage = new BroadcastMessage((Frame) SwingUtilities.getWindowAncestor(HomePanel.this),
                     serverController);
             broadcastMessage.setVisible(true);
         });
-
         add(buttonPanel, BorderLayout.SOUTH);
-    }
-}
+    } // end of HomePanel constructor
+} // end of HomePanel class

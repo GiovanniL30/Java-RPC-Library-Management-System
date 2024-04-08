@@ -14,12 +14,21 @@ import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+/**
+ * Represents the panel for viewing books in the server GUI.
+ * It allows searching, viewing, and categorizing books based on different criteria.
+ */
+
 public class ViewBookPanel extends JPanel {
     private final ServerObserver serverObserver;
     private final SubHeader subHeader;
     private boolean haveSearched = false;
     private ViewBooksList viewBooksList;
 
+    /**
+     * Constructs the ViewBookPanel with the specified server observer.
+     * @param serverObserver The server observer to handle actions.
+     */
     public ViewBookPanel(ServerObserver serverObserver) {
         this.serverObserver = serverObserver;
 
@@ -34,23 +43,33 @@ public class ViewBookPanel extends JPanel {
 
         subHeader.getSearchBar().getCancelSearch().addActionListener(this::closeSearch);
         subHeader.getSearchBar().getSearchButton().addActionListener(this::performSearch);
-    }
+    } // end ViewBookPanel constructor
 
+    /**
+     * Gets the sub header of the panel.
+     */
     public SubHeader getSubHeader() {
         return subHeader;
-    }
+    } // end getSubHeader
 
+    /**
+     * Sets the view with the specified list of books.
+     * @param books The list of books to be displayed.
+     */
     public synchronized void setView(LinkedList<Book> books) {
         remove(1);
         viewBooksList = new ViewBooksList(books, this.serverObserver);
         add(viewBooksList);
         revalidate();
         repaint();
-    }
+    } // end setView method
+
+    /**
+     * Closes the search and resets the view to display all books.
+     * @param event The action event triggering the method call.
+     */
     private void closeSearch(ActionEvent event){
-
         if(haveSearched) {
-
             if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
                 setView(serverObserver.getBooks());
                 subHeader.getSearchBar().getInputField().setText("");
@@ -67,10 +86,13 @@ public class ViewBookPanel extends JPanel {
                 haveSearched = false;
             }
         }
+    } // end closeSearch method
 
-    }
+    /**
+     * Performs a search based on the input provided and displays the search results.
+     * @param event The action event triggering the method call.
+     */
     private void performSearch(ActionEvent event) {
-
         String searchInput = subHeader.getSearchBar().getSearch();
 
         if(searchInput == null){
@@ -84,7 +106,6 @@ public class ViewBookPanel extends JPanel {
         }
 
         LinkedList<Book> searchedBooks = new LinkedList<>();
-
         if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
             searchedBooks = serverObserver.getBooks().stream().filter(book -> book.getBookTitle().toLowerCase().contains(searchInput.toLowerCase())
                     || book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())
@@ -102,9 +123,7 @@ public class ViewBookPanel extends JPanel {
                     || book.getAuthor().toLowerCase().contains(searchInput.toLowerCase())
             ).collect(Collectors.toCollection(LinkedList::new));
         }
-
         haveSearched = true;
         setView(searchedBooks);
-    }
-
-}
+    } // end performSearch method
+} // end ViewBookPanel class

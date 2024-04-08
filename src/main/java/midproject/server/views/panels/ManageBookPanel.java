@@ -15,16 +15,24 @@ import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-public class ManageBookPanel extends JPanel {
+/**
+ * Represents the panel for managing books in the server GUI.
+ * It allows searching, viewing, and managing books based on different categories.
+ */
 
+public class ManageBookPanel extends JPanel {
     private final LinkedList<Student> students;
     private final ServerObserver serverObserver;
     private SubHeader subHeader;
     private boolean haveSearched = false;
     private ManageBookList manageBookList;
 
+    /**
+     * Constructs the ManageBookPanel with the specified list of students and server observer.
+     * @param students       The list of students.
+     * @param serverObserver The server observer to handle actions.
+     */
     public ManageBookPanel( LinkedList<Student> students, ServerObserver serverObserver) {
-
         this.students = students;
         this.serverObserver = serverObserver;
 
@@ -43,22 +51,33 @@ public class ManageBookPanel extends JPanel {
 
         subHeader.getSearchBar().getCancelSearch().addActionListener(this::closeSearch);
         subHeader.getSearchBar().getSearchButton().addActionListener(this::performSearch);
-    }
+    } // end ManageBookPanel constructor
 
+    /**
+     * Sets the ManageBookList panel with the specified list of students and panel category.
+     * @param students    The list of students.
+     * @param serverPanels The panel category.
+     */
     public void setManageBookList( LinkedList<Student> students, ServerPanels serverPanels) {
         manageBookList = new ManageBookList(students, serverObserver, serverPanels);
         remove(1);
         add(manageBookList);
         revalidate();
         repaint();
+    } // end setManageBookList
 
-    }
-
+    /**
+     * Retrieves the SubHeader component.
+     */
     public SubHeader getSubHeader() {
         return subHeader;
     }
-    private void closeSearch(ActionEvent event){
 
+    /**
+     * Closes the search and resets the view to display all books.
+     * @param event The action event triggering the method call.
+     */
+    private void closeSearch(ActionEvent event){
         if(haveSearched) {
             if (subHeader.getCurrentButton().equals(subHeader.getButton1())) {
                 setManageBookList(serverObserver.getStudents(), ServerPanels.PENDING_BORROW_PANEL);
@@ -76,11 +95,13 @@ public class ManageBookPanel extends JPanel {
                 haveSearched = false;
             }
         }
+    } // end closeSearch method
 
-    }
-
+    /**
+     * Performs a search based on the input provided and displays the search results.
+     * @param e The action event triggering the method call.
+     */
     private void performSearch(ActionEvent e) {
-
         String search = subHeader.getSearchBar().getSearch();
 
         if(search.isEmpty()) {
@@ -95,24 +116,25 @@ public class ManageBookPanel extends JPanel {
         }else if (subHeader.getCurrentButton().equals(subHeader.getButton3())) {
             manageBookList.updateView(getStudents(search, ServerPanels.BORROWED_PANEL), ServerPanels.BORROWED_PANEL);
         }
-
         haveSearched = true;
-    }
+    } // end performSearch method
 
+    /**
+     * Retrieves a list of students based on the search input and panel category.
+     * @param search       The search input.
+     * @param panels       The panel category.
+     * @return             A list of students matching the search criteria.
+     */
     private LinkedList<Student> getStudents(String search, ServerPanels panels) {
         LinkedList<Student> filtered;
-
         filtered =  students.stream().filter(student -> student.getAccount().getFirstName().concat(student.getAccount().getLastName()).toLowerCase().contains(search)).collect(Collectors.toCollection(LinkedList::new));
 
         if (filtered.isEmpty()) {
-
             for (Student student : serverObserver.getStudents()) {
-
                 LinkedList<Book> booksToRemove = new LinkedList<>();
 
                 switch (panels) {
                     case PENDING_BORROW_PANEL -> {
-
                         for (Book book : student.getPendingBooks()) {
                             if (book.getBookTitle().toLowerCase().contains(search)) {
                                 filtered.add(student);
@@ -120,41 +142,33 @@ public class ManageBookPanel extends JPanel {
                                 booksToRemove.add(book);
                             }
                         }
-
                         student.getPendingBooks().removeAll(booksToRemove);
                     }
-                    case PENDING_RETURN_PANEL -> {
 
+                    case PENDING_RETURN_PANEL -> {
                         for (Book book : student.getPendingReturnBook()) {
                             if (book.getBookTitle().toLowerCase().contains(search)) {
                                 filtered.add(student);
-                            }else {
+                            } else {
                                 booksToRemove.add(book);
                             }
                         }
-
                         student.getPendingReturnBook().removeAll(booksToRemove);
-
                     }
-                    case BORROWED_PANEL -> {
 
+                    case BORROWED_PANEL -> {
                         for (Book book : student.getBorrowedBooks()) {
                             if (book.getBookTitle().toLowerCase().contains(search)) {
                                 filtered.add(student);
-                            }else {
+                            } else {
                                 booksToRemove.add(book);
                             }
                         }
-
-
                         student.getBorrowedBooks().removeAll(booksToRemove);
-
                     }
                 }
-
             }
         }
-
         return filtered;
-    }
-}
+    } // end getStudents method
+} // end ManageBookPanel class

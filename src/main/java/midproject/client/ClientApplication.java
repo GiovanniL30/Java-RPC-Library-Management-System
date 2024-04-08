@@ -7,6 +7,10 @@ import javax.swing.*;
 
 public class ClientApplication {
 
+    /**
+     * Main method
+     * @param args
+     */
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater( () -> {
@@ -19,6 +23,7 @@ public class ClientApplication {
             clientController.setMainView(mainView);
         });
 
-    }
+    } // end of main method
 
-}
+} // end of class
+
