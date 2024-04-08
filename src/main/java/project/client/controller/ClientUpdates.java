@@ -7,14 +7,16 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientUpdates extends UnicastRemoteObject implements ClientUpdateReceiver, Serializable {
+/**
+ * Implementation class of the Client Update Receiver
+ */
 
+public class ClientUpdates extends UnicastRemoteObject implements ClientUpdateReceiver, Serializable {
     private final ClientController clientController;
 
     public ClientUpdates(ClientController clientController) throws RemoteException {
         this.clientController = clientController;
     }
-
 
     @Override
     public void receiveMessage(String message, Student sender) {
@@ -30,6 +32,4 @@ public class ClientUpdates extends UnicastRemoteObject implements ClientUpdateRe
     public void receiveBroadcast(ServerActions serverActions, String message) throws RemoteException {
         clientController.receiveBroadcast(message);
     }
-
-
-}
+} // end of ClientUpdates class

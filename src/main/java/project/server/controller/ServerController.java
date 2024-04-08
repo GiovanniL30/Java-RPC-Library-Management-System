@@ -24,32 +24,35 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 
-public class ServerController implements ServerObserver, Serializable {
+/**
+ * This class is the controller for the admin side
+ */
 
+public class ServerController implements ServerObserver, Serializable {
     private GlobalRemoteMethods serverMethods;
     private Loading loading;
     private LibrarianMainFrame mainView;
     private Signup signup;
 
-
-
+    /**
+     * Method to accept the book requested by the client to borrow
+     */
     @Override
     public void acceptBook(Book book, Student student) {
-
         try {
             Response<String> response = serverMethods.acceptBook(book, student);
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.PENDING_BORROW_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
-
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+    /**
+     * Retrieves the book returned by the client
+     */
     @Override
     public void retrieveBook(Book book, Student student) {
         try {
@@ -63,24 +66,27 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Get the pending return book to display in the pending return panel
+     */
     @Override
     public void retrievePendingReturnBook(Book book, Student student) {
         try {
             Response<String> response = serverMethods.retrievePendingReturnBook(book, student);
-
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.PENDING_RETURN_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Allows the admin to edit book details
+     */
     @Override
     public void editBook(Book book) {
-
         try {
             Response<String> response = serverMethods.editBook(book);
             if (response.isSuccess()) {
@@ -91,21 +97,25 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Display the edit book viewer where the admin can edit book details
+     */
     @Override
     public void openBookEditor(Book book) {
         EditBookViewer editBookViewer = new EditBookViewer(mainView, book,this);
         editBookViewer.setVisible(true);
     }
 
+    /**
+     * Allows the admin to delete a book
+     */
     @Override
     public boolean deleteBook(Book book) {
-
         try {
             Response<String> response = serverMethods.deleteBook(book);
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.All_BOOKS_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
             return true;
         } catch (RemoteException e) {
@@ -114,42 +124,49 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Declines the request of user to borrow a book
+     */
     @Override
     public void cancelPending(Book book, Student student) {
-
         try {
             Response<String> response = serverMethods.cancelPending(book, student);
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.PENDING_BORROW_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
-
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Allows the admin to create a new book
+     */
     @Override
     public void createNewBook(Book book) {
         try {
             Response<String> response = serverMethods.createNewBook(book);
-
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.ADD_BOOKS_PANEL);
             }
-
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Display the signup for the server side
+     */
     @Override
     public void openSignUp() {
         signup = new Signup(mainView, new Dimension(1000, 500), this);
         signup.setVisible(true);
     }
 
+    /**
+     * Retrieve the list of available books
+     */
     @Override
     public LinkedList<Book> getAvailableBooks() {
         try {
@@ -163,7 +180,9 @@ public class ServerController implements ServerObserver, Serializable {
         return new LinkedList<>();
     }
 
-
+    /**
+     * Retrieve the list of unavailable books
+     */
     @Override
     public LinkedList<Book> getUnavailableBooks() {
         try {
@@ -177,7 +196,9 @@ public class ServerController implements ServerObserver, Serializable {
         return new LinkedList<>();
     }
 
-
+    /**
+     * Retrieve the list of borrowed books in the meantime
+     */
     @Override
     public LinkedList<Book> getCurrentBorrowedBooks() {
         try {
@@ -191,7 +212,9 @@ public class ServerController implements ServerObserver, Serializable {
         return new LinkedList<>();
     }
 
-
+    /**
+     * Retrieve the list of previously borrowed books
+     */
     @Override
     public LinkedList<Book> getPreviousBorrowedBooks() {
         try {
@@ -205,7 +228,9 @@ public class ServerController implements ServerObserver, Serializable {
         return new LinkedList<>();
     }
 
-
+    /**
+     * Retrieve the list of books that are requested to borrow
+     */
     @Override
     public LinkedList<Book> getPendingBorrowingBooks() {
         try {
@@ -219,6 +244,9 @@ public class ServerController implements ServerObserver, Serializable {
         return new LinkedList<>();
     }
 
+    /**
+     * Get the list of books that are in pending return
+     */
     @Override
     public LinkedList<Book> getPendingReturningBooks() {
         try {
@@ -232,6 +260,9 @@ public class ServerController implements ServerObserver, Serializable {
         return new LinkedList<>();
     }
 
+    /**
+     * Allows the admin to broadcast messages to a certain user
+     */
     @Override
     public void broadcastMessage(String message, String recipient) {
 
@@ -247,6 +278,9 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Allows the admin to broadcast messages to all users
+     */
     @Override
     public void broadcastMessageToAll(String message) {
         try {
@@ -261,74 +295,77 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Bans the account of a certain user
+     */
     @Override
     public void banAccount(Student account) {
 
         try {
             Response<String> response = serverMethods.banAccount(account);
-
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Unbans the account of a certain user
+     */
     @Override
     public void unbanAccount(Student account) {
-
         try {
             Response<String> response = serverMethods.unbanAccount(account);
-
-
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Deletes the account of a certain user
+     */
     @Override
     public void deleteAccount(Student account) {
         try {
             Response<String> response = serverMethods.deleteAccount(account);
-
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
-
+    /**
+     * Creates an account of a user
+     */
     @Override
     public void createAccount(Account account) {
         try {
             Response<String> response = serverMethods.createAccount(account);
-
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
                 signup.dispose();
             }
-
             signup.getUserName().enableError(response.getPayload());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Allows the changing of password of a user
+     */
     @Override
     public void changeUserPassword(Student account) {
-
         String newPass = JOptionPane.showInputDialog(mainView, "Enter the new password: ");
         if (newPass == null || newPass.isEmpty()) return;
 
@@ -339,19 +376,18 @@ public class ServerController implements ServerObserver, Serializable {
 
         try {
             Response<String> response = serverMethods.changeUserPassword(account, newPass);
-
             if (response.isSuccess()) {
                 changeFrame(ServerPanels.MANAGE_ACCOUNTS_PANEL);
             }
-
             JOptionPane.showMessageDialog(mainView, response.getPayload());
-
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+    /**
+     * Retrieve the list of all books
+     */
     @Override
     public LinkedList<Book> getBooks() {
         try {
@@ -364,10 +400,12 @@ public class ServerController implements ServerObserver, Serializable {
         } catch (RemoteException e) {
             return new LinkedList<>();
         }
-
         return new LinkedList<>();
     }
 
+    /**
+     * Retrieve the list of all student users
+     */
     @Override
     public LinkedList<Student> getStudents() {
         try {
@@ -380,67 +418,75 @@ public class ServerController implements ServerObserver, Serializable {
         } catch (RemoteException e) {
             return new LinkedList<>();
         }
-
         return new LinkedList<>();
     }
 
+    /**
+     * Changing of frames for every button for display
+     */
     @Override
     public void changeFrame(ServerPanels serverPanels) {
-
-
         new SwingWorker<>() {
             @Override
             protected Object doInBackground() {
 
                 switch (serverPanels) {
-
+                    //Home Panel Display
                     case HOME_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new HomePanel(ServerController.this));
-
                     }
+                    // View Book Panel Display
                     case VIEW_BOOKS_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new ViewBookPanel(ServerController.this));
                     }
+                    // Manage Books Panel Display
                     case MANAGE_BOOK_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new ManageBookPanel(getStudents(), ServerController.this));
                     }
+                    // Manage Accounts Panel Display
                     case MANAGE_ACCOUNTS_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new ManageAccountsPanel(getStudents(), ServerController.this));
                     }
+                    // Add Books Panel Display
                     case ADD_BOOKS_PANEL -> {
                         mainView.getContentPane().remove(1);
                         mainView.setCurrentPanel(new AddBooksPanel(ServerController.this));
                     }
+                    // Pending Borrow of Books Panel Display
                     case PENDING_BORROW_PANEL -> {
                         mainView.getManageBookPanel().setManageBookList(getStudents(), ServerPanels.PENDING_BORROW_PANEL);
                         mainView.getManageBookPanel().getSubHeader().setCurrentClickableText(mainView.getManageBookPanel().getSubHeader().getButton1());
                     }
+                    // Pending Return of Books Panel Display
                     case PENDING_RETURN_PANEL -> {
                         mainView.getManageBookPanel().setManageBookList(getStudents(), ServerPanels.PENDING_RETURN_PANEL);
                         mainView.getManageBookPanel().getSubHeader().setCurrentClickableText(mainView.getManageBookPanel().getSubHeader().getButton2());
                     }
+                    // Borrowed Books Panel Display
                     case BORROWED_PANEL -> {
                         mainView.getManageBookPanel().setManageBookList(getStudents(), ServerPanels.BORROWED_PANEL);
                         mainView.getManageBookPanel().getSubHeader().setCurrentClickableText(mainView.getManageBookPanel().getSubHeader().getButton3());
                     }
+                    // All Books Panel Display
                     case All_BOOKS_PANEL -> {
                         mainView.getViewBookPanel().setView(getBooks());
                         mainView.getViewBookPanel().getSubHeader().setCurrentClickableText(mainView.getViewBookPanel().getSubHeader().getButton1());
                     }
+                    // Available books panel Display
                     case AVAILABLE_BOOKS_PANEL -> {
                         mainView.getViewBookPanel().setView(getAvailableBooks());
                         mainView.getViewBookPanel().getSubHeader().setCurrentClickableText(mainView.getViewBookPanel().getSubHeader().getButton2());
                     }
+                    // Unavailable books Panel Display
                     case UNAVAILABLE_BOOKS_PANEL -> {
                         mainView.getViewBookPanel().setView(getUnavailableBooks());
                         mainView.getViewBookPanel().getSubHeader().setCurrentClickableText(mainView.getViewBookPanel().getSubHeader().getButton3());
                     }
                 }
-
                 return null;
             }
 
@@ -451,12 +497,12 @@ public class ServerController implements ServerObserver, Serializable {
                 loading.setVisible(false);
             }
         }.execute();
-
         loading.setVisible(true);
-
-
     }
 
+    /**
+     * Updates the display whenever actions are performed
+     */
     @Override
     public void updateView(ClientActions clientActions) {
         switch (clientActions) {
@@ -476,6 +522,9 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Accepts the book borrowed by the user
+     */
     @Override
     public void acceptBook(Student student, Book book) {
         try {
@@ -494,6 +543,9 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Sets the server
+     */
     public void setServerMethods(ServerUpdates updates) {
         try {
 
@@ -509,13 +561,18 @@ public class ServerController implements ServerObserver, Serializable {
         }
     }
 
+    /**
+     * Retrieve the main view to isplay the main frame of the admin
+     */
     public LibrarianMainFrame getServerMainView() {
         return mainView;
     }
 
+    /**
+     * Set the main view of the server
+     */
     public void setServerMainView(LibrarianMainFrame mainView) {
         this.mainView = mainView;
         loading = new Loading(this.mainView);
     }
-
-}
+} // end of ServerController class
