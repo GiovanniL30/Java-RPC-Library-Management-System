@@ -8,29 +8,9 @@
     "imagePath": "src/main/resources/images/bookImages/realm_of_magic.jpg",
     "copies": 1,
     "currentBorrowers": [],
-    "prevBookBorrowers": [
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      },
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      },
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      }
-    ],
+    "prevBookBorrowers": [],
     "pendingBorrowers": [],
-    "pendingBookReturners": [
-      {
-        "id": "Giovanni"
-      }
-    ]
+    "pendingBookReturners": []
   },
   {
     "bookId": "002",
@@ -41,13 +21,7 @@
     "imagePath": "src/main/resources/images/bookImages/dangerous_pursuit.jpg",
     "copies": 0,
     "currentBorrowers": [],
-    "prevBookBorrowers": [
-      {
-        "student": "Giovanni",
-        "name": "Giovanni Leo",
-        "returnDate": "2024-03-25"
-      }
-    ],
+    "prevBookBorrowers": [],
     "pendingBorrowers": [],
     "pendingBookReturners": []
   },

@@ -77,8 +77,9 @@ public class AddBooksPanel extends JPanel {
 
         // Action listeners for upload image
         button.addActionListener(e -> {
-            filePath = uploadImage();
-            if (filePath.isEmpty()) return;
+            String temp = uploadImage();
+            if(temp.isEmpty()) return;
+            filePath = temp;
             picture.updatePicture(filePath);
             imageArea.revalidate();
             imageArea.repaint();
@@ -122,8 +123,7 @@ public class AddBooksPanel extends JPanel {
             Files.copy(sourcePath, targetPath);
             JOptionPane.showMessageDialog(this, "Image saved successfully!");
         } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving image: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            targetPath = Paths.get("src/main/resources/images/bookImages/", imageFile.getName());
         }
         return targetPath.toString();
     } // end of saveImage method
