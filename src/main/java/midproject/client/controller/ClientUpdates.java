@@ -57,17 +57,6 @@ public class ClientUpdates extends UnicastRemoteObject implements ClientUpdateRe
 
     @Override
     public void getFile(String fileName, byte[] bytes) throws RemoteException {
-        File file = new File(fileName);
-        if(!file.exists()) {
-            try ( FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-                fileOutputStream.write(bytes);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println("downloaded image");
-        }else {
-            System.out.println("image is already downloaded");
-        }
-
+        clientController.uploadImage(fileName, bytes);
     }
 }
