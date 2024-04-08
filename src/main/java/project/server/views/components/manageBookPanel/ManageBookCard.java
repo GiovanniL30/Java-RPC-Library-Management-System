@@ -11,6 +11,10 @@ import project.utilities.viewComponents.Button;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents a card for displaying book information and actions for a student.
+ */
+
 public class ManageBookCard extends JPanel{
     private final Picture bookPicture;
     private final JLabel borrowerName;
@@ -65,7 +69,6 @@ public class ManageBookCard extends JPanel{
             retrieveBook.addActionListener(e -> {
                 serverObserver.retrievePendingReturnBook(book, student);
             });
-
         }
         else if(ServerPanels.PENDING_BORROW_PANEL.equals(serverPanels)) {
             buttonPanel.add(cancelBook);
@@ -92,8 +95,6 @@ public class ManageBookCard extends JPanel{
         cancelBook.addActionListener(e -> {
             serverObserver.cancelPending(book, student);
         });
-
-
     } // end of Card constructor
-}
+} // end of ManageBookCard
 
